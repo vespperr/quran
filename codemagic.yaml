@@ -13,6 +13,17 @@ workflows:
           flutter packages pub get
       - name: Build iOS IPA (Targeting iOS 15.1)
         script: |
-          IPHONEOS_DEPLOYMENT_TARGET=15.1 flutter build ipa --release --no-codesign
+          IPHONEOS_DEPLOYMENT_TARGET=15.1 flutter build ios --release --no-codesign
+          
+          # Create IPA payload
+          cd build/ios/iphoneos
+          mkdir -p Payload
+          cp -r Runner.app Payload/
+          zip -r Raiyan.ipa Payload
+          
+          # Copy to root artifacts folder
+          mkdir -p $CM_BUILD_DIR/build/ios/ipa
+          cp Raiyan.ipa $CM_BUILD_DIR/build/ios/ipa/
     artifacts:
       - build/ios/ipa/*.ipa
+      - build/ios/iphoneos/*.app
