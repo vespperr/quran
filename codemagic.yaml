@@ -1,22 +1,29 @@
 workflows:
-  ios-flutter-workflow:
-    name: iOS Flutter Workflow
-    max_build_duration: 120
+  ios-trollstore-release:
+    name: iOS TrollStore IPA Build
+    max_build_duration: 60
     instance_type: mac_mini_m1
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Get Flutter packages
+      - name: Set up Flutter dependencies
         script: |
-          flutter pub get
-      - name: Install CocoaPods dependencies
+          flutter packages pub get
+      - name: Build iOS IPA (Release Mode for TrollStore)
         script: |
-          find . -name "Podfile" -execdir pod install \;
-      - name: Build Flutter iOS release (un-signed)
-        script: |
+          # Build release version without codesign (TrollStore handles signing on device)
           flutter build ios --release --no-codesign
+          
+          # Create IPA package manually for TrollStore installation
+          cd build/ios/iphoneos
+          mkdir -p Payload
+          cp -r Runner.app Payload/
+          zip -r Raiyan_TrollStore.ipa Payload
+      - name: Move IPA to artifact build directory
+        script: |
+          mkdir -p $CM_BUILD_DIR/build/ios/ipa
+          cp build/ios/iphoneos/Raiyan_TrollStore.ipa $CM_BUILD_DIR/build/ios/ipa/
     artifacts:
-      - build/ios/iphoneos/*.app
-      - /tmp/xcodebuild_logs/*.log
+      - build/ios/ipa/*.ipa
