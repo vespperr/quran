@@ -5,7 +5,7 @@ workflows:
     instance_type: mac_mini_m1
     environment:
       flutter: stable
-      xcode: 14.3.1
+      xcode: 15.4
       cocoapods: default
     scripts:
       - name: Set up Flutter dependencies
@@ -16,8 +16,11 @@ workflows:
           flutter clean
           flutter packages pub get
 
+          # Force Xcode minimum deployment target to 15.0 to avoid missing private frameworks on iOS 15
+          find ios/ -name "*.pbxproj" -exec sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*/IPHONEOS_DEPLOYMENT_TARGET = 15.0/g' {} +
+
           # Build iOS release app targeting iOS 15.0 compatibility
-          IPHONEOS_DEPLOYMENT_TARGET=15.0 flutter build ios --release --no-codesign --extra-front-end-options=--no-golem-async-stacks
+          IPHONEOS_DEPLOYMENT_TARGET=15.0 flutter build ios --release --no-codesign OTHER_LDFLAGS="-weak_framework _LocationEssentials"
 
           # Create Payload structure for TrollStore
           cd build/ios/iphoneos
