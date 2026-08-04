@@ -1,6 +1,6 @@
 workflows:
-  ios-trollstore-release:
-    name: iOS TrollStore IPA Build
+  ios-release:
+    name: iOS Release Build (iOS 15.1 Target)
     max_build_duration: 60
     instance_type: mac_mini_m1
     environment:
@@ -11,19 +11,8 @@ workflows:
       - name: Set up Flutter dependencies
         script: |
           flutter packages pub get
-      - name: Build iOS IPA (Release Mode for TrollStore - Target iOS 15)
+      - name: Build iOS IPA (Targeting iOS 15.1)
         script: |
-          # Build release IPA targeting iOS 15 with weak framework linking
-          flutter build ios --release --no-codesign OTHER_LDFLAGS="-weak_framework _LocationEssentials"
-          
-          # Create IPA package manually for TrollStore installation
-          cd build/ios/iphoneos
-          mkdir -p Payload
-          cp -r Runner.app Payload/
-          zip -r Raiyan_TrollStore.ipa Payload
-
-          # Copy IPA to artifact folder inside the same script step
-          mkdir -p $CM_BUILD_DIR/build/ios/ipa
-          cp Raiyan_TrollStore.ipa $CM_BUILD_DIR/build/ios/ipa/
+          IPHONEOS_DEPLOYMENT_TARGET=15.1 flutter build ipa --release --no-codesign
     artifacts:
       - build/ios/ipa/*.ipa
