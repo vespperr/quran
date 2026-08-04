@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Mirrors lib/constants/colors.dart (premium design system) -->
+    <color name="ds_primary">#FF43A047</color>
+    <color name="ds_primary_variant">#FF2E7D32</color>
+    <color name="ds_secondary">#FF4F46E5</color>
+    <color name="ds_background">#FFFAFAF9</color>
+    <color name="ds_surface">#FFFFFFFF</color>
+    <color name="ds_on_surface">#FF1C1917</color>
+    <color name="ds_on_surface_muted">#B31C1917</color>
+    <color name="ds_on_primary">#FFFFFFFF</color>
+    <color name="ds_outline">#FFE7E5E4</color>
+    <color name="ds_luxury_top">#FFFFFEFB</color>
+    <color name="ds_luxury_bottom">#FFE8F5F3</color>
+    <color name="ds_primary_soft">#1A43A047</color>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ds_primary">#FF43A047</color>
+    <color name="ds_primary_variant">#FF2E7D32</color>
+    <color name="ds_secondary">#FF818CF8</color>
+    <color name="ds_background">#FF1C1917</color>
+    <color name="ds_surface">#FF292524</color>
+    <color name="ds_on_surface">#FFFAFAF9</color>
+    <color name="ds_on_surface_muted">#B3FAFAF9</color>
+    <color name="ds_on_primary">#FFFFFFFF</color>
+    <color name="ds_outline">#FF44403C</color>
+    <color name="ds_luxury_top">#FF292524</color>
+    <color name="ds_luxury_bottom">#FF1C1917</color>
+    <color name="ds_primary_soft">#3343A047</color>
+</resources>

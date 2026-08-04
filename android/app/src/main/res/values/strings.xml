@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_prayer_times_description">Prayer times for your selected city. Tap to open the app.</string>
+    <string name="widget_prayer_times_empty">Open the app → Prayer tab → choose your city to see times here.</string>
+    <string name="widget_prayer_times_header">Prayer times</string>
+    <string name="widget_prayer_city_hint">Tap to choose city</string>
+    <string name="widget_prayer_times_placeholder">—</string>
+</resources>

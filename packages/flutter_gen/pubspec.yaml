@@ -1,0 +1,9 @@
+name: flutter_gen
+description: Re-export for l10n (avoids package:flutter_gen/gen_l10n)
+version: 0.0.1
+publish_to: 'none'
+environment:
+  sdk: ">=2.17.6 <3.0.0"
+dependencies:
+  the_open_quran:
+    path: ../..

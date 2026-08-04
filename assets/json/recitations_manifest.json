@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "defaultReciterId": "mishary_alafasy",
+  "reciters": [
+    {
+      "id": "mishary_alafasy",
+      "displayName": {
+        "en": "Mishary Rashid Alafasy",
+        "ar": "مشاري راشد العفاسي",
+        "ku": "میشاری ڕەشید عەفاسی"
+      },
+      "remoteAyahUrlTemplate": "https://cdn.islamic.network/quran/audio/128/ar.alafasy/{ayahId}.mp3",
+      "bundledDemoAssetPath": "assets/recitations/bundled/demo_001001.mp3",
+      "bundledDemoAyahId": 1
+    }
+  ]
+}
