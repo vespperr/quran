@@ -13,8 +13,8 @@ workflows:
           flutter packages pub get
       - name: Build iOS IPA (Release Mode for TrollStore - Target iOS 15)
         script: |
-          # Set deployment target to iOS 15.0 and build release IPA
-          IPHONEOS_DEPLOYMENT_TARGET=15.0 flutter build ios --release --no-codesign
+          # Build release IPA targeting iOS 15 with weak framework linking
+          flutter build ios --release --no-codesign OTHER_LDFLAGS="-weak_framework _LocationEssentials"
           
           # Create IPA package manually for TrollStore installation
           cd build/ios/iphoneos
