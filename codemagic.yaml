@@ -13,13 +13,13 @@ workflows:
           flutter packages pub get
       - name: Build iOS IPA (Targeting iOS 15.1)
         script: |
-          # Force deployment target to 15.1 and weak-link _LocationEssentials for iOS 15 compatibility
-          IPHONEOS_DEPLOYMENT_TARGET=15.1 flutter build ios --release --no-codesign OTHER_LDFLAGS="-weak_framework _LocationEssentials"
+          # Build release IPA targeting iOS 15.1
+          IPHONEOS_DEPLOYMENT_TARGET=15.1 flutter build ios --release --no-codesign
           
           # Create IPA payload package
           cd build/ios/iphoneos
           mkdir -p Payload
-          cp -r Runner.app Payload/
+          cp -R Runner.app Payload/
           zip -r TheOpenQuran.ipa Payload
           
           # Copy to root artifacts folder
@@ -27,4 +27,3 @@ workflows:
           cp TheOpenQuran.ipa $CM_BUILD_DIR/build/ios/ipa/
     artifacts:
       - build/ios/ipa/*.ipa
-      - build/ios/iphoneos/*.app
