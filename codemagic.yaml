@@ -5,21 +5,27 @@ workflows:
     instance_type: mac_mini_m1
     environment:
       flutter: stable
-      xcode: latest
+      xcode: 14.3.1
       cocoapods: default
     scripts:
       - name: Set up Flutter dependencies
         script: |
           flutter packages pub get
-      - name: Build iOS IPA (Release Mode for TrollStore)
+      - name: Build iOS IPA (Release Mode for TrollStore - iOS 15 Target)
         script: |
-          # Build release version without codesign (TrollStore handles signing on device)
-          flutter build ios --release --no-codesign
-          
-          # Create IPA package manually for TrollStore installation
+          flutter clean
+          flutter packages pub get
+
+          # Build iOS release app targeting iOS 15.0 compatibility
+          IPHONEOS_DEPLOYMENT_TARGET=15.0 flutter build ios --release --no-codesign --extra-front-end-options=--no-golem-async-stacks
+
+          # Create Payload structure for TrollStore
           cd build/ios/iphoneos
+          rm -rf Payload Raiyan_TrollStore.ipa
           mkdir -p Payload
-          cp -r Runner.app Payload/
+          cp -R Runner.app Payload/
+
+          # Package IPA for TrollStore
           zip -r Raiyan_TrollStore.ipa Payload
       - name: Move IPA to artifact build directory
         script: |
