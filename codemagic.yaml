@@ -13,26 +13,24 @@ workflows:
           flutter packages pub get
       - name: Build iOS IPA (Release Mode for TrollStore - iOS 15 Target)
         script: |
+          set -e
           flutter clean
           flutter packages pub get
 
           # Force Xcode minimum deployment target to 15.0 to avoid missing private frameworks on iOS 15
           find ios/ -name "*.pbxproj" -exec sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*/IPHONEOS_DEPLOYMENT_TARGET = 15.0/g' {} +
 
-          # Build iOS release app targeting iOS 15.0 compatibility with weak framework linking
-          IPHONEOS_DEPLOYMENT_TARGET=15.0 flutter build ios --release --no-codesign OTHER_LDFLAGS="-weak_framework _LocationEssentials"
+          # Build iOS release app targeting iOS 15.0 compatibility
+          IPHONEOS_DEPLOYMENT_TARGET=15.0 flutter build ios --release --no-codesign
 
-          # Create Payload structure for TrollStore
+          # Create Payload structure and package IPA for TrollStore
           cd build/ios/iphoneos
           rm -rf Payload Raiyan_TrollStore.ipa
           mkdir -p Payload
           cp -R Runner.app Payload/
-
-          # Package IPA for TrollStore
           zip -r Raiyan_TrollStore.ipa Payload
-      - name: Move IPA to artifact build directory
-        script: |
-          mkdir -p $CM_BUILD_DIR/build/ios/ipa
-          cp build/ios/iphoneos/Raiyan_TrollStore.ipa $CM_BUILD_DIR/build/ios/ipa/
+
+          # Copy IPA to root directory for artifact collection
+          cp Raiyan_TrollStore.ipa $CM_BUILD_DIR/
     artifacts:
-      - build/ios/ipa/*.ipa
+      - *.ipa
