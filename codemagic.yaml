@@ -11,26 +11,19 @@ workflows:
       - name: Set up Flutter dependencies
         script: |
           flutter packages pub get
-      - name: Build iOS IPA (Release Mode for TrollStore - iOS 15 Target)
+      - name: Build iOS IPA (Release Mode for TrollStore - Target iOS 15)
         script: |
-          set -e
-          flutter clean
-          flutter packages pub get
-
-          # Force Xcode minimum deployment target to 15.0 to avoid missing private frameworks on iOS 15
-          find ios/ -name "*.pbxproj" -exec sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*/IPHONEOS_DEPLOYMENT_TARGET = 15.0/g' {} +
-
-          # Build iOS release app targeting iOS 15.0 compatibility
+          # Set deployment target to iOS 15.0 and build release IPA
           IPHONEOS_DEPLOYMENT_TARGET=15.0 flutter build ios --release --no-codesign
-
-          # Create Payload structure and package IPA for TrollStore
+          
+          # Create IPA package manually for TrollStore installation
           cd build/ios/iphoneos
-          rm -rf Payload Raiyan_TrollStore.ipa
           mkdir -p Payload
-          cp -R Runner.app Payload/
+          cp -r Runner.app Payload/
           zip -r Raiyan_TrollStore.ipa Payload
 
-          # Copy IPA to root directory for artifact collection
-          cp Raiyan_TrollStore.ipa $CM_BUILD_DIR/
+          # Copy IPA to artifact folder inside the same script step
+          mkdir -p $CM_BUILD_DIR/build/ios/ipa
+          cp Raiyan_TrollStore.ipa $CM_BUILD_DIR/build/ios/ipa/
     artifacts:
-      - *.ipa
+      - build/ios/ipa/*.ipa
