@@ -372,6 +372,23 @@ class PrayerNotificationService {
         .map((t) => '${t.name}|${t.timeString}')
         .join(';');
 
+    final Map<String, String> pMap = {};
+    for (final t in times) {
+      if (t.timeString.isNotEmpty && t.timeString != '--:--') {
+        pMap[t.name.toLowerCase()] = t.timeString;
+      }
+    }
+    final nextInfo = PrayerTimesDb.getNextPrayerWithDuration(times, DateTime.now());
+    final nextPrayerStr = (nextInfo.next.name.isNotEmpty && nextInfo.next.timeString != '--:--')
+        ? 'Next: ${nextInfo.next.name} ${nextInfo.next.timeString}'
+        : 'Next: --:--';
+
+    await WidgetService.updatePrayerWidget(
+      prayerTimes: pMap,
+      nextPrayer: nextPrayerStr,
+      city: city,
+    );
+
     if (Platform.isAndroid) {
       try {
         const MethodChannel(_prayerAlarmsChannel).invokeMethod<void>(
