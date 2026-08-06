@@ -15,6 +15,7 @@ import '../models/prayer_city_model.dart';
 import '../models/prayer_country_model.dart';
 import '../models/prayer_time_model.dart';
 import '../services/adhan_audio_service.dart';
+import '../services/prayer_foreground_adhan_watch.dart';
 import '../services/prayer_notification_service.dart';
 import '../services/prayer_prefs.dart';
 import '../services/prayer_times_source.dart';
@@ -65,9 +66,31 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   Timer? _countdownTimer;
   DateTime _now = DateTime.now();
 
+  late final PrayerForegroundAdhanWatch _foregroundWatch =
+      PrayerForegroundAdhanWatch(
+    times: _times,
+    onPrayerWindowStart: (prayerName, prayerAt) {
+      if (PrayerPrefs.isNotificationEnabled(prayerName)) {
+        if (Platform.isAndroid) {
+          try {
+            MethodChannel(_prayerAlarmsChannel).invokeMethod<void>(
+                'playAdhan', {'rawName': PrayerPrefs.adhanRawName});
+          } catch (_) {}
+        } else {
+          final adhan = PrayerPrefs.adhanAsset;
+          if (adhan.isNotEmpty) {
+            AdhanAudioService.play(adhan,
+                durationMs: PrayerPrefs.adhanDurationMs);
+          }
+        }
+      }
+    },
+  );
+
   @override
   void initState() {
     super.initState();
+    _foregroundWatch.start();
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (mounted) setState(() => _now = DateTime.now());
     });
@@ -118,6 +141,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
 
   @override
   void dispose() {
+    _foregroundWatch.stop();
     _countdownTimer?.cancel();
     _searchController.dispose();
     _countrySearchController.dispose();
@@ -149,6 +173,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         }
         final times = await src.getTodayPrayerTimes(city, includeIraq: false);
         if (mounted) {
+          _foregroundWatch.updatePrayerTimes(times);
           setState(() {
             _countries = [];
             _cities = cities;
@@ -193,6 +218,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
           countryIso: countryIso,
         );
         if (mounted) {
+          _foregroundWatch.updatePrayerTimes(times);
           setState(() {
             _countries = countries;
             _selectedCountryIso = countryIso;

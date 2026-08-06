@@ -75,6 +75,12 @@ class PrayerNotificationService {
   /// Uses sound: null (system default) so the notification always shows on all devices.
   static NotificationDetails _detailsForPrayer(String? prayerName) {
     const channelId = 'prayer_times_channel';
+    final adhanAsset = PrayerPrefs.adhanAsset;
+    String? iosSoundName;
+    if (Platform.isIOS && adhanAsset.isNotEmpty) {
+      iosSoundName = adhanAsset.split('/').last;
+    }
+
     const androidDetails = AndroidNotificationDetails(
       channelId,
       'Prayer Times',
@@ -82,14 +88,15 @@ class PrayerNotificationService {
       importance: Importance.max,
       priority: Priority.high,
       playSound: true,
-      sound: null, // System default so notification always shows; run copy_adhan script for adhan sound
+      sound: null, // System default on Android; native AlarmManager plays Adhan audio
     );
     return NotificationDetails(
       android: androidDetails,
-      iOS: const DarwinNotificationDetails(
+      iOS: DarwinNotificationDetails(
         presentAlert: true,
         presentSound: true,
         presentBadge: true,
+        sound: iosSoundName,
         interruptionLevel: InterruptionLevel.timeSensitive,
       ),
     );
