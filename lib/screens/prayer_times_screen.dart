@@ -181,6 +181,10 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
             _times = times;
             _loading = false;
           });
+          PrayerNotificationService.updateWidgetData(
+            city: _selectedCityDisplay,
+            times: times,
+          );
           Future.microtask(() => _rescheduleNotifications());
         }
       } else {
@@ -227,6 +231,10 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
             _times = times;
             _loading = false;
           });
+          PrayerNotificationService.updateWidgetData(
+            city: _selectedCityDisplay,
+            times: times,
+          );
           Future.microtask(() => _rescheduleNotifications());
         }
       }

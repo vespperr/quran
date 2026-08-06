@@ -21,7 +21,7 @@ struct PrayerWidgetProvider: TimelineProvider {
     func placeholder(in context: Context) -> PrayerEntry {
         PrayerEntry(
             date: Date(),
-            city: "Kalar",
+            city: "Slemani",
             times: [
                 ("Fajr", "04:12"),
                 ("Dhuhr", "12:15"),
@@ -56,8 +56,8 @@ struct PrayerWidgetProvider: TimelineProvider {
 
     private func fetchEntry(for date: Date) -> PrayerEntry {
         let defaults = UserDefaults(suiteName: "group.com.dya.azadalkrd") ?? UserDefaults.standard
-        let rawCity = defaults.string(forKey: "widget_city") ?? "Kalar"
-        let city = rawCity.isEmpty ? "Kalar" : rawCity
+        let rawCity = defaults.string(forKey: "widget_city") ?? "Slemani"
+        let city = rawCity.isEmpty ? "Slemani" : rawCity
         let displayTimes = defaults.string(forKey: "display_times") ?? ""
 
         var parsedTimes: [(name: String, timeStr: String)] = []

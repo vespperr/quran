@@ -346,6 +346,39 @@ class PrayerNotificationService {
   /// Schedule notifications for today and tomorrow (daily coverage without midnight job).
   /// On Android uses native AlarmManager; on iOS uses flutter_local_notifications.
   /// Returns the number of notifications scheduled.
+  /// Syncs city & prayer schedule to native iOS & Android home screen widgets.
+  static Future<void> updateWidgetData({
+    required String city,
+    required List<PrayerTimeModel> times,
+  }) async {
+    final displayTimes = times
+        .where((t) => t.timeString.isNotEmpty && t.timeString != '--:--')
+        .map((t) => '${t.name}|${t.timeString}')
+        .join(';');
+
+    if (Platform.isAndroid) {
+      try {
+        const MethodChannel(_prayerAlarmsChannel).invokeMethod<void>(
+          'updateWidgetData',
+          {
+            'widgetCity': city,
+            'displayTimes': displayTimes,
+          },
+        );
+      } catch (_) {}
+    } else if (Platform.isIOS) {
+      try {
+        const MethodChannel('com.dya.azadalkrd/prayer_widget').invokeMethod<void>(
+          'updateWidgetData',
+          {
+            'widgetCity': city,
+            'displayTimes': displayTimes,
+          },
+        );
+      } catch (_) {}
+    }
+  }
+
   static Future<int?> schedule({
     required String city,
     required List<PrayerTimeModel> times,
@@ -353,6 +386,9 @@ class PrayerNotificationService {
     bool includeIraq = false,
     String? countryIso,
   }) async {
+    // Sync widget data immediately regardless of notification permissions
+    await updateWidgetData(city: city, times: times);
+
     if (!_initialized) await init();
 
     final enabledCount = notifyEnabled.values.where((v) => v == true).length;
