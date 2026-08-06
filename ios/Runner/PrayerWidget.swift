@@ -331,7 +331,6 @@ struct LargePrayerWidgetView: View {
 
 // MARK: - Main Widget Entry
 
-@main
 struct PrayerWidget: Widget {
     let kind: String = "PrayerWidget"
 
