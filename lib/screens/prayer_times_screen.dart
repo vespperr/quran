@@ -62,10 +62,15 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   int _adhkarEveningM = 0;
   bool _fastingMonThu = false;
   bool _fastingWhiteDays = false;
+  Timer? _countdownTimer;
+  DateTime _now = DateTime.now();
 
   @override
   void initState() {
     super.initState();
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() => _now = DateTime.now());
+    });
     _selectedCity = GetStorage(PrayerTimesStorage.boxName)
             .read(PrayerTimesStorage.keyCity) ??
         PrayerTimesSourceRegistry.instance.defaultCity;
@@ -113,6 +118,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
 
   @override
   void dispose() {
+    _countdownTimer?.cancel();
     _searchController.dispose();
     _countrySearchController.dispose();
     super.dispose();
@@ -326,7 +332,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     }
 
     final nextInfo =
-        PrayerTimesDb.getNextPrayerWithDuration(_times, DateTime.now());
+        PrayerTimesDb.getNextPrayerWithDuration(_times, _now);
 
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
@@ -540,7 +546,9 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                     ),
                   ),
                   Text(
-                    _includeIraq ? 'Iraq / Country DB' : 'Kurdistan Region',
+                    _includeIraq
+                        ? context.translate.otherCountriesDb
+                        : context.translate.kurdistanRegion,
                     style: context.theme.textTheme.bodySmall?.copyWith(
                       color: DesignSystem.onSurface.withValues(alpha: 0.6),
                     ),
@@ -688,7 +696,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Select City & Region',
+                    context.translate.selectCityAndRegion,
                     style: context.theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: DesignSystem.onSurface,
@@ -764,7 +772,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Adhan Sound Settings',
+            context.translate.adhanSoundSettings,
             style: context.theme.textTheme.titleMedium?.copyWith(
               color: DesignSystem.onSurface,
               fontWeight: FontWeight.w700,
@@ -784,7 +792,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   Widget _buildMihrabExpansionTile(BuildContext context) {
     return ExpansionTile(
       title: Text(
-        'Classic Mihrab Card View',
+        context.translate.classicMihrabView,
         style: context.theme.textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.w600,
           color: DesignSystem.onSurface,
@@ -1278,11 +1286,16 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   Widget _buildAdhanDurationSetting() {
     final int currentDuration = PrayerPrefs.adhanDurationMs;
     final options = [
-      const DropdownMenuItem<int>(value: 3000, child: Text("3 Seconds")),
-      const DropdownMenuItem<int>(value: 15000, child: Text("15 Seconds")),
-      const DropdownMenuItem<int>(value: 30000, child: Text("30 Seconds")),
-      const DropdownMenuItem<int>(value: 60000, child: Text("1 Minute")),
-      const DropdownMenuItem<int>(value: -1, child: Text("Full Adhan")),
+      DropdownMenuItem<int>(
+          value: 3000, child: Text(context.translate.duration3Sec)),
+      DropdownMenuItem<int>(
+          value: 15000, child: Text(context.translate.duration15Sec)),
+      DropdownMenuItem<int>(
+          value: 30000, child: Text(context.translate.duration30Sec)),
+      DropdownMenuItem<int>(
+          value: 60000, child: Text(context.translate.duration1Min)),
+      DropdownMenuItem<int>(
+          value: -1, child: Text(context.translate.fullAdhan)),
     ];
 
     return Row(
@@ -1322,22 +1335,26 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   }
 
   String _dateHeader() {
-    final now = DateTime.now();
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
+    final now = _now;
+    final lang = Localizations.localeOf(context).languageCode;
+    const enMonths = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
     ];
-    return '${months[now.month - 1]} ${now.day}, ${now.year}';
+    const arMonths = [
+      'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+      'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+    ];
+    const kuMonths = [
+      'کانوونی دووەم', 'شوبات', 'ئازار', 'نیسان', 'ئایار', 'حوزەیران',
+      'تەممووز', 'ئاب', 'ئەیلوول', 'تشرینی یەکەم', 'تشرینی دووەم', 'کانوونی یەکەم'
+    ];
+    final mList = lang == 'ar' ? arMonths : (lang == 'ku' ? kuMonths : enMonths);
+    final monthName = mList[now.month - 1];
+    if (lang == 'ar' || lang == 'ku') {
+      return '$monthName ${now.day}، ${now.year}';
+    }
+    return '$monthName ${now.day}, ${now.year}';
   }
 
   /// Kurdistan (main) | Include Iraq (optional) segmented control.

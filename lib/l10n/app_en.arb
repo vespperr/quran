@@ -100,7 +100,7 @@
     "privacyPolicy": "Privacy policy",
     "nextSurah": "Next Surah",
     "previousSurah": "Previous Surah",
-    "beggingOfSurah": "Begging Of Surah",
+    "beggingOfSurah": "Beginning of Surah",
     "openSourceDevelopedByFabrikod": "Open source developed by AbdulrahmanMH",
     "permissions": "Permissions",
     "permissionsNotifications": "Notifications",
@@ -241,5 +241,15 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "selectCityAndRegion": "Select City & Region",
+    "adhanSoundSettings": "Adhan Sound Settings",
+    "classicMihrabView": "Classic Mihrab Card View",
+    "kurdistanRegion": "Kurdistan Region",
+    "otherCountriesDb": "Other Countries DB",
+    "duration3Sec": "3 Seconds",
+    "duration15Sec": "15 Seconds",
+    "duration30Sec": "30 Seconds",
+    "duration1Min": "1 Minute",
+    "fullAdhan": "Full Adhan"
 }

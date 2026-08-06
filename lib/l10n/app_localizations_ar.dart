@@ -217,7 +217,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recent => 'مؤخرًا';
 
   @override
-  String get read => 'يقرأ';
+  String get read => 'قراءة';
 
   @override
   String get fontSize => 'حجم الخط';
@@ -235,7 +235,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get backgroundColor => 'لون الخلفية';
 
   @override
-  String get ayatAndTranslation => 'آيات + للترجمة';
+  String get ayatAndTranslation => 'الآيات والترجمة';
 
   @override
   String get hide => 'إخفاء';
@@ -247,13 +247,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settings => 'إعدادات';
 
   @override
-  String get rate => 'معدّل';
+  String get rate => 'تقييم التطبيق';
 
   @override
   String get writeAnAppStoreReview => 'اكتب تقييماً في متجر التطبيقات';
 
   @override
-  String get play => 'يبدأ';
+  String get play => 'تشغيل';
 
   @override
   String get pause => 'يوقف';
@@ -265,7 +265,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get meaning => 'معنى';
 
   @override
-  String get navigation => 'الملاحة';
+  String get navigation => 'التنقل';
 
   @override
   String get searchSurahJuzOrAyahs => 'البحث في سورة أو جزء أو آيات ...';
@@ -657,4 +657,34 @@ class AppLocalizationsAr extends AppLocalizations {
   String recitationDownloading(int percent) {
     return 'جارٍ التنزيل… $percent%';
   }
+
+  @override
+  String get selectCityAndRegion => 'اختر المدينة والمنطقة';
+
+  @override
+  String get adhanSoundSettings => 'إعدادات صوت الأذان';
+
+  @override
+  String get classicMihrabView => 'عرض بطاقة المحراب الكلاسيكية';
+
+  @override
+  String get kurdistanRegion => 'إقليم كردستان';
+
+  @override
+  String get otherCountriesDb => 'دول أخرى';
+
+  @override
+  String get duration3Sec => '٣ ثوانٍ';
+
+  @override
+  String get duration15Sec => '١٥ ثانية';
+
+  @override
+  String get duration30Sec => '٣٠ ثانية';
+
+  @override
+  String get duration1Min => 'دقيقة واحدة';
+
+  @override
+  String get fullAdhan => 'الأذان كاملاً';
 }

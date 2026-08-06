@@ -562,7 +562,7 @@ class PrayerTimesDb {
   /// Returns "HH:mm" minus [minutes] (for adhan offset). Handles day wrap. Invalid input returns original.
   static String _timeStringSubtractMinutes(String timeString, int minutes) {
     if (minutes == 0) return timeString;
-    final total = _parseMinutes(timeString);
+    final total = parsePrayerTimeMinutes(timeString);
     if (total == null) return timeString;
     var result = total - minutes;
     while (result < 0) {
@@ -629,12 +629,12 @@ class PrayerTimesDb {
   }
 
   /// Index of the next prayer (first whose time is after [now]).
-  /// Times are parsed as HH:mm. If all are past, returns 0 (next is Fajr tomorrow).
+  /// Times are parsed as HH:mm (prayer-aware). If all are past, returns 0 (next is Fajr tomorrow).
   static int getNextPrayerIndex(List<PrayerTimeModel> times, DateTime now) {
     if (times.isEmpty) return 0;
     final nowMinutes = now.hour * 60 + now.minute;
     for (var i = 0; i < times.length; i++) {
-      final m = _parseMinutes(times[i].timeString);
+      final m = _parseMinutes(times[i].name, times[i].timeString);
       if (m != null && m > nowMinutes) return i;
     }
     return 0;
@@ -654,7 +654,7 @@ class PrayerTimesDb {
     }
     final nextIndex = getNextPrayerIndex(times, now);
     final next = times[nextIndex];
-    final nextMinutes = _parseMinutes(next.timeString);
+    final nextMinutes = _parseMinutes(next.name, next.timeString);
     if (nextMinutes == null) {
       return NextPrayerInfo(
           next: next, until: Duration.zero, isTomorrow: false);
@@ -669,6 +669,6 @@ class PrayerTimesDb {
     return NextPrayerInfo(next: next, until: until, isTomorrow: isTomorrow);
   }
 
-  static int? _parseMinutes(String timeString) =>
-      parsePrayerTimeMinutes(timeString);
+  static int? _parseMinutes(String prayerName, String timeString) =>
+      parsePrayerTimeMinutesForPrayer(prayerName, timeString);
 }

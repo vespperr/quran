@@ -369,7 +369,7 @@ class _HomePrayerTimesCardState extends State<_HomePrayerTimesCard> {
         final info = PrayerTimesDb.getNextPrayerWithDuration(times, _now);
         if (info.next.name.isEmpty) return const SizedBox.shrink();
         final countdownText = info.isTomorrow
-            ? context.translate.nextPrayerTomorrowAt(info.next.timeString)
+            ? '${context.translate.nextPrayerTomorrowAt(info.next.timeString)} (${context.translate.nextPrayerIn(_formatCountdown(info.until))})'
             : context.translate.nextPrayerIn(_formatCountdown(info.until));
         return Material(
           color: Colors.transparent,

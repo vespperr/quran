@@ -28,7 +28,7 @@
   "copy": "کۆپی",
   "copied": "کۆپی کرا",
   "share": "بەشداری",
-  "scroll": "فڕۆشتن",
+  "scroll": "تێپەڕاندن",
   "mushaf": "موسحەف",
   "quranType": "جۆری قورئان",
   "readingStyle": "شێوازی خوێندن",
@@ -77,7 +77,7 @@
   "settings": "ڕێکخستنەکان",
   "rate": "نرخی دان",
   "writeAnAppStoreReview": "پەیوەندیکردن لە ئێپ ستۆر",
-  "play": "یاری بکە",
+  "play": "پەخشکردن",
   "pause": "وەستاندن",
   "favorite": "دڵخواز",
   "meaning": "مانا",
@@ -161,7 +161,7 @@
   "notificationPermissionRequired": "ئاگاداریەکان چالاک بکە بۆ تاقیکردنەوەی ئاگاداری.",
   "testReminderOneMinute": "تاقیکردنەوە لە 10 چرکەدا",
   "testReminderOneMinuteScheduled": "ئاگاداری لە 10 چرکەدا. ئاگاداری و بانگ پێکەوە دەنگی دەدەن.",
-  "testReminderExactAlarmHint": "ئەگەر ئاگاداری 10 چرکەکە نەهات: ڕێکخستنەکان → ئەپەکان → أوقات الأذان آزاد الكُردي → کۆڵی و ئاگاداریەکان → چالاک بکە.",
+  "testReminderExactAlarmHint": "ئەگەر ئاگاداری 10 چرکەکە نەهات: ڕێکخستنەکان → ئەپەکان → أوقات الأذان آزاد الكُردي → منبەهـ و ئاگاداریەکان → چالاک بکە.",
   "nextPrayer": "نوێژی داهاتوو",
   "nextPrayerIn": "لە {duration}دا",
   "@nextPrayerIn": {
@@ -183,7 +183,7 @@
   "settingsDescription": "ڕێکخستنەکان",
   "changeAppLanguage": "زمانی ئەپ بگۆڕە",
   "viewManageMemorizationPlans": "بەرنامەکانی لەبەرکردن ببینە  ",
-  "readPrivacyPolicy": "یاسا و ڕێکار",
+  "readPrivacyPolicy": "خوێندنەوەی سیاسەتی تایبەتێتی",
   "featured": "تایبەتمەند",
   "surahListStats": "114 سورة • 6,236 ئایەت",
   "meccan": "مەککی",
@@ -198,7 +198,7 @@
   "prayerDhuhr": "نیوەڕۆ",
   "prayerAsr": "عەسر",
   "prayerMaghrib": "ئێوارە",
-  "prayerIsha": "خەوتنان",
+  "prayerIsha": "عیشا",
   "adhkarRepeatProgress": "{current} / {target}",
   "@adhkarRepeatProgress": {
     "placeholders": {
@@ -241,5 +241,15 @@
         "type": "int"
       }
     }
-  }
+  },
+  "selectCityAndRegion": "دیاریکردنی شار و هەرێم",
+  "adhanSoundSettings": "ڕێکخستنەکانی دەنگی بانگ",
+  "classicMihrabView": "دیمەنی میحرابی کلاسیک",
+  "kurdistanRegion": "هەرێمی کوردستان",
+  "otherCountriesDb": "وڵاتانی تر",
+  "duration3Sec": "٣ چرکە",
+  "duration15Sec": "١٥ چرکە",
+  "duration30Sec": "٣٠ چرکە",
+  "duration1Min": "١ خولەک",
+  "fullAdhan": "بانگی تەواو"
 }

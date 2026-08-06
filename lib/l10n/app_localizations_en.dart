@@ -328,7 +328,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get previousSurah => 'Previous Surah';
 
   @override
-  String get beggingOfSurah => 'Begging Of Surah';
+  String get beggingOfSurah => 'Beginning of Surah';
 
   @override
   String get openSourceDevelopedByFabrikod =>
@@ -666,4 +666,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String recitationDownloading(int percent) {
     return 'Downloading… $percent%';
   }
+
+  @override
+  String get selectCityAndRegion => 'Select City & Region';
+
+  @override
+  String get adhanSoundSettings => 'Adhan Sound Settings';
+
+  @override
+  String get classicMihrabView => 'Classic Mihrab Card View';
+
+  @override
+  String get kurdistanRegion => 'Kurdistan Region';
+
+  @override
+  String get otherCountriesDb => 'Other Countries DB';
+
+  @override
+  String get duration3Sec => '3 Seconds';
+
+  @override
+  String get duration15Sec => '15 Seconds';
+
+  @override
+  String get duration30Sec => '30 Seconds';
+
+  @override
+  String get duration1Min => '1 Minute';
+
+  @override
+  String get fullAdhan => 'Full Adhan';
 }

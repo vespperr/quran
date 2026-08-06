@@ -96,7 +96,7 @@ class AppLocalizationsKu extends AppLocalizations {
   String get share => 'بەشداری';
 
   @override
-  String get scroll => 'فڕۆشتن';
+  String get scroll => 'تێپەڕاندن';
 
   @override
   String get mushaf => 'موسحەف';
@@ -252,7 +252,7 @@ class AppLocalizationsKu extends AppLocalizations {
   String get writeAnAppStoreReview => 'پەیوەندیکردن لە ئێپ ستۆر';
 
   @override
-  String get play => 'یاری بکە';
+  String get play => 'پەخشکردن';
 
   @override
   String get pause => 'وەستاندن';
@@ -497,7 +497,7 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get testReminderExactAlarmHint =>
-      'ئەگەر ئاگاداری 10 چرکەکە نەهات: ڕێکخستنەکان → ئەپەکان → أوقات الأذان آزاد الكُردي → کۆڵی و ئاگاداریەکان → چالاک بکە.';
+      'ئەگەر ئاگاداری 10 چرکەکە نەهات: ڕێکخستنەکان → ئەپەکان → أوقات الأذان آزاد الكُردي → منبەهـ و ئاگاداریەکان → چالاک بکە.';
 
   @override
   String get nextPrayer => 'نوێژی داهاتوو';
@@ -526,7 +526,7 @@ class AppLocalizationsKu extends AppLocalizations {
   String get viewManageMemorizationPlans => 'بەرنامەکانی لەبەرکردن ببینە  ';
 
   @override
-  String get readPrivacyPolicy => 'یاسا و ڕێکار';
+  String get readPrivacyPolicy => 'خوێندنەوەی سیاسەتی تایبەتێتی';
 
   @override
   String get featured => 'تایبەتمەند';
@@ -573,7 +573,7 @@ class AppLocalizationsKu extends AppLocalizations {
   String get prayerMaghrib => 'ئێوارە';
 
   @override
-  String get prayerIsha => 'خەوتنان';
+  String get prayerIsha => 'عیشا';
 
   @override
   String adhkarRepeatProgress(int current, int target) {
@@ -657,4 +657,34 @@ class AppLocalizationsKu extends AppLocalizations {
   String recitationDownloading(int percent) {
     return 'دەگیرێت… $percent%';
   }
+
+  @override
+  String get selectCityAndRegion => 'دیاریکردنی شار و هەرێم';
+
+  @override
+  String get adhanSoundSettings => 'ڕێکخستنەکانی دەنگی بانگ';
+
+  @override
+  String get classicMihrabView => 'دیمەنی میحرابی کلاسیک';
+
+  @override
+  String get kurdistanRegion => 'هەرێمی کوردستان';
+
+  @override
+  String get otherCountriesDb => 'وڵاتانی تر';
+
+  @override
+  String get duration3Sec => '٣ چرکە';
+
+  @override
+  String get duration15Sec => '١٥ چرکە';
+
+  @override
+  String get duration30Sec => '٣٠ چرکە';
+
+  @override
+  String get duration1Min => '١ خولەک';
+
+  @override
+  String get fullAdhan => 'بانگی تەواو';
 }

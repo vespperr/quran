@@ -709,7 +709,7 @@ abstract class AppLocalizations {
   /// No description provided for @beggingOfSurah.
   ///
   /// In en, this message translates to:
-  /// **'Begging Of Surah'**
+  /// **'Beginning of Surah'**
   String get beggingOfSurah;
 
   /// No description provided for @openSourceDevelopedByFabrikod.
@@ -1329,6 +1329,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Downloading… {percent}%'**
   String recitationDownloading(int percent);
+
+  /// No description provided for @selectCityAndRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Select City & Region'**
+  String get selectCityAndRegion;
+
+  /// No description provided for @adhanSoundSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Adhan Sound Settings'**
+  String get adhanSoundSettings;
+
+  /// No description provided for @classicMihrabView.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic Mihrab Card View'**
+  String get classicMihrabView;
+
+  /// No description provided for @kurdistanRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Kurdistan Region'**
+  String get kurdistanRegion;
+
+  /// No description provided for @otherCountriesDb.
+  ///
+  /// In en, this message translates to:
+  /// **'Other Countries DB'**
+  String get otherCountriesDb;
+
+  /// No description provided for @duration3Sec.
+  ///
+  /// In en, this message translates to:
+  /// **'3 Seconds'**
+  String get duration3Sec;
+
+  /// No description provided for @duration15Sec.
+  ///
+  /// In en, this message translates to:
+  /// **'15 Seconds'**
+  String get duration15Sec;
+
+  /// No description provided for @duration30Sec.
+  ///
+  /// In en, this message translates to:
+  /// **'30 Seconds'**
+  String get duration30Sec;
+
+  /// No description provided for @duration1Min.
+  ///
+  /// In en, this message translates to:
+  /// **'1 Minute'**
+  String get duration1Min;
+
+  /// No description provided for @fullAdhan.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Adhan'**
+  String get fullAdhan;
 }
 
 class _AppLocalizationsDelegate

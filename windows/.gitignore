@@ -1,17 +1,56 @@
-flutter/ephemeral/
+# OS / IDE
+.DS_Store
+*.swp
+.idea/
+.vscode/
 
-# Visual Studio user-specific files.
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
+# Xcode User Data & Temporary Files
+xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+DerivedData/
+*.mode1v3
+*.mode2v3
+*.moved-aside
+*.pbxuser
+*.perspectivev3
 
-# Visual Studio build-related files.
-x64/
-x86/
+# Build Outputs & Compiled Binaries
+build/
+*.app
+*.ipa
+*.dSYM
+*.dSYM.zip
+*.pkg
+*.dmg
 
-# Visual Studio cache files
-# files ending in .cache can be ignored
-*.[Cc]ache
-# but keep track of directories ending in .cache
-!*.[Cc]ache/
+# CocoaPods
+# (Tracks Podfile and Podfile.lock, but ignores downloaded pod source code)
+Pods/
+
+# Swift Package Manager (SPM)
+.build/
+Packages/
+.swiftpm/
+
+# Flutter iOS Specific Generated Files
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Flutter/Debug.xcconfig
+**/ios/Flutter/Release.xcconfig
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
