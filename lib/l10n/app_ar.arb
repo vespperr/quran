@@ -249,7 +249,13 @@
     "otherCountriesDb": "دول أخرى",
     "duration3Sec": "٣ ثوانٍ",
     "duration15Sec": "١٥ ثانية",
-    "duration30Sec": "٣٠ ثانية",
+    "duration30Sec": "٣٠ ثانية (نصف دقيقة)",
     "duration1Min": "دقيقة واحدة",
-    "fullAdhan": "الأذان كاملاً"
+    "duration2Min": "دقيقتان",
+    "duration3Min": "٣ دقائق",
+    "fullAdhan": "الأذان كاملاً (أطول مدة)",
+    "alarmOffsetTitle": "توقيت تنبيه الأذان",
+    "onTime": "في الموعد (٠ دقيقة)",
+    "minsBefore": "قبل {mins} دقائق",
+    "minsAfter": "بعد {mins} دقائق"
 }

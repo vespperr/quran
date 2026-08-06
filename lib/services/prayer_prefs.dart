@@ -49,12 +49,33 @@ class PrayerPrefs {
 
   static const String _adhanDurationKey = 'prayer_adhan_duration_ms';
 
-  /// Selected adhan playback duration in milliseconds. -1 means full duration.
+  /// Selected adhan playback duration in milliseconds. -1 means full duration. Default is 30000 (30 seconds / half minute).
   static int get adhanDurationMs =>
-      GetStorage(_box).read(_adhanDurationKey) as int? ?? 3000;
+      GetStorage(_box).read(_adhanDurationKey) as int? ?? 30000;
 
   static Future<void> setAdhanDurationMs(int duration) async {
     await GetStorage(_box).write(_adhanDurationKey, duration);
+  }
+
+  static const String _offsetKeyPrefix = 'prayer_notify_offset_';
+
+  /// Notification timing offset in minutes for a specific prayer (e.g., -10 = 10 min before, 0 = on time).
+  static int getNotificationOffset(String prayerName) {
+    final box = GetStorage(_box);
+    return box.read('$_offsetKeyPrefix$prayerName') as int? ?? 0;
+  }
+
+  static Future<void> setNotificationOffset(String prayerName, int minutes) async {
+    await GetStorage(_box).write('$_offsetKeyPrefix$prayerName', minutes);
+  }
+
+  static Map<String, int> getAllNotificationOffsets() {
+    const names = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    final map = <String, int>{};
+    for (final n in names) {
+      map[n] = getNotificationOffset(n);
+    }
+    return map;
   }
 
   static Map<String, bool> getAllNotificationPrefs() {

@@ -1375,7 +1375,7 @@ abstract class AppLocalizations {
   /// No description provided for @duration30Sec.
   ///
   /// In en, this message translates to:
-  /// **'30 Seconds'**
+  /// **'30 Seconds (Half Minute)'**
   String get duration30Sec;
 
   /// No description provided for @duration1Min.
@@ -1384,11 +1384,47 @@ abstract class AppLocalizations {
   /// **'1 Minute'**
   String get duration1Min;
 
+  /// No description provided for @duration2Min.
+  ///
+  /// In en, this message translates to:
+  /// **'2 Minutes'**
+  String get duration2Min;
+
+  /// No description provided for @duration3Min.
+  ///
+  /// In en, this message translates to:
+  /// **'3 Minutes'**
+  String get duration3Min;
+
   /// No description provided for @fullAdhan.
   ///
   /// In en, this message translates to:
-  /// **'Full Adhan'**
+  /// **'Full Adhan (Longest Audio)'**
   String get fullAdhan;
+
+  /// No description provided for @alarmOffsetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm Timing Offset'**
+  String get alarmOffsetTitle;
+
+  /// No description provided for @onTime.
+  ///
+  /// In en, this message translates to:
+  /// **'On time (0 min)'**
+  String get onTime;
+
+  /// No description provided for @minsBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'{mins} mins before'**
+  String minsBefore(Object mins);
+
+  /// No description provided for @minsAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'{mins} mins after'**
+  String minsAfter(Object mins);
 }
 
 class _AppLocalizationsDelegate

@@ -28,7 +28,7 @@ object PrayerAlarmScheduler {
         context: Context,
         alarms: List<AlarmItem>,
         adhanRawName: String?,
-        adhanDurationMs: Int = 3000,
+        adhanDurationMs: Int = 30000,
         displayTimes: String? = null,
         widgetCity: String? = null
     ) {
@@ -66,7 +66,7 @@ object PrayerAlarmScheduler {
         val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val json = prefs.getString(KEY_SCHEDULE_JSON, null) ?: return
         val adhanRaw = prefs.getString(KEY_ADHAN_RAW, null)
-        val adhanDurationMs = prefs.getInt(KEY_ADHAN_DURATION, 3000)
+        val adhanDurationMs = prefs.getInt(KEY_ADHAN_DURATION, 30000)
         try {
             val arr = JSONArray(json)
             val list = mutableListOf<AlarmItem>()
@@ -90,11 +90,11 @@ object PrayerAlarmScheduler {
         alarmManager: AlarmManager,
         item: AlarmItem,
         adhanRawName: String? = null,
-        adhanDurationMs: Int = 3000
+        adhanDurationMs: Int = 30000
     ) {
         val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val adhan = adhanRawName ?: prefs.getString(KEY_ADHAN_RAW, null)
-        val duration = if (adhanRawName != null) adhanDurationMs else prefs.getInt(KEY_ADHAN_DURATION, 3000)
+        val duration = if (adhanRawName != null) adhanDurationMs else prefs.getInt(KEY_ADHAN_DURATION, 30000)
         val intent = alarmIntent(context, item.id).apply {
             putExtra(PrayerAlarmReceiver.EXTRA_ID, item.id)
             putExtra(PrayerAlarmReceiver.EXTRA_TITLE, item.title)

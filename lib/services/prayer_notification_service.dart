@@ -89,6 +89,8 @@ class PrayerNotificationService {
       iOS: const DarwinNotificationDetails(
         presentAlert: true,
         presentSound: true,
+        presentBadge: true,
+        interruptionLevel: InterruptionLevel.timeSensitive,
       ),
     );
   }
@@ -108,7 +110,9 @@ class PrayerNotificationService {
         } catch (_) {}
       } else {
         final adhan = PrayerPrefs.adhanAsset;
-        if (adhan.isNotEmpty) AdhanAudioService.play(adhan);
+        if (adhan.isNotEmpty) {
+          AdhanAudioService.play(adhan, durationMs: PrayerPrefs.adhanDurationMs);
+        }
       }
     });
   }
@@ -285,7 +289,11 @@ class PrayerNotificationService {
       if (minutes == null) continue;
       final hour = minutes ~/ 60;
       final minute = minutes % 60;
+      final offsetMinutes = PrayerPrefs.getNotificationOffset(model.name);
       var scheduled = DateTime(today.year, today.month, today.day, hour, minute);
+      if (offsetMinutes != 0) {
+        scheduled = scheduled.add(Duration(minutes: offsetMinutes));
+      }
       if (scheduled.isBefore(now)) continue;
       list.add({
         'id': _idForPrayer(model.name),
@@ -311,7 +319,11 @@ class PrayerNotificationService {
       if (minutes == null) continue;
       final hour = minutes ~/ 60;
       final minute = minutes % 60;
-      final scheduled = DateTime(tomorrow.year, tomorrow.month, tomorrow.day, hour, minute);
+      final offsetMinutes = PrayerPrefs.getNotificationOffset(model.name);
+      var scheduled = DateTime(tomorrow.year, tomorrow.month, tomorrow.day, hour, minute);
+      if (offsetMinutes != 0) {
+        scheduled = scheduled.add(Duration(minutes: offsetMinutes));
+      }
       list.add({
         'id': _idForPrayer(model.name) + tomorrowIdOffset,
         'triggerAtMillis': scheduled.millisecondsSinceEpoch,
@@ -389,15 +401,16 @@ class PrayerNotificationService {
       if (minutes == null) continue;
       final hour = minutes ~/ 60;
       final minute = minutes % 60;
+      final offsetMinutes = PrayerPrefs.getNotificationOffset(model.name);
       var scheduled = DateTime(today.year, today.month, today.day, hour, minute);
+      if (offsetMinutes != 0) {
+        scheduled = scheduled.add(Duration(minutes: offsetMinutes));
+      }
       if (scheduled.isBefore(now)) {
         scheduled = scheduled.add(const Duration(days: 1));
       }
 
-      final scheduledTz = tz.TZDateTime.fromMillisecondsSinceEpoch(
-        tz.UTC,
-        scheduled.millisecondsSinceEpoch,
-      );
+      final scheduledTz = tz.TZDateTime.from(scheduled, tz.local);
 
       await _scheduleOne(
         id: _idForPrayer(model.name),

@@ -42,7 +42,7 @@ object AdhanPlayer {
     }
 
     /** Play at prayer time: alarm stream, then auto-stop after durationMs. */
-    fun playForAlarm(context: Context, rawName: String?, durationMs: Long = 3000L) {
+    fun playForAlarm(context: Context, rawName: String?, durationMs: Long = 30000L) {
         if (rawName.isNullOrEmpty()) return
         stop()
         try {

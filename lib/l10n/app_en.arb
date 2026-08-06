@@ -249,7 +249,13 @@
     "otherCountriesDb": "Other Countries DB",
     "duration3Sec": "3 Seconds",
     "duration15Sec": "15 Seconds",
-    "duration30Sec": "30 Seconds",
+    "duration30Sec": "30 Seconds (Half Minute)",
     "duration1Min": "1 Minute",
-    "fullAdhan": "Full Adhan"
+    "duration2Min": "2 Minutes",
+    "duration3Min": "3 Minutes",
+    "fullAdhan": "Full Adhan (Longest Audio)",
+    "alarmOffsetTitle": "Alarm Timing Offset",
+    "onTime": "On time (0 min)",
+    "minsBefore": "{mins} mins before",
+    "minsAfter": "{mins} mins after"
 }

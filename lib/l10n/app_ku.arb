@@ -249,7 +249,13 @@
   "otherCountriesDb": "وڵاتانی تر",
   "duration3Sec": "٣ چرکە",
   "duration15Sec": "١٥ چرکە",
-  "duration30Sec": "٣٠ چرکە",
+  "duration30Sec": "٣٠ چرکە (نیو خولەک)",
   "duration1Min": "١ خولەک",
-  "fullAdhan": "بانگی تەواو"
+  "duration2Min": "٢ خولەک",
+  "duration3Min": "٣ خولەک",
+  "fullAdhan": "بانگی تەواو (درێژترین دەنک)",
+  "alarmOffsetTitle": "کاتی ئاگادارکردنەوەی بانگ",
+  "onTime": "لە کاتی خۆیدا (٠ خولەک)",
+  "minsBefore": "{mins} خولەک پێشتر",
+  "minsAfter": "{mins} خولەک دواتر"
 }

@@ -680,11 +680,33 @@ class AppLocalizationsKu extends AppLocalizations {
   String get duration15Sec => '١٥ چرکە';
 
   @override
-  String get duration30Sec => '٣٠ چرکە';
+  String get duration30Sec => '٣٠ چرکە (نیو خولەک)';
 
   @override
   String get duration1Min => '١ خولەک';
 
   @override
-  String get fullAdhan => 'بانگی تەواو';
+  String get duration2Min => '٢ خولەک';
+
+  @override
+  String get duration3Min => '٣ خولەک';
+
+  @override
+  String get fullAdhan => 'بانگی تەواو (درێژترین دەنک)';
+
+  @override
+  String get alarmOffsetTitle => 'کاتی ئاگادارکردنەوەی بانگ';
+
+  @override
+  String get onTime => 'لە کاتی خۆیدا (٠ خولەک)';
+
+  @override
+  String minsBefore(Object mins) {
+    return '$mins خولەک پێشتر';
+  }
+
+  @override
+  String minsAfter(Object mins) {
+    return '$mins خولەک دواتر';
+  }
 }

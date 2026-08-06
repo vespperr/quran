@@ -13,14 +13,20 @@ class AdhanAudioService {
   static bool _disposed = false;
 
   /// [assetPath] = full asset path as in pubspec (e.g. lib/assets/bang/bang_1.mp3).
-  static Future<void> play(String assetPath) async {
+  /// [durationMs] = playback duration in milliseconds. -1 means full duration.
+  static Future<void> play(String assetPath, {int durationMs = -1}) async {
     if (assetPath.isEmpty) return;
     try {
-      await _player.stop();
+      await stop();
       await _player.setReleaseMode(ReleaseMode.release);
       final data = await rootBundle.load(assetPath);
       final bytes = data.buffer.asUint8List();
       await _player.play(BytesSource(bytes, mimeType: 'audio/mpeg'));
+      if (durationMs > 0) {
+        Future.delayed(Duration(milliseconds: durationMs), () {
+          stop();
+        });
+      }
     } catch (e) {
       assert(() {
         debugPrint('AdhanAudioService.play error: $e');

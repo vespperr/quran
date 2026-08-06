@@ -689,11 +689,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get duration15Sec => '15 Seconds';
 
   @override
-  String get duration30Sec => '30 Seconds';
+  String get duration30Sec => '30 Seconds (Half Minute)';
 
   @override
   String get duration1Min => '1 Minute';
 
   @override
-  String get fullAdhan => 'Full Adhan';
+  String get duration2Min => '2 Minutes';
+
+  @override
+  String get duration3Min => '3 Minutes';
+
+  @override
+  String get fullAdhan => 'Full Adhan (Longest Audio)';
+
+  @override
+  String get alarmOffsetTitle => 'Alarm Timing Offset';
+
+  @override
+  String get onTime => 'On time (0 min)';
+
+  @override
+  String minsBefore(Object mins) {
+    return '$mins mins before';
+  }
+
+  @override
+  String minsAfter(Object mins) {
+    return '$mins mins after';
+  }
 }

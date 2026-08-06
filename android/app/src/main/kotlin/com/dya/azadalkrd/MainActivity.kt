@@ -76,7 +76,7 @@ class MainActivity: FlutterActivity() {
                         @Suppress("UNCHECKED_CAST")
                         val list = call.argument<List<Map<String, Any>>>("alarms") ?: emptyList()
                         val adhanRaw = call.argument<String>("adhanRawName")
-                        val adhanDurationMs = call.argument<Int>("adhanDurationMs") ?: 3000
+                        val adhanDurationMs = call.argument<Int>("adhanDurationMs") ?: 30000
                         val displayTimes = call.argument<String>("displayTimes")
                         val widgetCity = call.argument<String>("widgetCity")
                         val items = list.map { map ->

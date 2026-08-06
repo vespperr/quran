@@ -47,7 +47,7 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
         val title = intent.getStringExtra(EXTRA_TITLE) ?: "Prayer"
         val body = intent.getStringExtra(EXTRA_BODY) ?: ""
         val adhanRaw = intent.getStringExtra(EXTRA_ADHAN_RAW)
-        val adhanDurationMs = intent.getIntExtra(EXTRA_ADHAN_DURATION, 3000)
+        val adhanDurationMs = intent.getIntExtra(EXTRA_ADHAN_DURATION, 30000)
 
         Log.d(TAG, "onReceive id=$id at=${Date(System.currentTimeMillis())} adhanRaw=${adhanRaw ?: ""} title=$title")
         createChannelIfNeeded(context)

@@ -391,119 +391,105 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         ? '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}'
         : '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
 
-    return Container(
-      padding: const EdgeInsets.all(DesignSystem.space20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: isDark
-              ? [const Color(0xFF0F382C), const Color(0xFF061A14)]
-              : [const Color(0xFF1B4D3E), const Color(0xFF0E2E25)],
-        ),
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF1B4D3E).withValues(alpha: 0.35),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.access_time_filled,
-                      color: Color(0xFFD4AF37), size: 20),
-                  const SizedBox(width: 8),
-                  Text(
-                    _dateHeader(),
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+    return _LightSweepCountdownCard(
+      isDark: isDark,
+      child: Padding(
+        padding: const EdgeInsets.all(DesignSystem.space20),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
                   children: [
-                    const Icon(Icons.location_on,
-                        color: Color(0xFFD4AF37), size: 14),
-                    const SizedBox(width: 4),
+                    const Icon(Icons.access_time_filled,
+                        color: Color(0xFFD4AF37), size: 20),
+                    const SizedBox(width: 8),
                     Text(
-                      _selectedCity,
+                      _dateHeader(),
                       style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
+                        color: Colors.white70,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Text(
-            nextPrayerName,
-            style: const TextStyle(
-              color: Color(0xFFD4AF37),
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.5,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            nextPrayerTime,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 42,
-              fontWeight: FontWeight.w800,
-              letterSpacing: -1,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.25),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                  color: const Color(0xFFD4AF37).withValues(alpha: 0.3)),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.hourglass_top_rounded,
-                    color: Color(0xFFD4AF37), size: 16),
-                const SizedBox(width: 8),
-                Text(
-                  '-$countdownStr',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    fontFeatures: [FontFeature.tabularFigures()],
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.location_on,
+                          color: Color(0xFFD4AF37), size: 14),
+                      const SizedBox(width: 4),
+                      Text(
+                        _selectedCity,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            Text(
+              nextPrayerName,
+              style: const TextStyle(
+                color: Color(0xFFD4AF37),
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.5,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              nextPrayerTime,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 42,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -1,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.25),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                    color: const Color(0xFFD4AF37).withValues(alpha: 0.3)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.hourglass_top_rounded,
+                      color: Color(0xFFD4AF37), size: 16),
+                  const SizedBox(width: 8),
+                  Text(
+                    '-$countdownStr',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      fontFeatures: [FontFeature.tabularFigures()],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -780,10 +766,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
           ),
           const SizedBox(height: 12),
           _buildAdhanSetting(),
-          if (Platform.isAndroid) ...[
-            const SizedBox(height: 12),
-            _buildAdhanDurationSetting(),
-          ],
+          const SizedBox(height: 12),
+          _buildAdhanDurationSetting(),
         ],
       ),
     );
@@ -1260,7 +1244,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                               'playAdhan', {'rawName': _adhanRawName});
                     } catch (_) {}
                   } else {
-                    AdhanAudioService.play(_adhanAsset);
+                    AdhanAudioService.play(_adhanAsset,
+                        durationMs: PrayerPrefs.adhanDurationMs);
                   }
                 },
           tooltip: context.translate.playAdhan,
@@ -1287,13 +1272,13 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     final int currentDuration = PrayerPrefs.adhanDurationMs;
     final options = [
       DropdownMenuItem<int>(
-          value: 3000, child: Text(context.translate.duration3Sec)),
-      DropdownMenuItem<int>(
-          value: 15000, child: Text(context.translate.duration15Sec)),
-      DropdownMenuItem<int>(
           value: 30000, child: Text(context.translate.duration30Sec)),
       DropdownMenuItem<int>(
           value: 60000, child: Text(context.translate.duration1Min)),
+      DropdownMenuItem<int>(
+          value: 120000, child: Text(context.translate.duration2Min)),
+      DropdownMenuItem<int>(
+          value: 180000, child: Text(context.translate.duration3Min)),
       DropdownMenuItem<int>(
           value: -1, child: Text(context.translate.fullAdhan)),
     ];
@@ -1306,7 +1291,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
           child: DropdownButtonFormField<int>(
             initialValue: options.any((o) => o.value == currentDuration)
                 ? currentDuration
-                : 3000,
+                : 30000,
             decoration: InputDecoration(
               isDense: true,
               filled: true,
@@ -1656,6 +1641,103 @@ class _MihrabPrayerRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Card container with a smooth light sweep (shimmer beam) animation.
+class _LightSweepCountdownCard extends StatefulWidget {
+  final Widget child;
+  final bool isDark;
+
+  const _LightSweepCountdownCard({
+    required this.child,
+    required this.isDark,
+  });
+
+  @override
+  State<_LightSweepCountdownCard> createState() =>
+      _LightSweepCountdownCardState();
+}
+
+class _LightSweepCountdownCardState extends State<_LightSweepCountdownCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _sweepController;
+
+  @override
+  void initState() {
+    super.initState();
+    _sweepController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 3500),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _sweepController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF1B4D3E).withValues(alpha: 0.35),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: widget.isDark
+                      ? [const Color(0xFF0F382C), const Color(0xFF061A14)]
+                      : [const Color(0xFF1B4D3E), const Color(0xFF0E2E25)],
+                ),
+              ),
+              child: widget.child,
+            ),
+            Positioned.fill(
+              child: IgnorePointer(
+                child: AnimatedBuilder(
+                  animation: _sweepController,
+                  builder: (context, _) {
+                    final progress = _sweepController.value;
+                    final alignX = -2.0 + (progress * 4.0);
+                    return Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment(alignX - 0.4, -1.2),
+                          end: Alignment(alignX + 0.4, 1.2),
+                          stops: const [0.0, 0.45, 0.5, 0.55, 1.0],
+                          colors: [
+                            Colors.transparent,
+                            Colors.white.withValues(alpha: 0.02),
+                            Colors.white.withValues(alpha: 0.18),
+                            Colors.white.withValues(alpha: 0.02),
+                            Colors.transparent,
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
