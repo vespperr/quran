@@ -431,6 +431,23 @@ class PrayerNotificationService {
         print('[PrayerNotificationService] scheduled ${model.name} at $scheduled (local)');
       }
     }
+
+    if (Platform.isIOS) {
+      try {
+        final displayTimes = times
+            .where((t) => t.timeString.isNotEmpty && t.timeString != '--:--')
+            .map((t) => '${t.name}|${t.timeString}')
+            .join(';');
+        const MethodChannel('com.dya.azadalkrd/prayer_widget').invokeMethod<void>(
+          'updateWidgetData',
+          {
+            'widgetCity': city,
+            'displayTimes': displayTimes,
+          },
+        );
+      } catch (_) {}
+    }
+
     return scheduledCount;
   }
 
