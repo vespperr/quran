@@ -1,6 +1,8 @@
+#if canImport(WidgetKit) && canImport(SwiftUI)
 import WidgetKit
 import SwiftUI
 
+@available(iOS 14.0, *)
 struct PrayerEntry: TimelineEntry {
     let date: Date
     let city: String
@@ -10,6 +12,7 @@ struct PrayerEntry: TimelineEntry {
     let timeUntil: String
 }
 
+@available(iOS 14.0, *)
 struct PrayerWidgetProvider: TimelineProvider {
     func placeholder(in context: Context) -> PrayerEntry {
         PrayerEntry(
@@ -331,6 +334,7 @@ struct LargePrayerWidgetView: View {
 
 // MARK: - Main Widget Entry
 
+@available(iOS 14.0, *)
 struct PrayerWidget: Widget {
     let kind: String = "PrayerWidget"
 
@@ -344,6 +348,7 @@ struct PrayerWidget: Widget {
     }
 }
 
+@available(iOS 14.0, *)
 struct PrayerWidgetEntryView: View {
     @Environment(\.widgetFamily) var family
     let entry: PrayerEntry
@@ -361,3 +366,4 @@ struct PrayerWidgetEntryView: View {
         }
     }
 }
+#endif
