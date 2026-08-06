@@ -256,6 +256,17 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     _load();
   }
 
+  String get _selectedCityDisplay {
+    final matching = _cities.where((c) => c.id == _selectedCity);
+    if (matching.isNotEmpty) {
+      return matching.first.name;
+    }
+    if (_selectedCity.isNotEmpty) {
+      return _selectedCity[0].toUpperCase() + _selectedCity.substring(1);
+    }
+    return _selectedCity;
+  }
+
   Future<void> _rescheduleNotifications() async {
     try {
       await PrayerNotificationService.init();
@@ -270,7 +281,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         return;
       }
       await PrayerNotificationService.schedule(
-        city: _selectedCity,
+        city: _selectedCityDisplay,
         times: _times,
         notifyEnabled: PrayerPrefs.getAllNotificationPrefs(),
         includeIraq: _includeIraq,
@@ -455,7 +466,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                           color: Color(0xFFD4AF37), size: 14),
                       const SizedBox(width: 4),
                       Text(
-                        _selectedCity,
+                        _selectedCityDisplay,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -551,7 +562,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _selectedCity,
+                    _selectedCityDisplay,
                     style: context.theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: DesignSystem.onSurface,
