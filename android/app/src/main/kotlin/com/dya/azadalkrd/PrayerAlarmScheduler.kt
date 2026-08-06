@@ -143,6 +143,13 @@ object PrayerAlarmScheduler {
         edit.apply()
     }
 
+    fun saveWidgetData(context: Context, displayTimes: String?, widgetCity: String?) {
+        val edit = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
+        if (displayTimes != null) edit.putString(KEY_DISPLAY_TIMES, displayTimes)
+        if (widgetCity != null) edit.putString(KEY_WIDGET_CITY, widgetCity)
+        edit.apply()
+    }
+
     /** Display string for home widget: "Fajr|05:30;Dhuhr|12:15;...". Empty if not set. */
     fun getDisplayTimes(context: Context): String =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY_DISPLAY_TIMES, "") ?: ""

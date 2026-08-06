@@ -5,48 +5,50 @@
 ///
 /// **iOS:** This file defines [options] (labels + asset paths) and is used for the adhan dropdown
 /// and for in-app playback via [AdhanAudioService]. Add entries when you add new audio files to lib/assets/bang/.
+class AdhanAudioOption {
+  final String label;
+  final String rawName;
+
+  const AdhanAudioOption({required this.label, required this.rawName});
+
+  String get path => 'assets/audio/$rawName.mp3';
+
+  Map<String, String> toMap() => {
+        'label': label,
+        'rawName': rawName,
+        'path': path,
+      };
+}
+
+/// Adhan (prayer call) audio files. Single unified source of truth for all platforms.
 class AdhanAssets {
   AdhanAssets._();
 
-  static const String _basePath = 'lib/assets/bang';
-
-  /// Display label and asset path. Add your files here.
-  static const List<Map<String, String>> options = [
-    {'label': 'اذان رست ', 'path': '$_basePath/bang_1.mp3'},
-    {'label': 'اذان رست٢', 'path': '$_basePath/bang_2.mp3'},
-    {'label': 'اذان عراقي جديد', 'path': '$_basePath/bang_3.mp3'},
-    {'label': 'اذان کورد ٢', 'path': '$_basePath/bang_4.mp3'},
-    {'label': 'اذان بيلالي حبشي', 'path': '$_basePath/bang_5.mp3'},
-    {'label': 'اذان حزيني کورد', 'path': '$_basePath/bang_6.mp3'},
-    {'label': 'اذان رەست ٢', 'path': '$_basePath/bang_7.mp3'},
-    {'label': 'اذان کورد', 'path': '$_basePath/bang_8.mp3'},
-    {'label': 'اذان مککي', 'path': '$_basePath/bang_9.mp3'},
-    {'label': 'اذان صبا', 'path': '$_basePath/bang_10.mp3'},
-    {'label': 'اذان رمزان شکور', 'path': '$_basePath/bang_11.mp3'},
-    {'label': 'اذان مدينة', 'path': '$_basePath/bang_12.mp3'},
-    {'label': 'اذان لامي عێراقي ئازاد', 'path': '$_basePath/bang_13.mp3'},
-    {'label': 'اذان هومايون', 'path': '$_basePath/bang_14.mp3'},
+  /// Unified options list for all platforms (iOS & Android)
+  static const List<AdhanAudioOption> allOptions = [
+    AdhanAudioOption(label: 'بانگی ڕاست خام — نێوەرەوی عصر', rawName: 'bang_rast_nawrozh_asr'),
+    AdhanAudioOption(label: 'أذان الحجاز ٢', rawName: 'adhan_hijaz_2'),
+    AdhanAudioOption(label: 'أذان العراقي جديد', rawName: 'adhan_iraqi_new'),
+    AdhanAudioOption(label: 'أذان کورد ٢', rawName: 'adhan_kurd_2'),
+    AdhanAudioOption(label: 'بانگی بیلالی حەبەشی — بەیانیان', rawName: 'bang_bilali_habashi_fajr'),
+    AdhanAudioOption(label: 'بانگی حەزینی کورد — عیشایان', rawName: 'bang_hazini_kurd_isha'),
+    AdhanAudioOption(label: 'بانگی ڕاست ٢ — نێوەرەوی عصر', rawName: 'bang_rast_2_nawrozh_asr'),
+    AdhanAudioOption(label: 'بانگی کورد — بەیانی', rawName: 'bang_kurd_fajr'),
+    AdhanAudioOption(label: 'بانگی مەککی — حجاز (مغربان و عشایان)', rawName: 'bang_hijaz_maghrib_isha'),
+    AdhanAudioOption(label: 'بانگی صبا — مغربان و عیشایان', rawName: 'bang_saba_maghrib_isha_asr'),
+    AdhanAudioOption(label: 'م.رمزان شکور — بەیانی و مغربان', rawName: 'bang_ramazan_shakur_fajr_maghrib'),
+    AdhanAudioOption(label: 'بانگی مەدینە — مغرب و عیشایان', rawName: 'bang_madinah_maghrib_isha'),
+    AdhanAudioOption(label: 'بانگی لامی عێراقی ئازاد', rawName: 'bang_lami_iraqi_azad'),
+    AdhanAudioOption(label: 'هۆمایۆن', rawName: 'bang_homayoun_hazin'),
   ];
 
-  /// Android res/raw/ resource names for notification sound (no extension).
-  /// Order must match [options]: index 0 = Adhan 1, … 13 = Adhan 14.
-  /// Files go in: android/app/src/main/res/raw/ as adhan1.mp3, adhan_5.mp3, etc. (via copyAdhanToRaw in build.gradle)
-  static const List<String> rawResourceNames = [
-    'adhan1',
-    'adhan2',
-    'adhan3',
-    'adhan4',
-    'adhan_5',
-    'adhan_6',
-    'adhan_7',
-    'adhan_8',
-    'adhan_9',
-    'adhan_10',
-    'adhan_11',
-    'adhan_12',
-    'adhan_13',
-    'adhan_14',
-  ];
+  /// Legacy map options getter (backwards compatible)
+  static List<Map<String, String>> get options =>
+      allOptions.map((o) => o.toMap()).toList();
+
+  /// Raw resource names list
+  static List<String> get rawResourceNames =>
+      allOptions.map((o) => o.rawName).toList();
 
   /// Key for "No sound".
   static const String none = '';

@@ -24,7 +24,7 @@
   "reading": "خوێندن",
   "searchSurah": "گەڕان بۆ سورة",
   "madeByFabrikod": "پێشکەشکراو لەلایەن عبدالرحمن محمد",
-  "version": " - بەش",
+  "version": " - ڤێرشن",
   "copy": "کۆپی",
   "copied": "کۆپی کرا",
   "share": "بەشداری",
@@ -101,7 +101,7 @@
   "nextSurah": "سورةی دواتر",
   "previousSurah": "سورةی پێشوو",
   "beggingOfSurah": "دەستپێکی سورة",
-  "openSourceDevelopedByFabrikod": "گەشەێدەر: عبدالرحمن محمد",
+  "openSourceDevelopedByFabrikod": "گەشەپێدەر: عبدالرحمن محمد",
   "permissions": "مۆڵەتەکان",
   "permissionsNotifications": "ئاگاداریەکان",
   "permissionsNotificationsDescription": "چالاک بکە بۆ ئاگاداری کاتی نوێژ و ئاگاداریەکانی تر.",
@@ -257,5 +257,29 @@
   "alarmOffsetTitle": "کاتی ئاگادارکردنەوەی بانگ",
   "onTime": "لە کاتی خۆیدا (٠ خولەک)",
   "minsBefore": "{mins} خولەک پێشتر",
-  "minsAfter": "{mins} خولەک دواتر"
+  "minsAfter": "{mins} خولەک دواتر",
+  "supportUsTitle": "پشتیوانیمان بکەن / بەخشین",
+  "supportAppDev": "پشتیوانی کردنی گەشەپێدەری ئەم بەرنامەیە",
+  "supportAppDevDesc": "پشتیوانیکردنت یارمەتیمان دەدات بۆ بەردەوامبوون لەگەڵ نوێکردنەوە و باشترکردنی ئەم بەرنامەیە.",
+  "fibTitle": "بانکی  عێراقی (FIB)",
+  "fibPhoneLabel": "ژمارەی تەلەفۆنی FIB:",
+  "fibStep1": "١. ژمارەی تەلەفۆنی سەرەوە کۆپی بکە",
+  "fibStep2": "٢. بەرنامەی FIB بکەرەوە",
+  "fibStep3": "٣. دابگرە لەسەر ناردن / داواکاری -> ژمارەکە پەیست بکە",
+  "openFibApp": "کردنەوەی بەرنامەی FIB",
+  "openSuperQiApp": "کردنەوەی بەرنامەی سوپەر کی",
+  "superQiTitle": "سوپەر کی (سوپەر کی کارد)",
+  "superQiAccountLabel": "ژمارەی هەژمار / کاردی سوپەر کی:",
+  "superQiStep1": "١. ژمارەی هەژماری سەرەوە کۆپی بکە",
+  "superQiStep2": "٢. بەرنامەی سوپەر کی بکەرەوە",
+  "superQiStep3": "٣. دابگرە لەسەر گواستنەوە -> هەڵبژێرە گواستنەوەی کارد/هەژمار -> ژمارەکە پەیست بکە",
+  "donateViaFibSuperQi": "بەخشین لەڕێگەی FIB و سوپەر کی",
+  "copiedToast": "{label} کۆپی کرا!",
+  "@copiedToast": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -257,5 +257,29 @@
     "alarmOffsetTitle": "توقيت تنبيه الأذان",
     "onTime": "في الموعد (٠ دقيقة)",
     "minsBefore": "قبل {mins} دقائق",
-    "minsAfter": "بعد {mins} دقائق"
+    "minsAfter": "بعد {mins} دقائق",
+    "supportUsTitle": "ادعمنا / التبرع",
+    "supportAppDev": "دعم تطوير التطبيق",
+    "supportAppDevDesc": "دعمكم يساعد في إبقاء التطبيق خاليًا من الإعلانات، ومفتوح المصدر، ومحدثًا باستمرار للجميع.",
+    "fibTitle": "المصرف العراقي الأول (FIB)",
+    "fibPhoneLabel": "رقم هاتف FIB:",
+    "fibStep1": "١. انسخ رقم الهاتف أعلاه",
+    "fibStep2": "٢. افتح تطبيق المصرف العراقي الأول (FIB)",
+    "fibStep3": "٣. اضغط على إرسال / طلب -> الصق الرقم",
+    "openFibApp": "فتح تطبيق FIB",
+    "openSuperQiApp": "فتح تطبيق سوبر كي",
+    "superQiTitle": "سوبر كي (بطاقة كي)",
+    "superQiAccountLabel": "رقم حساب / بطاقة سوبر كي:",
+    "superQiStep1": "١. انسخ رقم الحساب أعلاه",
+    "superQiStep2": "٢. افتح تطبيق سوبر كي",
+    "superQiStep3": "٣. اضغط تحويل -> اختر تحويل بطاقة/حساب -> الصق الرقم",
+    "donateViaFibSuperQi": "التبرع عبر FIB وسوبر كي",
+    "copiedToast": "تم نسخ {label}!",
+    "@copiedToast": {
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    }
 }

@@ -84,7 +84,7 @@ class AppLocalizationsKu extends AppLocalizations {
   String get madeByFabrikod => 'پێشکەشکراو لەلایەن عبدالرحمن محمد';
 
   @override
-  String get version => ' - بەش';
+  String get version => ' - ڤێرشن';
 
   @override
   String get copy => 'کۆپی';
@@ -327,7 +327,7 @@ class AppLocalizationsKu extends AppLocalizations {
   String get beggingOfSurah => 'دەستپێکی سورة';
 
   @override
-  String get openSourceDevelopedByFabrikod => 'گەشەێدەر: عبدالرحمن محمد';
+  String get openSourceDevelopedByFabrikod => 'گەشەپێدەر: عبدالرحمن محمد';
 
   @override
   String get permissions => 'مۆڵەتەکان';
@@ -708,5 +708,61 @@ class AppLocalizationsKu extends AppLocalizations {
   @override
   String minsAfter(Object mins) {
     return '$mins خولەک دواتر';
+  }
+
+  @override
+  String get supportUsTitle => 'پشتیوانیمان بکەن / بەخشین';
+
+  @override
+  String get supportAppDev => 'پشتیوانی کردنی گەشەپێدەری ئەم بەرنامەیە';
+
+  @override
+  String get supportAppDevDesc =>
+      'پشتیوانیکردنت یارمەتیمان دەدات بۆ بەردەوامبوون لەگەڵ نوێکردنەوە و باشترکردنی ئەم بەرنامەیە.';
+
+  @override
+  String get fibTitle => 'بانکی  عێراقی (FIB)';
+
+  @override
+  String get fibPhoneLabel => 'ژمارەی تەلەفۆنی FIB:';
+
+  @override
+  String get fibStep1 => '١. ژمارەی تەلەفۆنی سەرەوە کۆپی بکە';
+
+  @override
+  String get fibStep2 => '٢. بەرنامەی FIB بکەرەوە';
+
+  @override
+  String get fibStep3 =>
+      '٣. دابگرە لەسەر ناردن / داواکاری -> ژمارەکە پەیست بکە';
+
+  @override
+  String get openFibApp => 'کردنەوەی بەرنامەی FIB';
+
+  @override
+  String get openSuperQiApp => 'کردنەوەی بەرنامەی سوپەر کی';
+
+  @override
+  String get superQiTitle => 'سوپەر کی (سوپەر کی کارد)';
+
+  @override
+  String get superQiAccountLabel => 'ژمارەی هەژمار / کاردی سوپەر کی:';
+
+  @override
+  String get superQiStep1 => '١. ژمارەی هەژماری سەرەوە کۆپی بکە';
+
+  @override
+  String get superQiStep2 => '٢. بەرنامەی سوپەر کی بکەرەوە';
+
+  @override
+  String get superQiStep3 =>
+      '٣. دابگرە لەسەر گواستنەوە -> هەڵبژێرە گواستنەوەی کارد/هەژمار -> ژمارەکە پەیست بکە';
+
+  @override
+  String get donateViaFibSuperQi => 'بەخشین لەڕێگەی FIB و سوپەر کی';
+
+  @override
+  String copiedToast(String label) {
+    return '$label کۆپی کرا!';
   }
 }

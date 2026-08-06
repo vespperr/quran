@@ -11,12 +11,14 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:hijri/hijri_calendar.dart';
 
 import '../constants/prayer_times_storage.dart';
+import '../database/prayer_times_db.dart';
 import '../models/prayer_time_model.dart';
 import 'adhan_audio_service.dart';
 import 'prayer_foreground_adhan_watch.dart';
 import 'prayer_prefs.dart';
 import 'prayer_times_source.dart';
 import '../utils/prayer_time_parse.dart';
+import 'widget_service.dart';
 
 /// Schedules and cancels prayer-time local notifications.
 ///
@@ -190,6 +192,22 @@ class PrayerNotificationService {
   /// Ensures notification permission and (on Android 12+) exact alarm permission are granted.
   /// Call before scheduling. Returns true if notification permission is granted.
   static Future<bool> ensurePermissions() async {
+    if (Platform.isIOS) {
+      final iosPlugin = _plugin.resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>();
+      final granted = await iosPlugin?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+      if (granted == true) {
+        if (kDebugMode) {
+          print('[PrayerNotificationService] ensurePermissions (iOS): notification permission granted');
+        }
+        return true;
+      }
+    }
+
     // 1. Notification permission
     var status = await Permission.notification.status;
     if (status.isDenied || status.isPermanentlyDenied) {
@@ -204,8 +222,6 @@ class PrayerNotificationService {
     if (kDebugMode) {
       print('[PrayerNotificationService] ensurePermissions: notification granted');
     }
-    // 2. On Android 12+, exact alarm must be allowed: Settings > Apps > This app > Alarms & reminders.
-    // permission_handler does not expose SCHEDULE_EXACT_ALARM; ensure it is in AndroidManifest.xml.
     if (Platform.isAndroid && kDebugMode) {
       print('[PrayerNotificationService] ensurePermissions: on Android 12+, enable Alarms & reminders in app settings if notifications do not fire.');
     }
@@ -422,6 +438,22 @@ class PrayerNotificationService {
           'displayTimes': displayTimes,
           'widgetCity': city,
         });
+
+        // Sync widget data
+        final Map<String, String> pMap = {};
+        for (final t in times) {
+          if (t.timeString.isNotEmpty && t.timeString != '--:--') {
+            pMap[t.name.toLowerCase()] = t.timeString;
+          }
+        }
+        final nextInfo = PrayerTimesDb.getNextPrayerWithDuration(times, DateTime.now());
+        final nextPrayerStr = (nextInfo.next.name.isNotEmpty && nextInfo.next.timeString != '--:--')
+            ? 'Next: ${nextInfo.next.name} ${nextInfo.next.timeString}'
+            : 'Next: --:--';
+        await WidgetService.updatePrayerWidget(
+          prayerTimes: pMap,
+          nextPrayer: nextPrayerStr,
+        );
         if (kDebugMode) {
           print('[PrayerNotificationService] schedule (native): ${alarms.length} alarms (today + tomorrow)');
         }

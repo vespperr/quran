@@ -52,7 +52,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 33
+        targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled = true
@@ -90,11 +90,20 @@ task copyAdhanToRaw {
     doLast {
         adhanRawDir.mkdirs()
         def names = [
-            ["bang_1.mp3", "adhan1.mp3"], ["bang_2.mp3", "adhan2.mp3"], ["bang_3.mp3", "adhan3.mp3"],
-            ["bang_4.mp3", "adhan4.mp3"], ["bang_5.mp3", "adhan_5.mp3"], ["bang_6.mp3", "adhan_6.mp3"],
-            ["bang_7.mp3", "adhan_7.mp3"], ["bang_8.mp3", "adhan_8.mp3"], ["bang_9.mp3", "adhan_9.mp3"],
-            ["bang_10.mp3", "adhan_10.mp3"], ["bang_11.mp3", "adhan_11.mp3"], ["bang_12.mp3", "adhan_12.mp3"],
-            ["bang_13.mp3", "adhan_13.mp3"], ["bang_14.mp3", "adhan_14.mp3"]
+            ["bang_rast_nawrozh_asr.mp3", "bang_rast_nawrozh_asr.mp3"],
+            ["adhan_hijaz_2.mp3", "adhan_hijaz_2.mp3"],
+            ["adhan_iraqi_new.mp3", "adhan_iraqi_new.mp3"],
+            ["adhan_kurd_2.mp3", "adhan_kurd_2.mp3"],
+            ["bang_bilali_habashi_fajr.mp3", "bang_bilali_habashi_fajr.mp3"],
+            ["bang_hazini_kurd_isha.mp3", "bang_hazini_kurd_isha.mp3"],
+            ["bang_rast_2_nawrozh_asr.mp3", "bang_rast_2_nawrozh_asr.mp3"],
+            ["bang_kurd_fajr.mp3", "bang_kurd_fajr.mp3"],
+            ["bang_hijaz_maghrib_isha.mp3", "bang_hijaz_maghrib_isha.mp3"],
+            ["bang_saba_maghrib_isha_asr.mp3", "bang_saba_maghrib_isha_asr.mp3"],
+            ["bang_ramazan_shakur_fajr_maghrib.mp3", "bang_ramazan_shakur_fajr_maghrib.mp3"],
+            ["bang_madinah_maghrib_isha.mp3", "bang_madinah_maghrib_isha.mp3"],
+            ["bang_lami_iraqi_azad.mp3", "bang_lami_iraqi_azad.mp3"],
+            ["bang_homayoun_hazin.mp3", "bang_homayoun_hazin.mp3"]
         ]
         names.each { fromTo ->
             def src = new File(adhanSourceDir, fromTo[0])

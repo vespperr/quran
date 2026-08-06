@@ -21,6 +21,7 @@ import '../services/prayer_prefs.dart';
 import '../services/prayer_times_source.dart';
 import '../widgets/adhan_learning_links_card.dart';
 import '../widgets/app_bars/primary_app_bar.dart';
+import '../widgets/light_sweep_container.dart';
 import 'qibla_screen.dart';
 
 /// Prayer times tab: city/country pickers, adhan settings, and mihrab-framed times list.
@@ -126,17 +127,10 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     });
   }
 
-  Future<void> _loadAndroidAdhanOptions() async {
-    try {
-      final list = await MethodChannel(_prayerAlarmsChannel)
-          .invokeMethod<List<dynamic>>('getAdhanOptions');
-      if (mounted && list != null) {
-        setState(() {
-          _androidAdhanOptions =
-              list.map((e) => Map<String, String>.from(e as Map)).toList();
-        });
-      }
-    } catch (_) {}
+  void _loadAndroidAdhanOptions() {
+    setState(() {
+      _androidAdhanOptions = AdhanAssets.options;
+    });
   }
 
   @override
@@ -1282,30 +1276,18 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
           onPressed: !hasSelection
               ? null
               : () async {
-                  if (isAndroid) {
-                    try {
-                      await MethodChannel(_prayerAlarmsChannel)
-                          .invokeMethod<void>(
-                              'playAdhan', {'rawName': _adhanRawName});
-                    } catch (_) {}
-                  } else {
-                    AdhanAudioService.play(_adhanAsset,
-                        durationMs: PrayerPrefs.adhanDurationMs);
-                  }
+                  final soundPath = isAndroid
+                      ? 'assets/audio/$_adhanRawName.mp3'
+                      : _adhanAsset;
+                  AdhanAudioService.play(soundPath,
+                      durationMs: PrayerPrefs.adhanDurationMs);
                 },
           tooltip: context.translate.playAdhan,
         ),
         IconButton(
           icon: const Icon(Icons.stop_circle_outlined),
           onPressed: () async {
-            if (isAndroid) {
-              try {
-                await MethodChannel(_prayerAlarmsChannel)
-                    .invokeMethod<void>('stopAdhan');
-              } catch (_) {}
-            } else {
-              AdhanAudioService.stop();
-            }
+            AdhanAudioService.stop();
           },
           tooltip: context.translate.stopAdhan,
         ),
@@ -1691,7 +1673,7 @@ class _MihrabPrayerRow extends StatelessWidget {
 }
 
 /// Card container with a smooth light sweep (shimmer beam) animation.
-class _LightSweepCountdownCard extends StatefulWidget {
+class _LightSweepCountdownCard extends StatelessWidget {
   final Widget child;
   final bool isDark;
 
@@ -1701,87 +1683,28 @@ class _LightSweepCountdownCard extends StatefulWidget {
   });
 
   @override
-  State<_LightSweepCountdownCard> createState() =>
-      _LightSweepCountdownCardState();
-}
-
-class _LightSweepCountdownCardState extends State<_LightSweepCountdownCard>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _sweepController;
-
-  @override
-  void initState() {
-    super.initState();
-    _sweepController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 3500),
-    )..repeat();
-  }
-
-  @override
-  void dispose() {
-    _sweepController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF1B4D3E).withValues(alpha: 0.35),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: widget.isDark
-                      ? [const Color(0xFF0F382C), const Color(0xFF061A14)]
-                      : [const Color(0xFF1B4D3E), const Color(0xFF0E2E25)],
-                ),
-              ),
-              child: widget.child,
-            ),
-            Positioned.fill(
-              child: IgnorePointer(
-                child: AnimatedBuilder(
-                  animation: _sweepController,
-                  builder: (context, _) {
-                    final progress = _sweepController.value;
-                    final alignX = -2.0 + (progress * 4.0);
-                    return Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment(alignX - 0.4, -1.2),
-                          end: Alignment(alignX + 0.4, 1.2),
-                          stops: const [0.0, 0.45, 0.5, 0.55, 1.0],
-                          colors: [
-                            Colors.transparent,
-                            Colors.white.withValues(alpha: 0.02),
-                            Colors.white.withValues(alpha: 0.18),
-                            Colors.white.withValues(alpha: 0.02),
-                            Colors.transparent,
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+    return LightSweepContainer(
+      borderRadius: BorderRadius.circular(24),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF1B4D3E).withValues(alpha: 0.35),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
             ),
           ],
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: isDark
+                ? [const Color(0xFF0F382C), const Color(0xFF061A14)]
+                : [const Color(0xFF1B4D3E), const Color(0xFF0E2E25)],
+          ),
         ),
+        child: child,
       ),
     );
   }

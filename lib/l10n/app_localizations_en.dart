@@ -718,4 +718,59 @@ class AppLocalizationsEn extends AppLocalizations {
   String minsAfter(Object mins) {
     return '$mins mins after';
   }
+
+  @override
+  String get supportUsTitle => 'Support Us / Donate';
+
+  @override
+  String get supportAppDev => 'Support App Development';
+
+  @override
+  String get supportAppDevDesc =>
+      'Your support helps keep the app ad-free, open source, and continuously updated for everyone.';
+
+  @override
+  String get fibTitle => 'First Iraqi Bank (FIB)';
+
+  @override
+  String get fibPhoneLabel => 'FIB Phone Number:';
+
+  @override
+  String get fibStep1 => '1. Copy phone number above';
+
+  @override
+  String get fibStep2 => '2. Open First Iraqi Bank (FIB) app';
+
+  @override
+  String get fibStep3 => '3. Tap Send / Request -> Paste number';
+
+  @override
+  String get openFibApp => 'Open FIB App';
+
+  @override
+  String get openSuperQiApp => 'Open SuperQi App';
+
+  @override
+  String get superQiTitle => 'SuperQi (Qi Card)';
+
+  @override
+  String get superQiAccountLabel => 'SuperQi Account / Card Number:';
+
+  @override
+  String get superQiStep1 => '1. Copy Account Number above';
+
+  @override
+  String get superQiStep2 => '2. Open SuperQi app';
+
+  @override
+  String get superQiStep3 =>
+      '3. Tap Transfer -> Choose Card/Account Transfer -> Paste number';
+
+  @override
+  String get donateViaFibSuperQi => 'Donate via FIB & SuperQi';
+
+  @override
+  String copiedToast(String label) {
+    return '$label Copied!';
+  }
 }

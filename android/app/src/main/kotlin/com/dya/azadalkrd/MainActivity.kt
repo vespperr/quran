@@ -60,7 +60,7 @@ class MainActivity: FlutterActivity() {
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, prayerChannel).setMethodCallHandler { call, result ->
             when (call.method) {
                 "getAdhanOptions" -> {
-                    result.success(AdhanOptions.toMapList())
+                    result.notImplemented()
                 }
                 "playAdhan" -> {
                     val rawName = call.argument<String>("rawName")
@@ -89,7 +89,6 @@ class MainActivity: FlutterActivity() {
                             )
                         }
                         PrayerAlarmScheduler.scheduleAlarms(this, items, adhanRaw, adhanDurationMs, displayTimes, widgetCity)
-                        PrayerTimesWidgetProvider.updateAllWidgets(this)
                         result.success(true)
                     } catch (e: Exception) {
                         result.success(false)
@@ -98,6 +97,16 @@ class MainActivity: FlutterActivity() {
                 "cancelPrayerAlarms" -> {
                     try {
                         PrayerAlarmScheduler.cancelAll(this)
+                        result.success(true)
+                    } catch (e: Exception) {
+                        result.success(false)
+                    }
+                }
+                "updateWidgetData" -> {
+                    try {
+                        val displayTimes = call.argument<String>("displayTimes") ?: ""
+                        val widgetCity = call.argument<String>("widgetCity") ?: ""
+                        PrayerAlarmScheduler.saveWidgetData(this, displayTimes, widgetCity)
                         result.success(true)
                     } catch (e: Exception) {
                         result.success(false)

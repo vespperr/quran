@@ -3,6 +3,7 @@ import 'package:the_open_quran/constants/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/adhan_links.dart';
+import 'light_sweep_container.dart';
 
 /// External links for learning the adhan (Bilal Academy, lessons, videos).
 /// Used from Prayer times and Library so teaching stays discoverable in both places.
@@ -24,7 +25,9 @@ class AdhanLearningLinksCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return LightSweepContainer(
+      borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
+      child: Container(
       width: double.infinity,
       padding: const EdgeInsets.all(DesignSystem.space16),
       decoration: BoxDecoration(
@@ -64,6 +67,7 @@ class AdhanLearningLinksCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 

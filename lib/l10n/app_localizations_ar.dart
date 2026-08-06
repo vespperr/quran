@@ -709,4 +709,59 @@ class AppLocalizationsAr extends AppLocalizations {
   String minsAfter(Object mins) {
     return 'بعد $mins دقائق';
   }
+
+  @override
+  String get supportUsTitle => 'ادعمنا / التبرع';
+
+  @override
+  String get supportAppDev => 'دعم تطوير التطبيق';
+
+  @override
+  String get supportAppDevDesc =>
+      'دعمكم يساعد في إبقاء التطبيق خاليًا من الإعلانات، ومفتوح المصدر، ومحدثًا باستمرار للجميع.';
+
+  @override
+  String get fibTitle => 'المصرف العراقي الأول (FIB)';
+
+  @override
+  String get fibPhoneLabel => 'رقم هاتف FIB:';
+
+  @override
+  String get fibStep1 => '١. انسخ رقم الهاتف أعلاه';
+
+  @override
+  String get fibStep2 => '٢. افتح تطبيق المصرف العراقي الأول (FIB)';
+
+  @override
+  String get fibStep3 => '٣. اضغط على إرسال / طلب -> الصق الرقم';
+
+  @override
+  String get openFibApp => 'فتح تطبيق FIB';
+
+  @override
+  String get openSuperQiApp => 'فتح تطبيق سوبر كي';
+
+  @override
+  String get superQiTitle => 'سوبر كي (بطاقة كي)';
+
+  @override
+  String get superQiAccountLabel => 'رقم حساب / بطاقة سوبر كي:';
+
+  @override
+  String get superQiStep1 => '١. انسخ رقم الحساب أعلاه';
+
+  @override
+  String get superQiStep2 => '٢. افتح تطبيق سوبر كي';
+
+  @override
+  String get superQiStep3 =>
+      '٣. اضغط تحويل -> اختر تحويل بطاقة/حساب -> الصق الرقم';
+
+  @override
+  String get donateViaFibSuperQi => 'التبرع عبر FIB وسوبر كي';
+
+  @override
+  String copiedToast(String label) {
+    return 'تم نسخ $label!';
+  }
 }

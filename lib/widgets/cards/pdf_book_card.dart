@@ -4,6 +4,8 @@ import 'package:the_open_quran/constants/constants.dart';
 import 'package:the_open_quran/constants/non_quran_style.dart';
 import 'package:the_open_quran/services/pdf_thumbnail_service.dart';
 
+import '../light_sweep_container.dart';
+
 /// Course-style PDF book card: large top cover, rounded content area, title, info chips, and primary action button.
 class PdfBookCard extends StatefulWidget {
   const PdfBookCard({
@@ -80,43 +82,46 @@ class _PdfBookCardState extends State<PdfBookCard>
                   widget.onTap!();
                 },
           borderRadius: BorderRadius.circular(_cardRadius),
-          child: Container(
-            decoration: BoxDecoration(
-              color: DesignSystem.surface,
-              borderRadius: BorderRadius.circular(_cardRadius),
-              boxShadow: [
-                BoxShadow(
-                  color: DesignSystem.textForest.withValues(alpha: 0.12),
-                  offset: const Offset(0, 3),
-                  blurRadius: 10,
+          child: LightSweepContainer(
+            borderRadius: BorderRadius.circular(_cardRadius),
+            child: Container(
+              decoration: BoxDecoration(
+                color: DesignSystem.surface,
+                borderRadius: BorderRadius.circular(_cardRadius),
+                boxShadow: [
+                  BoxShadow(
+                    color: DesignSystem.textForest.withValues(alpha: 0.12),
+                    offset: const Offset(0, 3),
+                    blurRadius: 10,
+                  ),
+                  BoxShadow(
+                    color: DesignSystem.textForest.withValues(alpha: 0.06),
+                    offset: const Offset(1, 1),
+                    blurRadius: 8,
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(_cardRadius),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final cardWidth = constraints.maxWidth;
+                    final coverHeight = cardWidth / 2.4;
+                    return Stack(
+                      children: [
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _buildCover(context),
+                            _buildContent(context),
+                          ],
+                        ),
+                        _buildFloatingBadge(context, coverHeight),
+                      ],
+                    );
+                  },
                 ),
-                BoxShadow(
-                  color: DesignSystem.textForest.withValues(alpha: 0.06),
-                  offset: const Offset(1, 1),
-                  blurRadius: 8,
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(_cardRadius),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final cardWidth = constraints.maxWidth;
-                  final coverHeight = cardWidth / 2.4;
-                  return Stack(
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          _buildCover(context),
-                          _buildContent(context),
-                        ],
-                      ),
-                      _buildFloatingBadge(context, coverHeight),
-                    ],
-                  );
-                },
               ),
             ),
           ),

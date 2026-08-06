@@ -7,8 +7,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/non_quran_style.dart';
 import '../widgets/app_bars/primary_app_bar.dart';
+import 'developer_profile_screen.dart';
 import 'language_screen.dart';
 import 'memorization_screen.dart';
+import 'support_us_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -91,11 +93,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: context.translate.privacyPolicy,
                 subTitle: context.translate.readPrivacyPolicy,
                 onTap: () async {
-                  const url =
-                      'https://github.com/fabrikod/the-open-quran/blob/main/PRIVACY.md';
+                  const url = 'https://t.me/akademyay_bangbezhy';
                   if (await canLaunchUrl(Uri.parse(url))) {
-                    await launchUrl(Uri.parse(url));
+                    await launchUrl(Uri.parse(url),
+                        mode: LaunchMode.externalApplication);
                   }
+                },
+              ),
+              SettingsMenuCard(
+                iconData: Icons.favorite_rounded,
+                iconPath: '',
+                title: context.translate.supportUsTitle,
+                subTitle: context.translate.donateViaFibSuperQi,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    AppRoutes.fadeSlideRoute(
+                      builder: (context) => const SupportUsScreen(),
+                    ),
+                  );
+                },
+              ),
+              SettingsMenuCard(
+                iconData: Icons.person_pin_rounded,
+                iconPath: '',
+                title: 'Developer Profile',
+                subTitle: 'AbdulrahmanMh',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    AppRoutes.fadeSlideRoute(
+                      builder: (context) => const DeveloperProfileScreen(),
+                    ),
+                  );
                 },
               ),
             ],
@@ -109,8 +139,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return FutureBuilder<PackageInfo>(
       future: PackageInfo.fromPlatform(),
       builder: (context, snapshot) {
-        return Opacity(
-          opacity: 0.24,
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              AppRoutes.fadeSlideRoute(
+                builder: (context) => const DeveloperProfileScreen(),
+              ),
+            );
+          },
           child: Padding(
             padding: const EdgeInsets.only(bottom: 20.0),
             child: Text(

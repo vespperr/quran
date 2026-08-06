@@ -1,9 +1,10 @@
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:the_open_quran/constants/constants.dart';
 
+import '../providers/quran_provider.dart';
 import '../constants/adhkar_repeat_targets.dart';
 import '../constants/non_quran_style.dart';
 import '../database/dhikr_db.dart';
@@ -13,12 +14,14 @@ import '../services/adhkar_counter_storage.dart';
 import '../services/copy_and_share_service.dart';
 import '../services/thikr_audio_service.dart';
 import '../widgets/app_bars/primary_app_bar.dart';
+import '../widgets/light_sweep_container.dart';
 
 /// Screen for Athkars / Thikr (remembrance) from KurdistanPrayerTimes.db.
 class ThikrScreen extends StatefulWidget {
   const ThikrScreen({super.key, this.selected = false, this.inSheet = false});
 
   final bool selected;
+
   /// When true, shown inside the bottom sheet; draws green handle and swipe-up opens full screen.
   final bool inSheet;
 
@@ -169,10 +172,12 @@ class _ThikrScreenState extends State<ThikrScreen> {
         ),
       );
     }
-    final firstExpandedIndex = _sections.indexWhere((s) => _expandedSectionIds.contains(s.sectionId));
-    final nextSection = firstExpandedIndex >= 0 && firstExpandedIndex < _sections.length - 1
-        ? _sections[firstExpandedIndex + 1]
-        : null;
+    final firstExpandedIndex =
+        _sections.indexWhere((s) => _expandedSectionIds.contains(s.sectionId));
+    final nextSection =
+        firstExpandedIndex >= 0 && firstExpandedIndex < _sections.length - 1
+            ? _sections[firstExpandedIndex + 1]
+            : null;
 
     return Column(
       children: [
@@ -187,7 +192,8 @@ class _ThikrScreenState extends State<ThikrScreen> {
             itemCount: _sections.length,
             itemBuilder: (context, sectionIndex) {
               final section = _sections[sectionIndex];
-              final isExpanded = _expandedSectionIds.contains(section.sectionId);
+              final isExpanded =
+                  _expandedSectionIds.contains(section.sectionId);
               final totalInSection = section.dhikrs.length;
               return Padding(
                 padding: const EdgeInsets.only(bottom: kSizeL),
@@ -202,7 +208,8 @@ class _ThikrScreenState extends State<ThikrScreen> {
                     ),
                     if (isExpanded) ...[
                       const SizedBox(height: kSizeM),
-                      if (thikrSectionAudioAssets.containsKey(section.sectionId))
+                      if (thikrSectionAudioAssets
+                          .containsKey(section.sectionId))
                         Padding(
                           padding: const EdgeInsets.only(bottom: kSizeM),
                           child: _SectionAudioBar(
@@ -255,7 +262,8 @@ class _AthkarsSheetHandleState extends State<_AthkarsSheetHandle> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onVerticalDragUpdate: (details) => setState(() => _dragTotal += details.delta.dy),
+      onVerticalDragUpdate: (details) =>
+          setState(() => _dragTotal += details.delta.dy),
       onVerticalDragEnd: (_) {
         if (_dragTotal < -_swipeThreshold) widget.onSwipeUp();
         setState(() => _dragTotal = 0);
@@ -361,7 +369,10 @@ class _ThikrFullScreenState extends State<_ThikrFullScreen> {
             Text(
               sections[_currentPage].title,
               style: context.theme.textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).appBarTheme.foregroundColor?.withValues(alpha: 0.8),
+                color: Theme.of(context)
+                    .appBarTheme
+                    .foregroundColor
+                    ?.withValues(alpha: 0.8),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -399,7 +410,8 @@ class _ThikrFullScreenState extends State<_ThikrFullScreen> {
                         borderRadius: BorderRadius.circular(4),
                         color: index == _currentPage
                             ? NonQuranStyle.sectionAccentColor
-                            : NonQuranStyle.sectionAccentColor.withValues(alpha: 0.3),
+                            : NonQuranStyle.sectionAccentColor
+                                .withValues(alpha: 0.3),
                       ),
                     ),
                   ),
@@ -425,7 +437,8 @@ class _ThikrFullScreenState extends State<_ThikrFullScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _SectionHeaderStatic(section: section, totalCount: section.dhikrs.length),
+                _SectionHeaderStatic(
+                    section: section, totalCount: section.dhikrs.length),
                 const SizedBox(height: kSizeM),
                 if (thikrSectionAudioAssets.containsKey(section.sectionId))
                   Padding(
@@ -486,7 +499,8 @@ class _SwipeUpBarState extends State<_SwipeUpBar> {
       onTap: () => widget.onSwipeUp(),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: NonQuranStyle.screenPaddingH, vertical: kSizeM),
+        padding: const EdgeInsets.symmetric(
+            horizontal: NonQuranStyle.screenPaddingH, vertical: kSizeM),
         decoration: BoxDecoration(
           color: DesignSystem.surface,
           border: Border(
@@ -514,7 +528,8 @@ class _SwipeUpBarState extends State<_SwipeUpBar> {
                   fontSize: 12,
                 ),
               ),
-              if (widget.nextSectionTitle != null && widget.nextSectionTitle!.isNotEmpty) ...[
+              if (widget.nextSectionTitle != null &&
+                  widget.nextSectionTitle!.isNotEmpty) ...[
                 const SizedBox(height: 4),
                 Text(
                   'Next: ${widget.nextSectionTitle!}',
@@ -551,7 +566,8 @@ class _SectionAudioBar extends StatefulWidget {
 
 class _SectionAudioBarState extends State<_SectionAudioBar> {
   Future<void> _resetTargetsToDefault() async {
-    await AdhkarTargetStorage.clearTargetsForSection(widget.sectionId, widget.dhikrIds);
+    await AdhkarTargetStorage.clearTargetsForSection(
+        widget.sectionId, widget.dhikrIds);
     widget.onResetDefaults();
   }
 
@@ -565,7 +581,8 @@ class _SectionAudioBarState extends State<_SectionAudioBar> {
         return ValueListenableBuilder<PlayerState>(
           valueListenable: ThikrAudioService.state,
           builder: (context, playerState, _) {
-            final isPlaying = isThisSection && playerState == PlayerState.playing;
+            final isPlaying =
+                isThisSection && playerState == PlayerState.playing;
             return ValueListenableBuilder<Duration>(
               valueListenable: ThikrAudioService.position,
               builder: (context, position, _) {
@@ -575,18 +592,22 @@ class _SectionAudioBarState extends State<_SectionAudioBar> {
                     final pos = isThisSection ? position : Duration.zero;
                     final dur = isThisSection ? duration : Duration.zero;
                     final sec = dur.inSeconds > 0 ? dur.inSeconds : 1;
-                    final progress = dur.inSeconds > 0 ? pos.inSeconds / sec : 0.0;
+                    final progress =
+                        dur.inSeconds > 0 ? pos.inSeconds / sec : 0.0;
                     return Container(
                       decoration: BoxDecoration(
                         color: DesignSystem.surface,
-                        borderRadius: BorderRadius.circular(NonQuranStyle.cardRadiusMedium),
+                        borderRadius: BorderRadius.circular(
+                            NonQuranStyle.cardRadiusMedium),
                         boxShadow: DesignSystem.shadowSoft,
                         border: Border.all(
-                          color: NonQuranStyle.sectionAccentColor.withValues(alpha: 0.2),
+                          color: NonQuranStyle.sectionAccentColor
+                              .withValues(alpha: 0.2),
                           width: 1,
                         ),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: kSizeM, vertical: kSizeS),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kSizeM, vertical: kSizeS),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -598,7 +619,9 @@ class _SectionAudioBarState extends State<_SectionAudioBar> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     IconButton(
-                                      icon: Icon(isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled),
+                                      icon: Icon(isPlaying
+                                          ? Icons.pause_circle_filled
+                                          : Icons.play_circle_filled),
                                       iconSize: 44,
                                       color: NonQuranStyle.sectionAccentColor,
                                       onPressed: () {
@@ -613,9 +636,11 @@ class _SectionAudioBarState extends State<_SectionAudioBar> {
                                     ),
                                     const SizedBox(width: 8),
                                     IconButton(
-                                      icon: const Icon(Icons.stop_circle_outlined),
+                                      icon: const Icon(
+                                          Icons.stop_circle_outlined),
                                       iconSize: 36,
-                                      color: DesignSystem.onSurface.withValues(alpha: 0.7),
+                                      color: DesignSystem.onSurface
+                                          .withValues(alpha: 0.7),
                                       onPressed: () => ThikrAudioService.stop(),
                                     ),
                                   ],
@@ -631,7 +656,8 @@ class _SectionAudioBarState extends State<_SectionAudioBar> {
                                   ),
                                   label: Text(
                                     context.translate.adhkarResetTarget,
-                                    style: context.theme.textTheme.labelSmall?.copyWith(
+                                    style: context.theme.textTheme.labelSmall
+                                        ?.copyWith(
                                       color: NonQuranStyle.sectionAccentColor,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -642,7 +668,8 @@ class _SectionAudioBarState extends State<_SectionAudioBar> {
                                   style: TextButton.styleFrom(
                                     padding: const EdgeInsets.only(left: 4),
                                     minimumSize: Size.zero,
-                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
                                   ),
                                 ),
                               ),
@@ -652,15 +679,20 @@ class _SectionAudioBarState extends State<_SectionAudioBar> {
                             const SizedBox(height: 4),
                             SliderTheme(
                               data: SliderTheme.of(context).copyWith(
-                                activeTrackColor: NonQuranStyle.sectionAccentColor,
-                                inactiveTrackColor: NonQuranStyle.sectionAccentColor.withValues(alpha: 0.2),
+                                activeTrackColor:
+                                    NonQuranStyle.sectionAccentColor,
+                                inactiveTrackColor: NonQuranStyle
+                                    .sectionAccentColor
+                                    .withValues(alpha: 0.2),
                                 thumbColor: NonQuranStyle.sectionAccentColor,
-                                overlayColor: NonQuranStyle.sectionAccentColor.withValues(alpha: 0.2),
+                                overlayColor: NonQuranStyle.sectionAccentColor
+                                    .withValues(alpha: 0.2),
                               ),
                               child: Slider(
                                 value: progress.clamp(0.0, 1.0),
                                 onChanged: isThisSection
-                                    ? (v) => ThikrAudioService.seek(Duration(seconds: (v * sec).round()))
+                                    ? (v) => ThikrAudioService.seek(
+                                        Duration(seconds: (v * sec).round()))
                                     : null,
                               ),
                             ),
@@ -706,7 +738,8 @@ class _SectionHeaderStatic extends StatelessWidget {
     return Container(
       decoration: NonQuranStyle.sectionCardDecoration(),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: kSizeL, vertical: kSizeL),
+        padding:
+            const EdgeInsets.symmetric(horizontal: kSizeL, vertical: kSizeL),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -726,7 +759,8 @@ class _SectionHeaderStatic extends StatelessWidget {
                     textDirection: TextDirection.ltr,
                     textAlign: TextAlign.left,
                   ),
-                  if (section.subtitle != null && section.subtitle!.isNotEmpty) ...[
+                  if (section.subtitle != null &&
+                      section.subtitle!.isNotEmpty) ...[
                     const SizedBox(height: 4),
                     Text(
                       section.subtitle!,
@@ -742,7 +776,8 @@ class _SectionHeaderStatic extends StatelessWidget {
                     Text(
                       '$totalCount athkars',
                       style: context.theme.textTheme.bodySmall?.copyWith(
-                        color: NonQuranStyle.sectionSubtitleColor.withValues(alpha: 0.9),
+                        color: NonQuranStyle.sectionSubtitleColor
+                            .withValues(alpha: 0.9),
                         fontSize: 12,
                       ),
                     ),
@@ -751,7 +786,8 @@ class _SectionHeaderStatic extends StatelessWidget {
               ),
             ),
             const SizedBox(width: kSizeS),
-            Icon(_icon, size: _iconSize, color: NonQuranStyle.sectionAccentColor),
+            Icon(_icon,
+                size: _iconSize, color: NonQuranStyle.sectionAccentColor),
           ],
         ),
       ),
@@ -795,66 +831,73 @@ class _SectionHeader extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(NonQuranStyle.cardRadiusLarge),
-        child: Container(
-          decoration: NonQuranStyle.sectionCardDecoration(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kSizeL, vertical: kSizeL),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        section.title,
-                        style: context.theme.textTheme.titleLarge?.copyWith(
-                          color: NonQuranStyle.sectionTitleColor,
-                          fontWeight: FontWeight.w700,
-                          height: 1.3,
-                          fontSize: 18,
-                        ),
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.left,
-                      ),
-                      if (section.subtitle != null && section.subtitle!.isNotEmpty) ...[
-                        const SizedBox(height: 4),
+        child: LightSweepContainer(
+          borderRadius: BorderRadius.circular(NonQuranStyle.cardRadiusLarge),
+          child: Container(
+            decoration: NonQuranStyle.sectionCardDecoration(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kSizeL, vertical: kSizeL),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
                         Text(
-                          section.subtitle!,
-                          style: context.theme.textTheme.bodyMedium?.copyWith(
-                            color: NonQuranStyle.sectionSubtitleColor,
-                            fontSize: 13,
+                          section.title,
+                          style: context.theme.textTheme.titleLarge?.copyWith(
+                            color: NonQuranStyle.sectionTitleColor,
+                            fontWeight: FontWeight.w700,
                             height: 1.3,
+                            fontSize: 18,
                           ),
+                          textDirection: TextDirection.ltr,
+                          textAlign: TextAlign.left,
                         ),
-                      ],
-                      if (totalCount > 0) ...[
-                        const SizedBox(height: 2),
-                        Text(
-                          '$totalCount athkars',
-                          style: context.theme.textTheme.bodySmall?.copyWith(
-                            color: NonQuranStyle.sectionSubtitleColor.withValues(alpha: 0.9),
-                            fontSize: 12,
+                        if (section.subtitle != null &&
+                            section.subtitle!.isNotEmpty) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            section.subtitle!,
+                            style: context.theme.textTheme.bodyMedium?.copyWith(
+                              color: NonQuranStyle.sectionSubtitleColor,
+                              fontSize: 13,
+                              height: 1.3,
+                            ),
                           ),
-                        ),
+                        ],
+                        if (totalCount > 0) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            '$totalCount athkars',
+                            style: context.theme.textTheme.bodySmall?.copyWith(
+                              color: NonQuranStyle.sectionSubtitleColor
+                                  .withValues(alpha: 0.9),
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
-                ),
-                const SizedBox(width: kSizeS),
-                Icon(_icon, size: _iconSize, color: NonQuranStyle.sectionAccentColor),
-                const SizedBox(width: kSizeS),
-                AnimatedRotation(
-                  turns: isExpanded ? 0.5 : 0,
-                  duration: const Duration(milliseconds: 200),
-                  child: Icon(
-                    Icons.expand_more,
-                    size: NonQuranStyle.expandableIconSize,
-                    color: NonQuranStyle.sectionAccentColor,
+                  const SizedBox(width: kSizeS),
+                  Icon(_icon,
+                      size: _iconSize, color: NonQuranStyle.sectionAccentColor),
+                  const SizedBox(width: kSizeS),
+                  AnimatedRotation(
+                    turns: isExpanded ? 0.5 : 0,
+                    duration: const Duration(milliseconds: 200),
+                    child: Icon(
+                      Icons.expand_more,
+                      size: NonQuranStyle.expandableIconSize,
+                      color: NonQuranStyle.sectionAccentColor,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -891,7 +934,8 @@ class _DhikrItemCardState extends State<_DhikrItemCard> {
   }
 
   int get _target {
-    final custom = AdhkarTargetStorage.readTarget(widget.sectionId, widget.dhikr.id);
+    final custom =
+        AdhkarTargetStorage.readTarget(widget.sectionId, widget.dhikr.id);
     if (custom != null && custom > 0) return custom;
     return AdhkarRepeatTargets.targetFor(widget.dhikr);
   }
@@ -900,9 +944,11 @@ class _DhikrItemCardState extends State<_DhikrItemCard> {
 
   Future<void> _applyTarget(int t) async {
     final clamped = t < 1 ? 1 : t;
-    await AdhkarTargetStorage.setTarget(widget.sectionId, widget.dhikr.id, clamped);
+    await AdhkarTargetStorage.setTarget(
+        widget.sectionId, widget.dhikr.id, clamped);
     if (_count > clamped) {
-      await AdhkarCounterStorage.setCount(widget.sectionId, widget.dhikr.id, clamped);
+      await AdhkarCounterStorage.setCount(
+          widget.sectionId, widget.dhikr.id, clamped);
       if (mounted) setState(() => _count = clamped);
     } else if (mounted) {
       setState(() {});
@@ -922,7 +968,8 @@ class _DhikrItemCardState extends State<_DhikrItemCard> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(kSizeM, kSizeM, kSizeM, kSizeS),
+                  padding:
+                      const EdgeInsets.fromLTRB(kSizeM, kSizeM, kSizeM, kSizeS),
                   child: Text(
                     context.translate.adhkarRepetitionsTitle,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -996,7 +1043,8 @@ class _DhikrItemCardState extends State<_DhikrItemCard> {
   }
 
   String _textForCopyShare() {
-    if (widget.dhikr.ardhikr != null && widget.dhikr.ardhikr!.trim().isNotEmpty) {
+    if (widget.dhikr.ardhikr != null &&
+        widget.dhikr.ardhikr!.trim().isNotEmpty) {
       return widget.dhikr.ardhikr!.trim();
     }
     return widget.dhikr.dhikrid ?? '';
@@ -1006,7 +1054,8 @@ class _DhikrItemCardState extends State<_DhikrItemCard> {
     if (_done) return;
     final next = _count + 1;
     setState(() => _count = next);
-    await AdhkarCounterStorage.setCount(widget.sectionId, widget.dhikr.id, next);
+    await AdhkarCounterStorage.setCount(
+        widget.sectionId, widget.dhikr.id, next);
   }
 
   Future<void> _reset() async {
@@ -1035,7 +1084,8 @@ class _DhikrItemCardState extends State<_DhikrItemCard> {
           value: 'repetitions',
           child: Row(
             children: [
-              Icon(Icons.repeat_rounded, size: 22, color: Theme.of(context).iconTheme.color),
+              Icon(Icons.repeat_rounded,
+                  size: 22, color: Theme.of(context).iconTheme.color),
               const SizedBox(width: 12),
               Text(context.translate.adhkarRepetitionsMenu),
             ],
@@ -1046,7 +1096,8 @@ class _DhikrItemCardState extends State<_DhikrItemCard> {
             value: 'copy',
             child: Row(
               children: [
-                Icon(Icons.copy_outlined, size: 22, color: Theme.of(context).iconTheme.color),
+                Icon(Icons.copy_outlined,
+                    size: 22, color: Theme.of(context).iconTheme.color),
                 const SizedBox(width: 12),
                 Text(context.translate.copy),
               ],
@@ -1057,7 +1108,8 @@ class _DhikrItemCardState extends State<_DhikrItemCard> {
             value: 'share',
             child: Row(
               children: [
-                Icon(Icons.share_outlined, size: 22, color: Theme.of(context).iconTheme.color),
+                Icon(Icons.share_outlined,
+                    size: 22, color: Theme.of(context).iconTheme.color),
                 const SizedBox(width: 12),
                 Text(context.translate.share),
               ],
@@ -1067,7 +1119,8 @@ class _DhikrItemCardState extends State<_DhikrItemCard> {
           value: 'reset',
           child: Row(
             children: [
-              Icon(Icons.refresh, size: 22, color: Theme.of(context).iconTheme.color),
+              Icon(Icons.refresh,
+                  size: 22, color: Theme.of(context).iconTheme.color),
               const SizedBox(width: 12),
               Text(context.translate.adhkarResetCounter),
             ],
@@ -1096,121 +1149,240 @@ class _DhikrItemCardState extends State<_DhikrItemCard> {
 
   @override
   Widget build(BuildContext context) {
-    final showIndex = widget.index != null && widget.total != null && widget.total! > 0;
+    final showIndex =
+        widget.index != null && widget.total != null && widget.total! > 0;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final progressFraction =
+        (_target > 0) ? (_count / _target).clamp(0.0, 1.0) : 0.0;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: _increment,
         onLongPress: () => _showCopyShareMenu(context),
-        borderRadius: BorderRadius.circular(NonQuranStyle.cardRadiusLarge),
-        child: Container(
+        borderRadius: BorderRadius.circular(20),
+        child: LightSweepContainer(
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
             decoration: BoxDecoration(
-              color: NonQuranStyle.sectionCardBackground,
-              borderRadius: BorderRadius.circular(NonQuranStyle.cardRadiusLarge),
-              boxShadow: DesignSystem.shadowSoft,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: _done
+                    ? (isDark
+                        ? [const Color(0xFF0F382C), const Color(0xFF061A14)]
+                        : [const Color(0xFF1B4D3E), const Color(0xFF0E2E25)])
+                    : (isDark
+                        ? [const Color(0xFF154437), const Color(0xFF0A241C)]
+                        : [const Color(0xFF1E5646), const Color(0xFF11382D)]),
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF1B4D3E).withValues(alpha: 0.35),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
               border: Border.all(
-                color: NonQuranStyle.sectionAccentColor.withValues(alpha: 0.12),
-                width: 1,
+                color: _done
+                    ? const Color(0xFFD4AF37)
+                    : const Color(0xFFD4AF37).withValues(alpha: 0.3),
+                width: _done ? 1.5 : 1,
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: kSizeM, vertical: kSizeS + 4),
+              padding: const EdgeInsets.all(kSizeM + 2),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (!_done) ...[
-                    Row(
-                      children: [
-                        Expanded(
-                          child: showIndex
-                              ? Text(
-                                  '${widget.index} of ${widget.total}',
-                                  style: context.theme.textTheme.titleMedium?.copyWith(
-                                    color: NonQuranStyle.sectionAccentColor,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 20,
-                                    height: 1.2,
-                                  ),
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                        IconButton(
-                          visualDensity: VisualDensity.compact,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-                          icon: Icon(
-                            Icons.tune_rounded,
-                            size: 20,
-                            color: NonQuranStyle.sectionAccentColor,
-                          ),
-                          tooltip: context.translate.adhkarRepetitionsMenu,
-                          onPressed: _showRepetitionsSheet,
-                        ),
-                        const SizedBox(width: 4),
+                  // Top Row: Index + Tune Button + Repetition Counter
+                  Row(
+                    children: [
+                      if (showIndex)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
-                            color: NonQuranStyle.sectionAccentColor.withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(20),
+                            color:
+                                const Color(0xFFD4AF37).withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: const Color(0xFFD4AF37)
+                                  .withValues(alpha: 0.3),
+                              width: 0.8,
+                            ),
                           ),
                           child: Text(
-                            context.translate.adhkarRepeatProgress(
-                              _count.clamp(0, _target),
-                              _target,
-                            ),
-                            style: context.theme.textTheme.titleLarge?.copyWith(
-                              color: NonQuranStyle.sectionAccentColor,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 24,
-                              fontFeatures: const [FontFeature.tabularFigures()],
+                            '${widget.index} / ${widget.total}',
+                            style: const TextStyle(
+                              color: Color(0xFFD4AF37),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
+                              height: 1.2,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      context.translate.adhkarTapHint,
-                      style: context.theme.textTheme.labelSmall?.copyWith(
-                        color: NonQuranStyle.sectionSubtitleColor,
-                        fontSize: 11,
+                      const Spacer(),
+                      IconButton(
+                        visualDensity: VisualDensity.compact,
+                        padding: EdgeInsets.zero,
+                        constraints:
+                            const BoxConstraints(minWidth: 36, minHeight: 36),
+                        icon: const Icon(
+                          Icons.tune_rounded,
+                          size: 20,
+                          color: Color(0xFFD4AF37),
+                        ),
+                        tooltip: context.translate.adhkarRepetitionsMenu,
+                        onPressed: _showRepetitionsSheet,
                       ),
-                    ),
-                    const SizedBox(height: 6),
-                  ] else if (showIndex) ...[
-                    Row(
-                      children: [
-                        Text(
-                          '${widget.index} of ${widget.total}',
-                          style: context.theme.textTheme.titleMedium?.copyWith(
-                            color: NonQuranStyle.sectionAccentColor,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
+                      const SizedBox(width: 4),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFD4AF37)
+                              .withValues(alpha: _done ? 0.3 : 0.18),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: const Color(0xFFD4AF37)
+                                .withValues(alpha: _done ? 0.8 : 0.4),
                           ),
                         ),
-                      ],
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (_done) ...[
+                              const Icon(
+                                Icons.check_circle_rounded,
+                                color: Color(0xFFD4AF37),
+                                size: 18,
+                              ),
+                              const SizedBox(width: 4),
+                            ],
+                            Text(
+                              context.translate.adhkarRepeatProgress(
+                                _count.clamp(0, _target),
+                                _target,
+                              ),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 20,
+                                fontFeatures: [FontFeature.tabularFigures()],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+
+                  // Progress Bar Indicator
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: LinearProgressIndicator(
+                      value: progressFraction,
+                      minHeight: 3.5,
+                      backgroundColor: Colors.white.withValues(alpha: 0.12),
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                          Color(0xFFD4AF37)),
                     ),
-                    const SizedBox(height: 6),
-                  ],
-                  if (widget.dhikr.ardhikr != null && widget.dhikr.ardhikr!.isNotEmpty)
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  // Ornamental Islamic Star Symbol Divider
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 1,
+                        width: 32,
+                        color: const Color(0xFFD4AF37).withValues(alpha: 0.3),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          '❖',
+                          style: TextStyle(
+                            color: Color(0xFFD4AF37),
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 1,
+                        width: 32,
+                        color: const Color(0xFFD4AF37).withValues(alpha: 0.3),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  // Arabic Thikr Text (Pure White)
+                  if (widget.dhikr.ardhikr != null &&
+                      widget.dhikr.ardhikr!.isNotEmpty) ...[
                     Text(
                       widget.dhikr.ardhikr!,
                       style: context.theme.textTheme.bodyLarge?.copyWith(
-                        color: NonQuranStyle.sectionTitleColor,
-                        fontWeight: FontWeight.w500,
-                        height: 1.45,
-                        fontSize: 18,
-                        fontFamily: Fonts.naskh,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        height: 1.65,
+                        fontSize: 21,
+                        fontFamily: Fonts.getArabicFont(
+                          context
+                              .watch<QuranProvider>()
+                              .localSetting
+                              .fontTypeArabic,
+                        ),
+                        fontFamilyFallback: [
+                          Fonts.amiri,
+                          Fonts.notoNaskhArabic,
+                          Fonts.uthmanic,
+                          Fonts.naskh,
+                        ],
                       ),
                       textDirection: TextDirection.rtl,
                       textAlign: TextAlign.right,
                     ),
+                    if (widget.dhikr.krdhikr != null &&
+                        widget.dhikr.krdhikr!.trim().isNotEmpty) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        widget.dhikr.krdhikr!.trim(),
+                        style: context.theme.textTheme.bodyMedium?.copyWith(
+                          color: Colors.white.withValues(alpha: 0.82),
+                          fontSize: 15,
+                          height: 1.45,
+                          fontFamily: Fonts.kurdish,
+                        ),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.right,
+                      ),
+                    ],
+                  ],
+                  if (!_done) ...[
+                    const SizedBox(height: 10),
+                    Text(
+                      context.translate.adhkarTapHint,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.5),
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
           ),
         ),
+      ),
     );
   }
 }

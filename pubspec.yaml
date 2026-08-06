@@ -3,7 +3,7 @@ description: "أوقات الأذان آزاد الكُردي — Qur'an and pra
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.1+3
+version: 1.0.2
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -41,6 +41,7 @@ dependencies:
   scrollable_positioned_list: ^0.3.5
   gap: ^3.0.1                                             # Adding gaps between widgets
   flutter_slidable: ^4.0.3                                # Slidable list item
+  home_widget: ^0.7.0
 
   # Local Database
   get_storage: ^2.0.3                                     # Store data locally
@@ -99,11 +100,11 @@ flutter:
     - assets/recitations/bundled/
     - assets/json/translations/
     - assets/surahSVG/
+    - assets/audio/
     - lib/assets/
     # Explicit DBs so they are always listed in the asset manifest (Kurdistan vs IQ/IR).
     - lib/assets/kurdistandb.sqlite
     - lib/assets/pdfbooks/
-    - lib/assets/bang/
     - lib/assets/thikrs/
     - lib/assets/athkars2.svg
 

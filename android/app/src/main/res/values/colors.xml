@@ -10,7 +10,17 @@
     <color name="ds_on_surface_muted">#B31C1917</color>
     <color name="ds_on_primary">#FFFFFFFF</color>
     <color name="ds_outline">#FFE7E5E4</color>
-    <color name="ds_luxury_top">#FFFFFEFB</color>
-    <color name="ds_luxury_bottom">#FFE8F5F3</color>
+    <color name="ds_luxury_top">#0F382C</color>
+    <color name="ds_luxury_bottom">#061A14</color>
     <color name="ds_primary_soft">#1A43A047</color>
+
+    <!-- Widget Luxury Emerald & Gold Theme -->
+    <color name="widget_emerald_start">#0F382C</color>
+    <color name="widget_emerald_end">#061A14</color>
+    <color name="widget_gold">#D4AF37</color>
+    <color name="widget_gold_bg">#33D4AF37</color>
+    <color name="widget_gold_border">#66D4AF37</color>
+    <color name="widget_dark_card">#33000000</color>
+    <color name="widget_text_white">#FFFFFF</color>
+    <color name="widget_text_muted">#D0FFFFFF</color>
 </resources>

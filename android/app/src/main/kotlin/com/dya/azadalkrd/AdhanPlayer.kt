@@ -27,15 +27,17 @@ object AdhanPlayer {
         if (rawName.isNullOrEmpty()) return
         stop()
         try {
-            val uri = Uri.parse("android.resource://${context.packageName}/raw/$rawName")
+            val resId = context.resources.getIdentifier(rawName, "raw", context.packageName)
+            if (resId == 0) return
+            val uri = Uri.parse("android.resource://${context.packageName}/$resId")
             player = MediaPlayer().apply {
                 setDataSource(context, uri)
-                setAudioStreamType(AudioManager.STREAM_ALARM)
+                setAudioStreamType(AudioManager.STREAM_MUSIC)
                 setOnCompletionListener { stop() }
                 prepare()
                 start()
             }
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             player?.release()
             player = null
         }
@@ -46,7 +48,9 @@ object AdhanPlayer {
         if (rawName.isNullOrEmpty()) return
         stop()
         try {
-            val uri = Uri.parse("android.resource://${context.packageName}/raw/$rawName")
+            val resId = context.resources.getIdentifier(rawName, "raw", context.packageName)
+            if (resId == 0) return
+            val uri = Uri.parse("android.resource://${context.packageName}/$resId")
             player = MediaPlayer().apply {
                 setDataSource(context, uri)
                 setAudioStreamType(AudioManager.STREAM_ALARM)
@@ -60,7 +64,7 @@ object AdhanPlayer {
                 alarmAutoStopRunnable = r
                 handler.postDelayed(r, durationMs)
             }
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             cancelAlarmAutoStop()
             player?.release()
             player = null

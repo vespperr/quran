@@ -257,5 +257,29 @@
     "alarmOffsetTitle": "Alarm Timing Offset",
     "onTime": "On time (0 min)",
     "minsBefore": "{mins} mins before",
-    "minsAfter": "{mins} mins after"
+    "minsAfter": "{mins} mins after",
+    "supportUsTitle": "Support Us / Donate",
+    "supportAppDev": "Support App Development",
+    "supportAppDevDesc": "Your support helps keep the app ad-free, open source, and continuously updated for everyone.",
+    "fibTitle": "First Iraqi Bank (FIB)",
+    "fibPhoneLabel": "FIB Phone Number:",
+    "fibStep1": "1. Copy phone number above",
+    "fibStep2": "2. Open First Iraqi Bank (FIB) app",
+    "fibStep3": "3. Tap Send / Request -> Paste number",
+    "openFibApp": "Open FIB App",
+    "openSuperQiApp": "Open SuperQi App",
+    "superQiTitle": "SuperQi (Qi Card)",
+    "superQiAccountLabel": "SuperQi Account / Card Number:",
+    "superQiStep1": "1. Copy Account Number above",
+    "superQiStep2": "2. Open SuperQi app",
+    "superQiStep3": "3. Tap Transfer -> Choose Card/Account Transfer -> Paste number",
+    "donateViaFibSuperQi": "Donate via FIB & SuperQi",
+    "copiedToast": "{label} Copied!",
+    "@copiedToast": {
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    }
 }

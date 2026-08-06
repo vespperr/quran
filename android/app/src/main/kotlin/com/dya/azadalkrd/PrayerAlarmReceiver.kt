@@ -51,6 +51,9 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
 
         Log.d(TAG, "onReceive id=$id at=${Date(System.currentTimeMillis())} adhanRaw=${adhanRaw ?: ""} title=$title")
         createChannelIfNeeded(context)
+        try {
+            PrayerTimesWidgetBaseProvider.refreshAllWidgets(context)
+        } catch (_: Exception) {}
 
         if (adhanRaw != null && adhanRaw.isNotEmpty()) {
             AdhanPlayer.playForAlarm(context, adhanRaw, adhanDurationMs.toLong())

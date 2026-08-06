@@ -7,6 +7,9 @@ import 'package:url_launcher/url_launcher.dart';
 import '../constants/non_quran_style.dart';
 import '../widgets/app_bars/primary_app_bar.dart';
 
+import '../routes/app_routes.dart';
+import 'developer_profile_screen.dart';
+
 class ReferencesScreen extends StatefulWidget {
   const ReferencesScreen({super.key});
 
@@ -64,15 +67,28 @@ class _ReferencesScreenState extends State<ReferencesScreen> {
                     height: 5,
                   ),
                   Text(
-                    "Version 1.0.0-alpha",
+                    "Version 1.0.2",
                     style: context.theme.textTheme.bodyMedium,
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    context.translate.fabrikodTwoThree,
-                    style: context.theme.textTheme.headlineMedium,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        AppRoutes.fadeSlideRoute(
+                          builder: (context) => const DeveloperProfileScreen(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      context.translate.fabrikodTwoThree,
+                      style: context.theme.textTheme.headlineMedium?.copyWith(
+                        color: DesignSystem.primary,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
                   ),
                 ],
               )
@@ -136,10 +152,11 @@ class _ReferencesScreenState extends State<ReferencesScreen> {
                   text: " (see app settings).",
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {
-                      const url = 'https://github.com/fabrikod/the-open-quran/blob/main/PRIVACY.md';
+                      const url = 'https://t.me/akademyay_bangbezhy';
                       if (await canLaunchUrl(Uri.parse(url))) {
                         await launchUrl(
                           Uri.parse(url),
+                          mode: LaunchMode.externalApplication,
                         );
                       }
                     },

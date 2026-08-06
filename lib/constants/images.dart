@@ -46,6 +46,7 @@ class ImageConstants {
   /// Surah name SVGs (1.svg–114.svg) in assets/surahSVG/; use with ColorFilter to match design.
   static const String _surahSvgPath = "assets/surahSVG";
   static String surahNameSvg(int surahId) => "$_surahSvgPath/$surahId.svg";
+  static const String whatsappQrCode = "${_iconsPath}whatsapp_qr.png";
   static const String arrowBack = "${_iconsPath}ic_arrow_back.svg";
   static const String newBackArrow = "${_iconsPath}ic_new_back_arrow.svg";
   static const String helpGuideIcon = "${_iconsPath}ic_help_guide.svg";

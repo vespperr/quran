@@ -57,6 +57,16 @@ class PermissionsScreen extends StatelessWidget {
                 }
               },
             ),
+            const SizedBox(height: kSizeM),
+            _PermissionCard(
+              icon: Icons.alarm,
+              title: 'ئاگادارکردنەوەی دقیق (Alarms & Reminders)',
+              description: 'بۆ کارکردنی ئاگادارکردنەوەی نوێژەکان و بانگ دان لە کاتی دیاریکراودا لە پاشبنەمادا.',
+              buttonLabel: context.translate.openSettings,
+              onPressed: () async {
+                await openAppSettings();
+              },
+            ),
           ],
         ),
       ),

@@ -51,6 +51,7 @@ Future<void> main() async {
     Future<void>.delayed(Duration.zero, () async {
       try {
         await PrayerNotificationService.init();
+        await PrayerNotificationService.ensurePermissions();
         await PrayerNotificationService.rescheduleFromStoredPrefs();
       } catch (e, st) {
         _writeErrorLog('PrayerNotificationService: $e', st.toString());

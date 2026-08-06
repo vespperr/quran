@@ -1425,6 +1425,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{mins} mins after'**
   String minsAfter(Object mins);
+
+  /// No description provided for @supportUsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Support Us / Donate'**
+  String get supportUsTitle;
+
+  /// No description provided for @supportAppDev.
+  ///
+  /// In en, this message translates to:
+  /// **'Support App Development'**
+  String get supportAppDev;
+
+  /// No description provided for @supportAppDevDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your support helps keep the app ad-free, open source, and continuously updated for everyone.'**
+  String get supportAppDevDesc;
+
+  /// No description provided for @fibTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'First Iraqi Bank (FIB)'**
+  String get fibTitle;
+
+  /// No description provided for @fibPhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'FIB Phone Number:'**
+  String get fibPhoneLabel;
+
+  /// No description provided for @fibStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Copy phone number above'**
+  String get fibStep1;
+
+  /// No description provided for @fibStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Open First Iraqi Bank (FIB) app'**
+  String get fibStep2;
+
+  /// No description provided for @fibStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Tap Send / Request -> Paste number'**
+  String get fibStep3;
+
+  /// No description provided for @openFibApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Open FIB App'**
+  String get openFibApp;
+
+  /// No description provided for @openSuperQiApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Open SuperQi App'**
+  String get openSuperQiApp;
+
+  /// No description provided for @superQiTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'SuperQi (Qi Card)'**
+  String get superQiTitle;
+
+  /// No description provided for @superQiAccountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'SuperQi Account / Card Number:'**
+  String get superQiAccountLabel;
+
+  /// No description provided for @superQiStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Copy Account Number above'**
+  String get superQiStep1;
+
+  /// No description provided for @superQiStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Open SuperQi app'**
+  String get superQiStep2;
+
+  /// No description provided for @superQiStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Tap Transfer -> Choose Card/Account Transfer -> Paste number'**
+  String get superQiStep3;
+
+  /// No description provided for @donateViaFibSuperQi.
+  ///
+  /// In en, this message translates to:
+  /// **'Donate via FIB & SuperQi'**
+  String get donateViaFibSuperQi;
+
+  /// No description provided for @copiedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} Copied!'**
+  String copiedToast(String label);
 }
 
 class _AppLocalizationsDelegate
