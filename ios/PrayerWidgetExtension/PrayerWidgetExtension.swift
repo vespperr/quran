@@ -1,8 +1,13 @@
-#if canImport(WidgetKit) && canImport(SwiftUI)
 import WidgetKit
 import SwiftUI
 
-@available(iOS 14.0, *)
+@main
+struct PrayerWidgetBundle: WidgetBundle {
+    var body: some Widget {
+        PrayerWidget()
+    }
+}
+
 struct PrayerEntry: TimelineEntry {
     let date: Date
     let city: String
@@ -12,7 +17,6 @@ struct PrayerEntry: TimelineEntry {
     let timeUntil: String
 }
 
-@available(iOS 14.0, *)
 struct PrayerWidgetProvider: TimelineProvider {
     func placeholder(in context: Context) -> PrayerEntry {
         PrayerEntry(
@@ -39,7 +43,6 @@ struct PrayerWidgetProvider: TimelineProvider {
         let currentDate = Date()
         var entries: [PrayerEntry] = []
         
-        // Generate entries for the next 24 hours every 15 minutes
         for minuteOffset in stride(from: 0, to: 24 * 60, by: 15) {
             if let entryDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate) {
                 entries.append(fetchEntry(for: entryDate))
@@ -79,7 +82,6 @@ struct PrayerWidgetProvider: TimelineProvider {
             ]
         }
 
-        // Determine next prayer
         let calendar = Calendar.current
         let currentMinutes = calendar.component(.hour, from: date) * 60 + calendar.component(.minute, from: date)
         
@@ -179,7 +181,6 @@ struct MediumPrayerWidgetView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            // Left Hero Highlight
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
                     Image(systemName: "location.fill")
@@ -213,7 +214,6 @@ struct MediumPrayerWidgetView: View {
             .background(Color.black.opacity(0.25))
             .cornerRadius(14)
 
-            // Right Schedule List
             VStack(spacing: 4) {
                 ForEach(entry.times, id: \.name) { item in
                     let isNext = item.name == entry.nextPrayerName
@@ -250,7 +250,6 @@ struct LargePrayerWidgetView: View {
 
     var body: some View {
         VStack(spacing: 12) {
-            // Header
             HStack {
                 HStack(spacing: 4) {
                     Image(systemName: "clock.fill")
@@ -275,7 +274,6 @@ struct LargePrayerWidgetView: View {
                 .cornerRadius(8)
             }
 
-            // Hero Highlight Card
             VStack(spacing: 4) {
                 Text(entry.nextPrayerName)
                     .font(.system(size: 20, weight: .bold))
@@ -301,7 +299,6 @@ struct LargePrayerWidgetView: View {
             .background(Color.black.opacity(0.2))
             .cornerRadius(16)
 
-            // Times List
             VStack(spacing: 6) {
                 ForEach(entry.times, id: \.name) { item in
                     let isNext = item.name == entry.nextPrayerName
@@ -334,7 +331,6 @@ struct LargePrayerWidgetView: View {
 
 // MARK: - Main Widget Entry
 
-@available(iOS 14.0, *)
 struct PrayerWidget: Widget {
     let kind: String = "PrayerWidget"
 
@@ -342,13 +338,12 @@ struct PrayerWidget: Widget {
         StaticConfiguration(kind: kind, provider: PrayerWidgetProvider()) { entry in
             PrayerWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("Prayer Times")
+        .configurationDisplayName("Azad Al-Kurdi Prayer Times")
         .description("Beautiful live prayer times and next prayer countdown.")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
 
-@available(iOS 14.0, *)
 struct PrayerWidgetEntryView: View {
     @Environment(\.widgetFamily) var family
     let entry: PrayerEntry
@@ -366,4 +361,3 @@ struct PrayerWidgetEntryView: View {
         }
     }
 }
-#endif
