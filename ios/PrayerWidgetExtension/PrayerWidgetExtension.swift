@@ -73,13 +73,29 @@ struct PrayerWidgetProvider: TimelineProvider {
         }
         
         if parsedTimes.isEmpty {
-            parsedTimes = [
-                ("Fajr", "04:12"),
-                ("Dhuhr", "12:15"),
-                ("Asr", "15:45"),
-                ("Maghrib", "18:30"),
-                ("Isha", "19:50")
-            ]
+            let fajr = defaults.string(forKey: "fajr") ?? ""
+            let dhuhr = defaults.string(forKey: "dhuhr") ?? ""
+            let asr = defaults.string(forKey: "asr") ?? ""
+            let maghrib = defaults.string(forKey: "maghrib") ?? ""
+            let isha = defaults.string(forKey: "isha") ?? ""
+            
+            if !fajr.isEmpty && fajr != "--:--" {
+                parsedTimes = [
+                    ("Fajr", fajr),
+                    ("Dhuhr", dhuhr),
+                    ("Asr", asr),
+                    ("Maghrib", maghrib),
+                    ("Isha", isha)
+                ]
+            } else {
+                parsedTimes = [
+                    ("Fajr", "04:12"),
+                    ("Dhuhr", "12:15"),
+                    ("Asr", "15:45"),
+                    ("Maghrib", "18:30"),
+                    ("Isha", "19:50")
+                ]
+            }
         }
 
         let calendar = Calendar.current

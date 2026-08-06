@@ -453,6 +453,7 @@ class PrayerNotificationService {
         await WidgetService.updatePrayerWidget(
           prayerTimes: pMap,
           nextPrayer: nextPrayerStr,
+          city: city,
         );
         if (kDebugMode) {
           print('[PrayerNotificationService] schedule (native): ${alarms.length} alarms (today + tomorrow)');
