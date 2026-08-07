@@ -66,9 +66,9 @@ struct PrayerWidgetProvider: TimelineProvider {
             
             if !isPm && !isAm {
                 let lower = name.lowercased()
-                if lower.contains("dhuhr") && h in 1...11 {
+                if lower.contains("dhuhr") && (1...11).contains(h) {
                     h += 12
-                } else if (lower.contains("asr") || lower.contains("maghrib") || lower.contains("isha")) && h in 1...11 {
+                } else if (lower.contains("asr") || lower.contains("maghrib") || lower.contains("isha")) && (1...11).contains(h) {
                     h += 12
                 }
             }
