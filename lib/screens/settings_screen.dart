@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../constants/non_quran_style.dart';
 import '../widgets/app_bars/primary_app_bar.dart';
 import 'developer_profile_screen.dart';
+import 'friday_sunnahs_screen.dart';
 import 'language_screen.dart';
 import 'memorization_screen.dart';
 import 'support_us_screen.dart';
@@ -64,6 +65,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               const SizedBox(height: 24),
+              SettingsMenuCard(
+                iconData: Icons.wb_sunny_rounded,
+                iconPath: '',
+                title: context.translate.fridaySunnahs,
+                subTitle: context.translate.fridaySunnahsDesc,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    AppRoutes.fadeSlideRoute(
+                      builder: (context) => const FridaySunnahsScreen(),
+                    ),
+                  );
+                },
+              ),
               SettingsMenuCard(
                 iconPath: ImageConstants.languageIcon,
                 title: context.translate.language,

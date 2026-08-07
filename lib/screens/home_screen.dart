@@ -17,6 +17,7 @@ import '../providers/favorites_provider.dart';
 import '../providers/home_provider.dart';
 import '../providers/search_provider.dart';
 import 'favorites_screen.dart';
+import 'friday_sunnahs_screen.dart';
 import 'memorization_screen.dart';
 import 'permissions_screen.dart';
 import 'prayer_times_screen.dart';
@@ -44,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildHomeHeader(context),
+              _buildFridaySunnahBanner(context),
               _buildPermissionsAndMemorizationRow(context),
               Padding(
                 padding: const EdgeInsets.all(DesignSystem.screenPadding),
@@ -117,6 +119,96 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFridaySunnahBanner(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        DesignSystem.screenPadding,
+        DesignSystem.space12,
+        DesignSystem.screenPadding,
+        0,
+      ),
+      child: Material(
+        color: DesignSystem.surface,
+        borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              AppRoutes.fadeSlideRoute<void>(
+                builder: (_) => const FridaySunnahsScreen(),
+              ),
+            );
+          },
+          borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: DesignSystem.space16,
+              vertical: DesignSystem.space12,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
+              border: Border.all(
+                color: DesignSystem.primary.withValues(alpha: 0.3),
+                width: 1.5,
+              ),
+              gradient: LinearGradient(
+                colors: [
+                  DesignSystem.primary.withValues(alpha: 0.08),
+                  DesignSystem.surface,
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
+              boxShadow: DesignSystem.shadowSoft,
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: DesignSystem.primary,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(
+                    Icons.wb_sunny_rounded,
+                    size: 22,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(width: DesignSystem.space12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        context.translate.fridaySunnahs,
+                        style: context.theme.textTheme.titleMedium?.copyWith(
+                          color: DesignSystem.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        context.translate.fridaySunnahsDesc,
+                        style: context.theme.textTheme.bodySmall?.copyWith(
+                          color: DesignSystem.onSurface.withValues(alpha: 0.7),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(
+                  Icons.chevron_right_rounded,
+                  color: DesignSystem.primary,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

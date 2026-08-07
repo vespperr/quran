@@ -281,5 +281,35 @@
         "type": "String"
       }
     }
-  }
+  },
+  "fridaySunnahs": "سوننەتەکانی ڕۆژی هەینی",
+  "fridaySunnahsDesc": "سوننەت و کارە چاکە ڕاسپێردراوەکانی ڕۆژی هەینی",
+  "readSurahKahf": "خوێندنەوەی سورەتی الكهف",
+  "readSurahKahfDesc": "نوورێک لە نێوان دوو هەینیدا",
+  "salawatCounter": "ژمێرەری سڵاوات",
+  "salawatCounterDesc": "ناردنی سڵاوات و سەلام لەسەر پێغەمبەر ﷺ",
+  "tapToCount": "دابگرە بۆ زیادکردن",
+  "resetCounter": "ڕێکخستنەوەی ژمێرەر",
+  "salawatTarget": "ئامانج: {count}",
+  "@salawatTarget": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sunnahGhusl": "خۆشۆردنی ڕۆژی هەینی (غسل)",
+  "sunnahGhuslDesc": "خۆشۆردن و پاککردنەوە پێش ڕۆشتن بۆ نوێژی هەینی",
+  "sunnahSiwak": "بەکارهێنانی سیواک و بۆن",
+  "sunnahSiwakDesc": "بەکارهێنانی سیواک و لەخودانی بۆنی خۆش",
+  "sunnahCleanClothes": "پۆشینی پۆشاکی پاک و جوان",
+  "sunnahCleanClothesDesc": "پۆشینی باشترین و پاکترین پۆشاک بۆ ڕۆژی هەینی",
+  "sunnahEarlyMosque": "زوو ڕۆشتن بۆ نوێژی هەینی",
+  "sunnahEarlyMosqueDesc": "بەدەستهێنانی پاداشتی گەورە بە زوو ڕۆشتن بۆ مزگەوت",
+  "sunnahDuaHour": "ساتی وەڵامدانەوەی دوعا",
+  "sunnahDuaHourDesc": "زۆر دوعاکردن بەتایبەت لە نێوان نوێژی عەسر و ئێوارە",
+  "fridayReminders": "بیرخەرەوەکانی ڕۆژی هەینی",
+  "fridayRemindersDesc": "پێگەیشتنی بیرخەرەوەی هەفتانە بۆ سورەتی الكهف و سوننەتەکان",
+  "fridayNotificationTitle": "بیرخەرەوەی سوننەتەکانی ڕۆژی هەینی",
+  "fridayNotificationBody": "لەبیرت نەچێت ئیمڕۆ سورەتی الكهف بخوێنیتەوە و سڵاوات بنێریت!"
 }

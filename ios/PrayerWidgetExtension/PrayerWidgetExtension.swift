@@ -54,6 +54,29 @@ struct PrayerWidgetProvider: TimelineProvider {
         completion(timeline)
     }
 
+    private func parsePrayerMinutes(_ timeStr: String, name: String) -> Int? {
+        let clean = timeStr.trimmingCharacters(in: .whitespaces).uppercased()
+        let isPm = clean.contains("PM")
+        let isAm = clean.contains("AM")
+        let digitsOnly = clean.replacingOccurrences(of: "AM", with: "").replacingOccurrences(of: "PM", with: "").trimmingCharacters(in: .whitespaces)
+        let parts = digitsOnly.components(separatedBy: ":")
+        if parts.count >= 2, var h = Int(parts[0]), let m = Int(parts[1]) {
+            if isPm && h < 12 { h += 12 }
+            if isAm && h == 12 { h = 0 }
+            
+            if !isPm && !isAm {
+                let lower = name.lowercased()
+                if lower.contains("dhuhr") && h in 1...11 {
+                    h += 12
+                } else if (lower.contains("asr") || lower.contains("maghrib") || lower.contains("isha")) && h in 1...11 {
+                    h += 12
+                }
+            }
+            return h * 60 + m
+        }
+        return nil
+    }
+
     private func fetchEntry(for date: Date) -> PrayerEntry {
         let defaults = UserDefaults(suiteName: "group.com.dya.azadalkrd") ?? UserDefaults.standard
         let rawCity = defaults.string(forKey: "widget_city") ?? "Slemani"
@@ -106,9 +129,7 @@ struct PrayerWidgetProvider: TimelineProvider {
         var nextTotalMins = 0
 
         for item in parsedTimes {
-            let parts = item.timeStr.components(separatedBy: ":")
-            if parts.count == 2, let h = Int(parts[0]), let m = Int(parts[1]) {
-                let total = h * 60 + m
+            if let total = parsePrayerMinutes(item.timeStr, name: item.name) {
                 if total > currentMinutes {
                     nextName = item.name
                     nextTimeStr = item.timeStr
@@ -119,9 +140,8 @@ struct PrayerWidgetProvider: TimelineProvider {
         }
 
         if nextTotalMins == 0, let first = parsedTimes.first {
-            let parts = first.timeStr.components(separatedBy: ":")
-            if parts.count == 2, let h = Int(parts[0]), let m = Int(parts[1]) {
-                nextTotalMins = h * 60 + m + (24 * 60)
+            if let total = parsePrayerMinutes(first.timeStr, name: first.name) {
+                nextTotalMins = total + (24 * 60)
             }
         }
 

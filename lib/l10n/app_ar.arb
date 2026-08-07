@@ -281,5 +281,35 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "fridaySunnahs": "سُنن يوم الجمعة",
+    "fridaySunnahsDesc": "السنن والآداب المستحبة في يوم الجمعة",
+    "readSurahKahf": "قراءة سورة الكهف",
+    "readSurahKahfDesc": "نور ما بين الجمعتين",
+    "salawatCounter": "عداد الصلاة على النبي",
+    "salawatCounterDesc": "أكثر من الصلاة والتسليم على النبي ﷺ",
+    "tapToCount": "إضغط للزيادة",
+    "resetCounter": "إعادة الضبط",
+    "salawatTarget": "الهدف: {count}",
+    "@salawatTarget": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "sunnahGhusl": "غُسل الجمعة",
+    "sunnahGhuslDesc": "الاغتسال والتطهر ليوم الجمعة",
+    "sunnahSiwak": "السواك والتطيب",
+    "sunnahSiwakDesc": "استعمال السواك ووضع الطيب والريح الطيبة",
+    "sunnahCleanClothes": "لبس أحدث الثياب",
+    "sunnahCleanClothesDesc": "ارتداء أفضل الملابس ونظافتها للتجمل",
+    "sunnahEarlyMosque": "التبكير لصلاة الجمعة",
+    "sunnahEarlyMosqueDesc": "الذهاب مبكراً إلى المسجد لنيل الأجر العظيم",
+    "sunnahDuaHour": "ساعة الاستجابة",
+    "sunnahDuaHourDesc": "الإكثار من الدعاء وبخاصة في آخر ساعة بعد العصر",
+    "fridayReminders": "تنبيهات الجمعة",
+    "fridayRemindersDesc": "تلقي تذكيرات أسبوعية لسورة الكهف وسُنن الجمعة",
+    "fridayNotificationTitle": "تذكير بسُنن الجمعة",
+    "fridayNotificationBody": "لا تنسَ قراءة سورة الكهف والصلاة على النبي ﷺ اليوم!"
 }

@@ -281,5 +281,35 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "fridaySunnahs": "Friday Sunnahs",
+    "fridaySunnahsDesc": "Blessed acts recommended on Friday",
+    "readSurahKahf": "Read Surah Al-Kahf",
+    "readSurahKahfDesc": "A light between two Fridays",
+    "salawatCounter": "Salawat Counter",
+    "salawatCounterDesc": "Send blessings upon Prophet Muhammad ﷺ",
+    "tapToCount": "Tap to count",
+    "resetCounter": "Reset Counter",
+    "salawatTarget": "Target: {count}",
+    "@salawatTarget": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "sunnahGhusl": "Friday Bathing (Ghusl)",
+    "sunnahGhuslDesc": "Purify oneself before Friday prayer",
+    "sunnahSiwak": "Siwak & Fragrance",
+    "sunnahSiwakDesc": "Use Siwak and wear pleasant perfume",
+    "sunnahCleanClothes": "Clean & Best Clothes",
+    "sunnahCleanClothesDesc": "Dress nicely for the day of Friday",
+    "sunnahEarlyMosque": "Going Early to Jumu'ah",
+    "sunnahEarlyMosqueDesc": "Earn great reward by arriving early",
+    "sunnahDuaHour": "Hour of Response (Dua)",
+    "sunnahDuaHourDesc": "Make abundant Dua, especially between Asr and Maghrib",
+    "fridayReminders": "Friday Reminders",
+    "fridayRemindersDesc": "Get weekly reminders for Surah Al-Kahf & Friday Sunnahs",
+    "fridayNotificationTitle": "Friday Sunnahs Reminder",
+    "fridayNotificationBody": "Don't forget to read Surah Al-Kahf & send Salawat today!"
 }

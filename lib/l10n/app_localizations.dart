@@ -1527,6 +1527,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{label} Copied!'**
   String copiedToast(String label);
+
+  /// No description provided for @fridaySunnahs.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday Sunnahs'**
+  String get fridaySunnahs;
+
+  /// No description provided for @fridaySunnahsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Blessed acts recommended on Friday'**
+  String get fridaySunnahsDesc;
+
+  /// No description provided for @readSurahKahf.
+  ///
+  /// In en, this message translates to:
+  /// **'Read Surah Al-Kahf'**
+  String get readSurahKahf;
+
+  /// No description provided for @readSurahKahfDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'A light between two Fridays'**
+  String get readSurahKahfDesc;
+
+  /// No description provided for @salawatCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'Salawat Counter'**
+  String get salawatCounter;
+
+  /// No description provided for @salawatCounterDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Send blessings upon Prophet Muhammad ﷺ'**
+  String get salawatCounterDesc;
+
+  /// No description provided for @tapToCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to count'**
+  String get tapToCount;
+
+  /// No description provided for @resetCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Counter'**
+  String get resetCounter;
+
+  /// No description provided for @salawatTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Target: {count}'**
+  String salawatTarget(int count);
+
+  /// No description provided for @sunnahGhusl.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday Bathing (Ghusl)'**
+  String get sunnahGhusl;
+
+  /// No description provided for @sunnahGhuslDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Purify oneself before Friday prayer'**
+  String get sunnahGhuslDesc;
+
+  /// No description provided for @sunnahSiwak.
+  ///
+  /// In en, this message translates to:
+  /// **'Siwak & Fragrance'**
+  String get sunnahSiwak;
+
+  /// No description provided for @sunnahSiwakDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Siwak and wear pleasant perfume'**
+  String get sunnahSiwakDesc;
+
+  /// No description provided for @sunnahCleanClothes.
+  ///
+  /// In en, this message translates to:
+  /// **'Clean & Best Clothes'**
+  String get sunnahCleanClothes;
+
+  /// No description provided for @sunnahCleanClothesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Dress nicely for the day of Friday'**
+  String get sunnahCleanClothesDesc;
+
+  /// No description provided for @sunnahEarlyMosque.
+  ///
+  /// In en, this message translates to:
+  /// **'Going Early to Jumu\'ah'**
+  String get sunnahEarlyMosque;
+
+  /// No description provided for @sunnahEarlyMosqueDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn great reward by arriving early'**
+  String get sunnahEarlyMosqueDesc;
+
+  /// No description provided for @sunnahDuaHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Hour of Response (Dua)'**
+  String get sunnahDuaHour;
+
+  /// No description provided for @sunnahDuaHourDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Make abundant Dua, especially between Asr and Maghrib'**
+  String get sunnahDuaHourDesc;
+
+  /// No description provided for @fridayReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday Reminders'**
+  String get fridayReminders;
+
+  /// No description provided for @fridayRemindersDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get weekly reminders for Surah Al-Kahf & Friday Sunnahs'**
+  String get fridayRemindersDesc;
+
+  /// No description provided for @fridayNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday Sunnahs Reminder'**
+  String get fridayNotificationTitle;
+
+  /// No description provided for @fridayNotificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t forget to read Surah Al-Kahf & send Salawat today!'**
+  String get fridayNotificationBody;
 }
 
 class _AppLocalizationsDelegate

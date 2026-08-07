@@ -1173,40 +1173,67 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     final options = [
       DropdownMenuItem<String>(
         value: '',
-        child: Text(
-          context.translate.noAdhanSound,
-          style: context.theme.textTheme.bodyLarge?.copyWith(
-            color: DesignSystem.onSurface,
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        child: Row(
+          children: [
+            Icon(Icons.volume_off_outlined, color: DesignSystem.onSurface.withValues(alpha: 0.5), size: 18),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                context.translate.noAdhanSound,
+                style: context.theme.textTheme.bodyLarge?.copyWith(
+                  color: DesignSystem.onSurface.withValues(alpha: 0.7),
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
         ),
       ),
       if (isAndroid)
         ..._androidAdhanOptions.map((o) => DropdownMenuItem<String>(
               value: o['rawName'] ?? '',
-              child: Text(
-                o['label'] ?? '',
-                style: context.theme.textTheme.bodyLarge?.copyWith(
-                  color: DesignSystem.onSurface,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              child: Row(
+                children: [
+                  const Icon(Icons.music_note_outlined, color: DesignSystem.primary, size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      o['label'] ?? '',
+                      style: context.theme.textTheme.bodyLarge?.copyWith(
+                        color: DesignSystem.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
             )),
       if (!isAndroid)
         ...AdhanAssets.options.map((o) => DropdownMenuItem<String>(
               value: o['path']!,
-              child: Text(
-                o['label']!,
-                style: context.theme.textTheme.bodyLarge?.copyWith(
-                  color: DesignSystem.onSurface,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              child: Row(
+                children: [
+                  const Icon(Icons.music_note_outlined, color: DesignSystem.primary, size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      o['label']!,
+                      style: context.theme.textTheme.bodyLarge?.copyWith(
+                        color: DesignSystem.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
             )),
     ];
+
     final currentValue = isAndroid
         ? (_adhanRawName.isEmpty ||
                 !_androidAdhanOptions.any((o) => o['rawName'] == _adhanRawName)
@@ -1218,80 +1245,168 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
             : _adhanAsset);
     final hasSelection =
         isAndroid ? _adhanRawName.isNotEmpty : _adhanAsset.isNotEmpty;
-    return Row(
-      children: [
-        Icon(Icons.volume_up_outlined, color: DesignSystem.primary, size: 22),
-        const SizedBox(width: DesignSystem.space12),
-        Expanded(
-          child: DropdownButtonFormField<String>(
-            initialValue: currentValue,
-            decoration: InputDecoration(
-              isDense: true,
-              filled: true,
-              fillColor: DesignSystem.surface,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(DesignSystem.radiusPill),
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 10,
-              ),
-            ),
-            isExpanded: true,
-            items: options,
-            selectedItemBuilder: (context) => [
-              Text(
-                context.translate.noAdhanSound,
-                style: context.theme.textTheme.bodyLarge?.copyWith(
-                  color: DesignSystem.onSurface,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              if (isAndroid)
-                ..._androidAdhanOptions.map((o) => Text(
-                      o['label'] ?? '',
-                      style: context.theme.textTheme.bodyLarge?.copyWith(
-                        color: DesignSystem.onSurface,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    )),
-              if (!isAndroid)
-                ...AdhanAssets.options.map((o) => Text(
-                      o['label']!,
-                      style: context.theme.textTheme.bodyLarge?.copyWith(
-                        color: DesignSystem.onSurface,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    )),
-            ],
-            onChanged: (v) => _onAdhanChanged(v),
+
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: DesignSystem.surface,
+        borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
+        border: Border.all(
+          color: DesignSystem.primary.withValues(alpha: 0.15),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
-        ),
-        const SizedBox(width: 8),
-        IconButton(
-          icon: const Icon(Icons.play_circle_outline),
-          onPressed: !hasSelection
-              ? null
-              : () async {
-                  final soundPath = isAndroid
-                      ? 'assets/audio/$_adhanRawName.mp3'
-                      : _adhanAsset;
-                  AdhanAudioService.play(soundPath,
-                      durationMs: PrayerPrefs.adhanDurationMs);
-                },
-          tooltip: context.translate.playAdhan,
-        ),
-        IconButton(
-          icon: const Icon(Icons.stop_circle_outlined),
-          onPressed: () async {
-            AdhanAudioService.stop();
-          },
-          tooltip: context.translate.stopAdhan,
-        ),
-      ],
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: DesignSystem.primary.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.volume_up_rounded,
+                  color: DesignSystem.primary,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'دەنگی بانگدان',
+                  style: context.theme.textTheme.titleMedium?.copyWith(
+                    color: DesignSystem.onSurface,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: DropdownButtonFormField<String>(
+                  initialValue: currentValue,
+                  dropdownColor: DesignSystem.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  icon: const Icon(Icons.keyboard_arrow_down_rounded, color: DesignSystem.primary),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    filled: true,
+                    fillColor: DesignSystem.background,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: BorderSide(
+                        color: DesignSystem.primary.withValues(alpha: 0.2),
+                        width: 1,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: const BorderSide(
+                        color: DesignSystem.primary,
+                        width: 1.5,
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                  ),
+                  isExpanded: true,
+                  items: options,
+                  selectedItemBuilder: (context) => [
+                    Text(
+                      context.translate.noAdhanSound,
+                      style: context.theme.textTheme.bodyLarge?.copyWith(
+                        color: DesignSystem.onSurface.withValues(alpha: 0.7),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if (isAndroid)
+                      ..._androidAdhanOptions.map((o) => Text(
+                            o['label'] ?? '',
+                            style: context.theme.textTheme.bodyLarge?.copyWith(
+                              color: DesignSystem.onSurface,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                    if (!isAndroid)
+                      ...AdhanAssets.options.map((o) => Text(
+                            o['label']!,
+                            style: context.theme.textTheme.bodyLarge?.copyWith(
+                              color: DesignSystem.onSurface,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                  ],
+                  onChanged: (v) => _onAdhanChanged(v),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Material(
+                color: hasSelection ? DesignSystem.primary : Colors.grey.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(14),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(14),
+                  onTap: !hasSelection
+                      ? null
+                      : () async {
+                          final soundPath = isAndroid
+                              ? 'assets/audio/$_adhanRawName.mp3'
+                              : _adhanAsset;
+                          AdhanAudioService.play(soundPath,
+                              durationMs: PrayerPrefs.adhanDurationMs);
+                        },
+                  child: const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Icon(
+                      Icons.play_arrow_rounded,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 6),
+              Material(
+                color: Colors.red.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(14),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(14),
+                  onTap: () async {
+                    AdhanAudioService.stop();
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Icon(
+                      Icons.stop_rounded,
+                      color: Colors.redAccent,
+                      size: 22,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

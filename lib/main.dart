@@ -14,6 +14,8 @@ import 'package:the_open_quran/providers/favorites_provider.dart';
 import 'package:the_open_quran/providers/quran_provider.dart';
 import 'package:the_open_quran/providers/search_provider.dart';
 import 'package:the_open_quran/screens/splash_screen.dart';
+import 'package:the_open_quran/services/friday_notification_service.dart';
+import 'package:the_open_quran/services/friday_sunnah_service.dart';
 import 'package:the_open_quran/services/prayer_notification_service.dart';
 import 'package:the_open_quran/themes/theme.dart';
 
@@ -44,6 +46,7 @@ Future<void> main() async {
     };
     print('flutter: [STARTUP] 1. GetStorage.init');
     await GetStorage.init('FabrikodQuran');
+    await FridaySunnahService.init();
     // Run app immediately so launcher doesn't hang; do notification setup in background
     print('flutter: [STARTUP] 2. runApp');
     runApp(const MyApp());
@@ -53,9 +56,10 @@ Future<void> main() async {
         await PrayerNotificationService.init();
         await PrayerNotificationService.ensurePermissions();
         await PrayerNotificationService.rescheduleFromStoredPrefs();
+        await FridayNotificationService.scheduleFridayNotifications();
       } catch (e, st) {
         _writeErrorLog('PrayerNotificationService: $e', st.toString());
-        print('flutter: [STARTUP] Prayer notifications init failed: $e');
+        print('flutter: [STARTUP] Notification init failed: $e');
       }
     });
   }, (Object error, StackTrace stack) {

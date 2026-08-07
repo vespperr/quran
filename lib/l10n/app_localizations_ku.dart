@@ -765,4 +765,81 @@ class AppLocalizationsKu extends AppLocalizations {
   String copiedToast(String label) {
     return '$label کۆپی کرا!';
   }
+
+  @override
+  String get fridaySunnahs => 'سوننەتەکانی ڕۆژی هەینی';
+
+  @override
+  String get fridaySunnahsDesc =>
+      'سوننەت و کارە چاکە ڕاسپێردراوەکانی ڕۆژی هەینی';
+
+  @override
+  String get readSurahKahf => 'خوێندنەوەی سورەتی الكهف';
+
+  @override
+  String get readSurahKahfDesc => 'نوورێک لە نێوان دوو هەینیدا';
+
+  @override
+  String get salawatCounter => 'ژمێرەری سڵاوات';
+
+  @override
+  String get salawatCounterDesc => 'ناردنی سڵاوات و سەلام لەسەر پێغەمبەر ﷺ';
+
+  @override
+  String get tapToCount => 'دابگرە بۆ زیادکردن';
+
+  @override
+  String get resetCounter => 'ڕێکخستنەوەی ژمێرەر';
+
+  @override
+  String salawatTarget(int count) {
+    return 'ئامانج: $count';
+  }
+
+  @override
+  String get sunnahGhusl => 'خۆشۆردنی ڕۆژی هەینی (غسل)';
+
+  @override
+  String get sunnahGhuslDesc => 'خۆشۆردن و پاککردنەوە پێش ڕۆشتن بۆ نوێژی هەینی';
+
+  @override
+  String get sunnahSiwak => 'بەکارهێنانی سیواک و بۆن';
+
+  @override
+  String get sunnahSiwakDesc => 'بەکارهێنانی سیواک و لەخودانی بۆنی خۆش';
+
+  @override
+  String get sunnahCleanClothes => 'پۆشینی پۆشاکی پاک و جوان';
+
+  @override
+  String get sunnahCleanClothesDesc =>
+      'پۆشینی باشترین و پاکترین پۆشاک بۆ ڕۆژی هەینی';
+
+  @override
+  String get sunnahEarlyMosque => 'زوو ڕۆشتن بۆ نوێژی هەینی';
+
+  @override
+  String get sunnahEarlyMosqueDesc =>
+      'بەدەستهێنانی پاداشتی گەورە بە زوو ڕۆشتن بۆ مزگەوت';
+
+  @override
+  String get sunnahDuaHour => 'ساتی وەڵامدانەوەی دوعا';
+
+  @override
+  String get sunnahDuaHourDesc =>
+      'زۆر دوعاکردن بەتایبەت لە نێوان نوێژی عەسر و ئێوارە';
+
+  @override
+  String get fridayReminders => 'بیرخەرەوەکانی ڕۆژی هەینی';
+
+  @override
+  String get fridayRemindersDesc =>
+      'پێگەیشتنی بیرخەرەوەی هەفتانە بۆ سورەتی الكهف و سوننەتەکان';
+
+  @override
+  String get fridayNotificationTitle => 'بیرخەرەوەی سوننەتەکانی ڕۆژی هەینی';
+
+  @override
+  String get fridayNotificationBody =>
+      'لەبیرت نەچێت ئیمڕۆ سورەتی الكهف بخوێنیتەوە و سڵاوات بنێریت!';
 }

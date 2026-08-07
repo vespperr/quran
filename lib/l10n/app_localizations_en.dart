@@ -773,4 +773,78 @@ class AppLocalizationsEn extends AppLocalizations {
   String copiedToast(String label) {
     return '$label Copied!';
   }
+
+  @override
+  String get fridaySunnahs => 'Friday Sunnahs';
+
+  @override
+  String get fridaySunnahsDesc => 'Blessed acts recommended on Friday';
+
+  @override
+  String get readSurahKahf => 'Read Surah Al-Kahf';
+
+  @override
+  String get readSurahKahfDesc => 'A light between two Fridays';
+
+  @override
+  String get salawatCounter => 'Salawat Counter';
+
+  @override
+  String get salawatCounterDesc => 'Send blessings upon Prophet Muhammad ﷺ';
+
+  @override
+  String get tapToCount => 'Tap to count';
+
+  @override
+  String get resetCounter => 'Reset Counter';
+
+  @override
+  String salawatTarget(int count) {
+    return 'Target: $count';
+  }
+
+  @override
+  String get sunnahGhusl => 'Friday Bathing (Ghusl)';
+
+  @override
+  String get sunnahGhuslDesc => 'Purify oneself before Friday prayer';
+
+  @override
+  String get sunnahSiwak => 'Siwak & Fragrance';
+
+  @override
+  String get sunnahSiwakDesc => 'Use Siwak and wear pleasant perfume';
+
+  @override
+  String get sunnahCleanClothes => 'Clean & Best Clothes';
+
+  @override
+  String get sunnahCleanClothesDesc => 'Dress nicely for the day of Friday';
+
+  @override
+  String get sunnahEarlyMosque => 'Going Early to Jumu\'ah';
+
+  @override
+  String get sunnahEarlyMosqueDesc => 'Earn great reward by arriving early';
+
+  @override
+  String get sunnahDuaHour => 'Hour of Response (Dua)';
+
+  @override
+  String get sunnahDuaHourDesc =>
+      'Make abundant Dua, especially between Asr and Maghrib';
+
+  @override
+  String get fridayReminders => 'Friday Reminders';
+
+  @override
+  String get fridayRemindersDesc =>
+      'Get weekly reminders for Surah Al-Kahf & Friday Sunnahs';
+
+  @override
+  String get fridayNotificationTitle => 'Friday Sunnahs Reminder';
+
+  @override
+  String get fridayNotificationBody =>
+      'Don\'t forget to read Surah Al-Kahf & send Salawat today!';
 }
