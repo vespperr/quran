@@ -10,19 +10,18 @@ workflows:
     scripts:
       - name: Set up Flutter dependencies
         script: |
-          flutter packages pub get
-      - name: Build iOS IPA
+          flutter pub get
+      - name: Build iOS App & Extension
         script: |
           flutter build ios --release --no-codesign
-          
-          # Create IPA package
+      - name: Package IPA
+        script: |
           cd build/ios/iphoneos
           mkdir -p Payload
           cp -R Runner.app Payload/
-          zip -r TheOpenQuran.ipa Payload
-          
-          # Copy to root artifacts folder
+          zip -qr TheOpenQuran.ipa Payload
           mkdir -p $CM_BUILD_DIR/build/ios/ipa
           cp TheOpenQuran.ipa $CM_BUILD_DIR/build/ios/ipa/
     artifacts:
       - build/ios/ipa/*.ipa
+      - build/ios/iphoneos/*.app
