@@ -78,6 +78,7 @@ struct PrayerEntry: TimelineEntry {
     let nextPrayerName: String
     let nextPrayerTime: String
     let timeUntil: String
+    let lastUpdatedStr: String
 }
 
 struct PrayerWidgetProvider: TimelineProvider {
@@ -94,7 +95,8 @@ struct PrayerWidgetProvider: TimelineProvider {
             ],
             nextPrayerName: "Dhuhr",
             nextPrayerTime: "12:15",
-            timeUntil: "01:25"
+            timeUntil: "01:25",
+            lastUpdatedStr: "12:00"
         )
     }
 
@@ -142,9 +144,19 @@ struct PrayerWidgetProvider: TimelineProvider {
 
     private func fetchEntry(for date: Date) -> PrayerEntry {
         let data = SharedPrayerStore.loadData()
-        let rawCity = data?.city ?? "Slemani"
-        let city = rawCity.isEmpty ? "Slemani" : rawCity
+        let rawCity = data?.city ?? ""
+        let city = rawCity.isEmpty ? "Azad Al-Kurdi" : rawCity
         let displayTimes = data?.displayTimes ?? ""
+        let lastUpdated = data?.lastUpdated ?? 0
+
+        let lastUpdatedStr: String
+        if lastUpdated > 0 {
+            let df = DateFormatter()
+            df.dateFormat = "HH:mm"
+            lastUpdatedStr = df.string(from: Date(timeIntervalSince1970: lastUpdated))
+        } else {
+            lastUpdatedStr = "Open App"
+        }
 
         var parsedTimes: [(name: String, timeStr: String)] = []
         if !displayTimes.isEmpty {
@@ -175,11 +187,11 @@ struct PrayerWidgetProvider: TimelineProvider {
                 ]
             } else {
                 parsedTimes = [
-                    ("Fajr", "04:12"),
-                    ("Dhuhr", "12:15"),
-                    ("Asr", "15:45"),
-                    ("Maghrib", "18:30"),
-                    ("Isha", "19:50")
+                    ("Fajr", "--:--"),
+                    ("Dhuhr", "--:--"),
+                    ("Asr", "--:--"),
+                    ("Maghrib", "--:--"),
+                    ("Isha", "--:--")
                 ]
             }
         }
@@ -219,7 +231,8 @@ struct PrayerWidgetProvider: TimelineProvider {
             times: parsedTimes,
             nextPrayerName: nextName,
             nextPrayerTime: nextTimeStr,
-            timeUntil: untilStr
+            timeUntil: untilStr,
+            lastUpdatedStr: lastUpdatedStr
         )
     }
 }
@@ -239,6 +252,9 @@ struct SmallPrayerWidgetView: View {
                     .font(.system(size: 11, weight: .bold))
                     .foregroundColor(.white)
                 Spacer()
+                Text(entry.lastUpdatedStr)
+                    .font(.system(size: 8, weight: .regular))
+                    .foregroundColor(.white.opacity(0.5))
             }
 
             Spacer()
@@ -288,6 +304,10 @@ struct MediumPrayerWidgetView: View {
                     Text(entry.city)
                         .font(.system(size: 11, weight: .bold))
                         .foregroundColor(.white)
+                    Spacer()
+                    Text(entry.lastUpdatedStr)
+                        .font(.system(size: 8, weight: .regular))
+                        .foregroundColor(.white.opacity(0.5))
                 }
 
                 Spacer()
@@ -363,7 +383,7 @@ struct LargePrayerWidgetView: View {
                     Image(systemName: "location.fill")
                         .font(.system(size: 10))
                         .foregroundColor(Color(red: 212/255, green: 175/255, blue: 55/255))
-                    Text(entry.city)
+                    Text("\(entry.city) (\(entry.lastUpdatedStr))")
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundColor(.white)
                 }
