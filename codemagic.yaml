@@ -14,8 +14,14 @@ workflows:
       - name: Build iOS App & Extension
         script: |
           flutter build ios --release --no-codesign
-      - name: Package IPA
+      - name: Package IPA for TrollStore
         script: |
+          # Embed App Group entitlements into Mach-O binaries for TrollStore
+          if [ -d "build/ios/iphoneos/Runner.app/PlugIns/PrayerWidgetExtension.appex" ]; then
+            codesign --force --deep --sign - --entitlements ios/PrayerWidgetExtension/PrayerWidgetExtension.entitlements build/ios/iphoneos/Runner.app/PlugIns/PrayerWidgetExtension.appex
+          fi
+          codesign --force --deep --sign - --entitlements ios/Runner/Runner.entitlements build/ios/iphoneos/Runner.app
+
           cd build/ios/iphoneos
           mkdir -p Payload
           cp -R Runner.app Payload/
