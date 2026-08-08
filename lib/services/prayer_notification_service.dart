@@ -240,13 +240,6 @@ class PrayerNotificationService {
   /// Call once at app start so reminders are scheduled even if user never opens Prayer tab.
   static Future<void> rescheduleFromStoredPrefs() async {
     if (!_initialized) await init();
-    final granted = await ensurePermissions();
-    if (!granted) {
-      if (kDebugMode) {
-        print('[PrayerNotificationService] rescheduleFromStoredPrefs: notification permission not granted, skipping schedule');
-      }
-      return;
-    }
     final city = GetStorage(PrayerTimesStorage.boxName).read(PrayerTimesStorage.keyCity) as String? ??
         PrayerTimesSourceRegistry.instance.defaultCity;
     final includeIraq = PrayerTimesStorage.readIncludeIraq();
@@ -257,6 +250,17 @@ class PrayerNotificationService {
         includeIraq: includeIraq,
         countryIso: countryIso,
       );
+      // Always sync widget data on startup
+      await updateWidgetData(city: city, times: times);
+
+      final granted = await ensurePermissions();
+      if (!granted) {
+        if (kDebugMode) {
+          print('[PrayerNotificationService] rescheduleFromStoredPrefs: notification permission not granted, skipping alarm schedule');
+        }
+        return;
+      }
+
       final notifyEnabled = PrayerPrefs.getAllNotificationPrefs();
       final count = await schedule(
         city: city,
@@ -401,14 +405,24 @@ class PrayerNotificationService {
       } catch (_) {}
     } else if (Platform.isIOS) {
       try {
-        const MethodChannel('com.dya.azadalkrd/prayer_widget').invokeMethod<void>(
+        await const MethodChannel('com.dya.azadalkrd/prayer_widget').invokeMethod<void>(
           'updateWidgetData',
           {
             'widgetCity': city,
             'displayTimes': displayTimes,
+            'fajr': pMap['fajr'] ?? '',
+            'dhuhr': pMap['dhuhr'] ?? '',
+            'asr': pMap['asr'] ?? '',
+            'maghrib': pMap['maghrib'] ?? '',
+            'isha': pMap['isha'] ?? '',
+            'nextPrayer': nextPrayerStr,
           },
         );
-      } catch (_) {}
+      } catch (e) {
+        if (kDebugMode) {
+          print('[PrayerNotificationService] updateWidgetData iOS channel error: $e');
+        }
+      }
     }
   }
 

@@ -175,7 +175,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
             _times = times;
             _loading = false;
           });
-          PrayerNotificationService.updateWidgetData(
+          await PrayerNotificationService.updateWidgetData(
             city: _selectedCityDisplay,
             times: times,
           );
@@ -225,7 +225,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
             _times = times;
             _loading = false;
           });
-          PrayerNotificationService.updateWidgetData(
+          await PrayerNotificationService.updateWidgetData(
             city: _selectedCityDisplay,
             times: times,
           );

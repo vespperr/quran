@@ -12,6 +12,7 @@ import '../constants/prayer_times_storage.dart';
 import '../database/local_db.dart';
 import '../database/prayer_times_db.dart';
 import '../models/prayer_time_model.dart';
+import '../services/prayer_notification_service.dart';
 import '../services/prayer_times_source.dart';
 import '../providers/favorites_provider.dart';
 import '../providers/home_provider.dart';
@@ -456,8 +457,10 @@ class _HomePrayerTimesCardState extends State<_HomePrayerTimesCard> {
           return const SizedBox.shrink();
         }
         final times = snapshot.data!;
-        _times ??= times;
-        if (_times != times) _times = times;
+        if (_times != times) {
+          _times = times;
+          PrayerNotificationService.updateWidgetData(city: city, times: times);
+        }
         final info = PrayerTimesDb.getNextPrayerWithDuration(times, _now);
         if (info.next.name.isEmpty) return const SizedBox.shrink();
         final countdownText = info.isTomorrow
