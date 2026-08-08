@@ -1371,8 +1371,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                           final soundPath = isAndroid
                               ? 'assets/audio/$_adhanRawName.mp3'
                               : _adhanAsset;
-                          AdhanAudioService.play(soundPath,
-                              durationMs: PrayerPrefs.adhanDurationMs);
+                          AdhanAudioService.play(soundPath);
                         },
                   child: const Padding(
                     padding: EdgeInsets.all(10),

@@ -1,10 +1,66 @@
 import WidgetKit
 import SwiftUI
 
-@main
-struct PrayerWidgetBundle: WidgetBundle {
-    var body: some Widget {
-        PrayerWidget()
+// MARK: - App Group Store & Data Contract
+
+struct SharedPrayerItem: Codable {
+    let name: String
+    let timeStr: String
+}
+
+struct SharedPrayerStoreData: Codable {
+    let city: String
+    let displayTimes: String
+    let fajr: String
+    let dhuhr: String
+    let asr: String
+    let maghrib: String
+    let isha: String
+    let nextPrayer: String
+    let lastUpdated: Double
+}
+
+struct SharedPrayerStore {
+    static let appGroupId = "group.com.dya.azadalkrd"
+    static let jsonKey = "widget_prayer_data_v1"
+    
+    static var defaults: UserDefaults {
+        UserDefaults(suiteName: appGroupId) ?? UserDefaults.standard
+    }
+    
+    static func loadData() -> SharedPrayerStoreData? {
+        let defs = defaults
+        if let jsonString = defs.string(forKey: jsonKey),
+           let jsonData = jsonString.data(using: .utf8),
+           let decoded = try? JSONDecoder().decode(SharedPrayerStoreData.self, from: jsonData) {
+            return decoded
+        }
+        
+        let city = defs.string(forKey: "widget_city") ?? ""
+        let displayTimes = defs.string(forKey: "display_times") ?? ""
+        let fajr = defs.string(forKey: "fajr") ?? ""
+        let dhuhr = defs.string(forKey: "dhuhr") ?? ""
+        let asr = defs.string(forKey: "asr") ?? ""
+        let maghrib = defs.string(forKey: "maghrib") ?? ""
+        let isha = defs.string(forKey: "isha") ?? ""
+        let nextPrayer = defs.string(forKey: "next_prayer") ?? ""
+        let lastUpdated = defs.double(forKey: "last_updated")
+        
+        if city.isEmpty && displayTimes.isEmpty && fajr.isEmpty {
+            return nil
+        }
+        
+        return SharedPrayerStoreData(
+            city: city,
+            displayTimes: displayTimes,
+            fajr: fajr,
+            dhuhr: dhuhr,
+            asr: asr,
+            maghrib: maghrib,
+            isha: isha,
+            nextPrayer: nextPrayer,
+            lastUpdated: lastUpdated
+        )
     }
 }
 
@@ -78,10 +134,10 @@ struct PrayerWidgetProvider: TimelineProvider {
     }
 
     private func fetchEntry(for date: Date) -> PrayerEntry {
-        let defaults = UserDefaults(suiteName: "group.com.dya.azadalkrd") ?? UserDefaults.standard
-        let rawCity = defaults.string(forKey: "widget_city") ?? "Slemani"
+        let data = SharedPrayerStore.loadData()
+        let rawCity = data?.city ?? "Slemani"
         let city = rawCity.isEmpty ? "Slemani" : rawCity
-        let displayTimes = defaults.string(forKey: "display_times") ?? ""
+        let displayTimes = data?.displayTimes ?? ""
 
         var parsedTimes: [(name: String, timeStr: String)] = []
         if !displayTimes.isEmpty {
@@ -96,11 +152,11 @@ struct PrayerWidgetProvider: TimelineProvider {
         }
         
         if parsedTimes.isEmpty {
-            let fajr = defaults.string(forKey: "fajr") ?? ""
-            let dhuhr = defaults.string(forKey: "dhuhr") ?? ""
-            let asr = defaults.string(forKey: "asr") ?? ""
-            let maghrib = defaults.string(forKey: "maghrib") ?? ""
-            let isha = defaults.string(forKey: "isha") ?? ""
+            let fajr = data?.fajr ?? ""
+            let dhuhr = data?.dhuhr ?? ""
+            let asr = data?.asr ?? ""
+            let maghrib = data?.maghrib ?? ""
+            let isha = data?.isha ?? ""
             
             if !fajr.isEmpty && fajr != "--:--" {
                 parsedTimes = [

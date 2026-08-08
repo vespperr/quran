@@ -1,18 +1,17 @@
+import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 /// Plays adhan (prayer call) from app assets.
-/// Uses rootBundle because our assets are under lib/assets/bang/ and
-/// audioplayers' AssetSource expects paths under assets/.
 class AdhanAudioService {
   AdhanAudioService._();
 
   static final AudioPlayer _player = AudioPlayer();
-
+  static Timer? _stopTimer;
   static bool _disposed = false;
 
-  /// [assetPath] = full asset path as in pubspec (e.g. lib/assets/bang/bang_1.mp3).
+  /// [assetPath] = full asset path as in pubspec (e.g. assets/audio/bang_bilali_habashi_fajr.mp3).
   /// [durationMs] = playback duration in milliseconds. -1 means full duration.
   static Future<void> play(String assetPath, {int durationMs = -1}) async {
     if (assetPath.isEmpty) return;
@@ -23,7 +22,7 @@ class AdhanAudioService {
       final bytes = data.buffer.asUint8List();
       await _player.play(BytesSource(bytes, mimeType: 'audio/mpeg'));
       if (durationMs > 0) {
-        Future.delayed(Duration(milliseconds: durationMs), () {
+        _stopTimer = Timer(Duration(milliseconds: durationMs), () {
           stop();
         });
       }
@@ -36,12 +35,16 @@ class AdhanAudioService {
   }
 
   static Future<void> stop() async {
+    _stopTimer?.cancel();
+    _stopTimer = null;
     try {
       await _player.stop();
     } catch (_) {}
   }
 
   static void dispose() {
+    _stopTimer?.cancel();
+    _stopTimer = null;
     if (!_disposed) {
       _disposed = true;
       _player.dispose();

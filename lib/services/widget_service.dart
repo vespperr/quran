@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:home_widget/home_widget.dart';
 
 class WidgetService {
@@ -67,9 +68,23 @@ class WidgetService {
     if (prayerTimes['asr'] != null) displayList.add('Asr|${prayerTimes['asr']}');
     if (prayerTimes['maghrib'] != null) displayList.add('Maghrib|${prayerTimes['maghrib']}');
     if (prayerTimes['isha'] != null) displayList.add('Isha|${prayerTimes['isha']}');
+    final displayTimesStr = displayList.join(';');
     if (displayList.isNotEmpty) {
-      await HomeWidget.saveWidgetData<String>('display_times', displayList.join(';'));
+      await HomeWidget.saveWidgetData<String>('display_times', displayTimesStr);
     }
+
+    final jsonMap = {
+      'city': city ?? '',
+      'displayTimes': displayTimesStr,
+      'fajr': prayerTimes['fajr'] ?? '',
+      'dhuhr': prayerTimes['dhuhr'] ?? '',
+      'asr': prayerTimes['asr'] ?? '',
+      'maghrib': prayerTimes['maghrib'] ?? '',
+      'isha': prayerTimes['isha'] ?? '',
+      'nextPrayer': nextPrayer ?? '',
+      'lastUpdated': DateTime.now().millisecondsSinceEpoch / 1000.0,
+    };
+    await HomeWidget.saveWidgetData<String>('widget_prayer_data_v1', jsonEncode(jsonMap));
 
     for (final provider in _androidWidgetProviders) {
       await HomeWidget.updateWidget(name: provider);
