@@ -1,6 +1,13 @@
 import WidgetKit
 import SwiftUI
 
+@main
+struct PrayerWidgetBundle: WidgetBundle {
+    var body: some Widget {
+        PrayerWidget()
+    }
+}
+
 // MARK: - App Group Store & Data Contract
 
 struct SharedPrayerItem: Codable {
