@@ -83,21 +83,7 @@ struct PrayerEntry: TimelineEntry {
 
 struct PrayerWidgetProvider: TimelineProvider {
     func placeholder(in context: Context) -> PrayerEntry {
-        PrayerEntry(
-            date: Date(),
-            city: "Slemani",
-            times: [
-                ("Fajr", "04:12"),
-                ("Dhuhr", "12:15"),
-                ("Asr", "15:45"),
-                ("Maghrib", "18:30"),
-                ("Isha", "19:50")
-            ],
-            nextPrayerName: "Dhuhr",
-            nextPrayerTime: "12:15",
-            timeUntil: "01:25",
-            lastUpdatedStr: "12:00"
-        )
+        fetchEntry(for: Date())
     }
 
     func getSnapshot(in context: Context, completion: @escaping (PrayerEntry) -> Void) {
