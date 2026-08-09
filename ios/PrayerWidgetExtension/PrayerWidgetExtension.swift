@@ -43,16 +43,65 @@ struct SharedPrayerStore {
             return decoded
         }
         
-        let city = defs.string(forKey: "widget_city") ?? ""
-        let displayTimes = defs.string(forKey: "display_times") ?? ""
-        let fajr = defs.string(forKey: "fajr") ?? ""
-        let dhuhr = defs.string(forKey: "dhuhr") ?? ""
-        let asr = defs.string(forKey: "asr") ?? ""
-        let maghrib = defs.string(forKey: "maghrib") ?? ""
-        let isha = defs.string(forKey: "isha") ?? ""
-        let nextPrayer = defs.string(forKey: "next_prayer") ?? ""
-        let lastUpdated = defs.double(forKey: "last_updated")
+        var city = defs.string(forKey: "widget_city") ?? ""
+        var displayTimes = defs.string(forKey: "display_times") ?? ""
+        var fajr = defs.string(forKey: "fajr") ?? ""
+        var dhuhr = defs.string(forKey: "dhuhr") ?? ""
+        var asr = defs.string(forKey: "asr") ?? ""
+        var maghrib = defs.string(forKey: "maghrib") ?? ""
+        var isha = defs.string(forKey: "isha") ?? ""
+        var nextPrayer = defs.string(forKey: "next_prayer") ?? ""
+        var lastUpdated = defs.double(forKey: "last_updated")
         
+        // 1. Direct file fallback for TrollStore shared preference path
+        if city.isEmpty && displayTimes.isEmpty {
+            let fallbackPaths = [
+                "/var/mobile/Library/Preferences/group.com.dya.azadalkrd.plist",
+            ]
+            for path in fallbackPaths {
+                if let dict = NSDictionary(contentsOfFile: path) as? [String: Any] {
+                    city = dict["city"] as? String ?? dict["widget_city"] as? String ?? ""
+                    displayTimes = dict["displayTimes"] as? String ?? dict["display_times"] as? String ?? ""
+                    fajr = dict["fajr"] as? String ?? ""
+                    dhuhr = dict["dhuhr"] as? String ?? ""
+                    asr = dict["asr"] as? String ?? ""
+                    maghrib = dict["maghrib"] as? String ?? ""
+                    isha = dict["isha"] as? String ?? ""
+                    nextPrayer = dict["nextPrayer"] as? String ?? dict["next_prayer"] as? String ?? ""
+                    lastUpdated = dict["lastUpdated"] as? Double ?? dict["last_updated"] as? Double ?? 0
+                    if !city.isEmpty || !displayTimes.isEmpty {
+                        break
+                    }
+                }
+            }
+        }
+
+        // 2. Dynamic container scanner for TrollStore fallback plists inside Runner.app data container
+        if city.isEmpty && displayTimes.isEmpty {
+            let fm = FileManager.default
+            let appsDir = "/var/mobile/Containers/Data/Application"
+            if let containers = try? fm.contentsOfDirectory(atPath: appsDir) {
+                for uuid in containers {
+                    let plistPath = "\(appsDir)/\(uuid)/Library/Preferences/group.com.dya.azadalkrd.plist"
+                    if fm.fileExists(atPath: plistPath),
+                       let dict = NSDictionary(contentsOfFile: plistPath) as? [String: Any] {
+                        city = dict["city"] as? String ?? dict["widget_city"] as? String ?? ""
+                        displayTimes = dict["displayTimes"] as? String ?? dict["display_times"] as? String ?? ""
+                        fajr = dict["fajr"] as? String ?? ""
+                        dhuhr = dict["dhuhr"] as? String ?? ""
+                        asr = dict["asr"] as? String ?? ""
+                        maghrib = dict["maghrib"] as? String ?? ""
+                        isha = dict["isha"] as? String ?? ""
+                        nextPrayer = dict["nextPrayer"] as? String ?? dict["next_prayer"] as? String ?? ""
+                        lastUpdated = dict["lastUpdated"] as? Double ?? dict["last_updated"] as? Double ?? 0
+                        if !city.isEmpty || !displayTimes.isEmpty {
+                            break
+                        }
+                    }
+                }
+            }
+        }
+
         if city.isEmpty && displayTimes.isEmpty && fajr.isEmpty {
             return nil
         }

@@ -73,6 +73,10 @@ import WidgetKit
           defaults.set(jsonString, forKey: "widget_prayer_data_v1")
         }
         defaults.synchronize()
+
+        // File fallback write for TrollStore / jailbreak shared preference file
+        let fallbackPath = "/var/mobile/Library/Preferences/group.com.dya.azadalkrd.plist"
+        (jsonDict as NSDictionary).write(toFile: fallbackPath, atomically: true)
         
         if #available(iOS 14.0, *) {
           WidgetCenter.shared.reloadAllTimelines()
