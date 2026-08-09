@@ -10,11 +10,15 @@ import WidgetKit
   ) -> Bool {
     let result = super.application(application, didFinishLaunchingWithOptions: launchOptions)
 
-    if let controller = window?.rootViewController as? FlutterViewController {
-      let widgetChannel = FlutterMethodChannel(
-        name: "com.dya.azadalkrd/prayer_widget",
-        binaryMessenger: controller.binaryMessenger
-      )
+    guard let controller = (window?.rootViewController as? FlutterViewController) ?? (UIApplication.shared.windows.first?.rootViewController as? FlutterViewController) else {
+      NSLog("=== APPDELEGATE ERROR: FlutterViewController not found ===")
+      return result
+    }
+
+    let widgetChannel = FlutterMethodChannel(
+      name: "com.dya.azadalkrd/prayer_widget",
+      binaryMessenger: controller.binaryMessenger
+    )
       widgetChannel.setMethodCallHandler({
         (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
         if call.method == "updateWidgetData" {
