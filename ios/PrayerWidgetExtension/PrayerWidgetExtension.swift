@@ -36,87 +36,91 @@ struct SharedPrayerStore {
     }
     
     static func loadData() -> SharedPrayerStoreData? {
+        var candidates: [SharedPrayerStoreData] = []
+        
         let defs = defaults
         if let jsonString = defs.string(forKey: jsonKey),
            let jsonData = jsonString.data(using: .utf8),
            let decoded = try? JSONDecoder().decode(SharedPrayerStoreData.self, from: jsonData) {
-            return decoded
+            candidates.append(decoded)
         }
         
-        var city = defs.string(forKey: "widget_city") ?? ""
-        var displayTimes = defs.string(forKey: "display_times") ?? ""
-        var fajr = defs.string(forKey: "fajr") ?? ""
-        var dhuhr = defs.string(forKey: "dhuhr") ?? ""
-        var asr = defs.string(forKey: "asr") ?? ""
-        var maghrib = defs.string(forKey: "maghrib") ?? ""
-        var isha = defs.string(forKey: "isha") ?? ""
-        var nextPrayer = defs.string(forKey: "next_prayer") ?? ""
-        var lastUpdated = defs.double(forKey: "last_updated")
+        let defCity = defs.string(forKey: "widget_city") ?? ""
+        let defDisplayTimes = defs.string(forKey: "display_times") ?? ""
+        let defFajr = defs.string(forKey: "fajr") ?? ""
+        let defDhuhr = defs.string(forKey: "dhuhr") ?? ""
+        let defAsr = defs.string(forKey: "asr") ?? ""
+        let defMaghrib = defs.string(forKey: "maghrib") ?? ""
+        let defIsha = defs.string(forKey: "isha") ?? ""
+        let defNextPrayer = defs.string(forKey: "next_prayer") ?? ""
+        let defLastUpdated = defs.double(forKey: "last_updated")
+        
+        if !defCity.isEmpty || !defDisplayTimes.isEmpty || !defFajr.isEmpty {
+            candidates.append(SharedPrayerStoreData(
+                city: defCity, displayTimes: defDisplayTimes, fajr: defFajr,
+                dhuhr: defDhuhr, asr: defAsr, maghrib: defMaghrib, isha: defIsha,
+                nextPrayer: defNextPrayer, lastUpdated: defLastUpdated
+            ))
+        }
         
         // 1. Direct file fallback for TrollStore shared preference path
-        if city.isEmpty && displayTimes.isEmpty {
-            let fallbackPaths = [
-                "/var/mobile/Library/Preferences/group.com.dya.azadalkrd.plist",
-            ]
-            for path in fallbackPaths {
-                if let dict = NSDictionary(contentsOfFile: path) as? [String: Any] {
-                    city = dict["city"] as? String ?? dict["widget_city"] as? String ?? ""
-                    displayTimes = dict["displayTimes"] as? String ?? dict["display_times"] as? String ?? ""
-                    fajr = dict["fajr"] as? String ?? ""
-                    dhuhr = dict["dhuhr"] as? String ?? ""
-                    asr = dict["asr"] as? String ?? ""
-                    maghrib = dict["maghrib"] as? String ?? ""
-                    isha = dict["isha"] as? String ?? ""
-                    nextPrayer = dict["nextPrayer"] as? String ?? dict["next_prayer"] as? String ?? ""
-                    lastUpdated = dict["lastUpdated"] as? Double ?? dict["last_updated"] as? Double ?? 0
-                    if !city.isEmpty || !displayTimes.isEmpty {
-                        break
-                    }
+        let fallbackPaths = [
+            "/var/mobile/Library/Preferences/group.com.dya.azadalkrd.plist",
+        ]
+        for path in fallbackPaths {
+            if let dict = NSDictionary(contentsOfFile: path) as? [String: Any] {
+                let city = dict["city"] as? String ?? dict["widget_city"] as? String ?? ""
+                let displayTimes = dict["displayTimes"] as? String ?? dict["display_times"] as? String ?? ""
+                let fajr = dict["fajr"] as? String ?? ""
+                let dhuhr = dict["dhuhr"] as? String ?? ""
+                let asr = dict["asr"] as? String ?? ""
+                let maghrib = dict["maghrib"] as? String ?? ""
+                let isha = dict["isha"] as? String ?? ""
+                let nextPrayer = dict["nextPrayer"] as? String ?? dict["next_prayer"] as? String ?? ""
+                let lastUpdated = dict["lastUpdated"] as? Double ?? dict["last_updated"] as? Double ?? 0
+                if !city.isEmpty || !displayTimes.isEmpty || !fajr.isEmpty {
+                    candidates.append(SharedPrayerStoreData(
+                        city: city, displayTimes: displayTimes, fajr: fajr,
+                        dhuhr: dhuhr, asr: asr, maghrib: maghrib, isha: isha,
+                        nextPrayer: nextPrayer, lastUpdated: lastUpdated
+                    ))
                 }
             }
         }
 
         // 2. Dynamic container scanner for TrollStore fallback plists inside Runner.app data container
-        if city.isEmpty && displayTimes.isEmpty {
-            let fm = FileManager.default
-            let appsDir = "/var/mobile/Containers/Data/Application"
-            if let containers = try? fm.contentsOfDirectory(atPath: appsDir) {
-                for uuid in containers {
-                    let plistPath = "\(appsDir)/\(uuid)/Library/Preferences/group.com.dya.azadalkrd.plist"
-                    if fm.fileExists(atPath: plistPath),
-                       let dict = NSDictionary(contentsOfFile: plistPath) as? [String: Any] {
-                        city = dict["city"] as? String ?? dict["widget_city"] as? String ?? ""
-                        displayTimes = dict["displayTimes"] as? String ?? dict["display_times"] as? String ?? ""
-                        fajr = dict["fajr"] as? String ?? ""
-                        dhuhr = dict["dhuhr"] as? String ?? ""
-                        asr = dict["asr"] as? String ?? ""
-                        maghrib = dict["maghrib"] as? String ?? ""
-                        isha = dict["isha"] as? String ?? ""
-                        nextPrayer = dict["nextPrayer"] as? String ?? dict["next_prayer"] as? String ?? ""
-                        lastUpdated = dict["lastUpdated"] as? Double ?? dict["last_updated"] as? Double ?? 0
-                        if !city.isEmpty || !displayTimes.isEmpty {
-                            break
-                        }
+        let fm = FileManager.default
+        let appsDir = "/var/mobile/Containers/Data/Application"
+        if let containers = try? fm.contentsOfDirectory(atPath: appsDir) {
+            for uuid in containers {
+                let plistPath = "\(appsDir)/\(uuid)/Library/Preferences/group.com.dya.azadalkrd.plist"
+                if fm.fileExists(atPath: plistPath),
+                   let dict = NSDictionary(contentsOfFile: plistPath) as? [String: Any] {
+                    let city = dict["city"] as? String ?? dict["widget_city"] as? String ?? ""
+                    let displayTimes = dict["displayTimes"] as? String ?? dict["display_times"] as? String ?? ""
+                    let fajr = dict["fajr"] as? String ?? ""
+                    let dhuhr = dict["dhuhr"] as? String ?? ""
+                    let asr = dict["asr"] as? String ?? ""
+                    let maghrib = dict["maghrib"] as? String ?? ""
+                    let isha = dict["isha"] as? String ?? ""
+                    let nextPrayer = dict["nextPrayer"] as? String ?? dict["next_prayer"] as? String ?? ""
+                    let lastUpdated = dict["lastUpdated"] as? Double ?? dict["last_updated"] as? Double ?? 0
+                    if !city.isEmpty || !displayTimes.isEmpty || !fajr.isEmpty {
+                        candidates.append(SharedPrayerStoreData(
+                            city: city, displayTimes: displayTimes, fajr: fajr,
+                            dhuhr: dhuhr, asr: asr, maghrib: maghrib, isha: isha,
+                            nextPrayer: nextPrayer, lastUpdated: lastUpdated
+                        ))
                     }
                 }
             }
         }
 
-        if city.isEmpty && displayTimes.isEmpty && fajr.isEmpty {
+        if candidates.isEmpty {
             return nil
         }
         
-        return SharedPrayerStoreData(
-            city: city,
-            displayTimes: displayTimes,
-            fajr: fajr,
-            dhuhr: dhuhr,
-            asr: asr,
-            maghrib: maghrib,
-            isha: isha,
-            nextPrayer: nextPrayer,
-            lastUpdated: lastUpdated
-        )
+        return candidates.max(by: { $0.lastUpdated < $1.lastUpdated })
     }
 }
 
