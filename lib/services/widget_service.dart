@@ -89,6 +89,9 @@ class WidgetService {
     for (final provider in _androidWidgetProviders) {
       await HomeWidget.updateWidget(name: provider);
     }
-    await HomeWidget.updateWidget(name: 'PrayerWidget');
+    await HomeWidget.updateWidget(
+      name: 'PrayerWidget',
+      iOSName: 'PrayerWidget',
+    );
   }
 }
