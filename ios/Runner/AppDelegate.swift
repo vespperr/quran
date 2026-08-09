@@ -30,6 +30,16 @@ import WidgetKit
           let maghrib = args["maghrib"] as? String ?? ""
           let isha = args["isha"] as? String ?? ""
           let nextPrayer = args["nextPrayer"] as? String ?? ""
+
+          NSLog("=== APPDELEGATE WIDGET SYNC RECEIVED ===")
+          NSLog("city: %@", city)
+          NSLog("displayTimes: %@", times)
+          NSLog("fajr: %@", fajr)
+          NSLog("dhuhr: %@", dhuhr)
+          NSLog("asr: %@", asr)
+          NSLog("maghrib: %@", maghrib)
+          NSLog("isha: %@", isha)
+          NSLog("nextPrayer: %@", nextPrayer)
           
           let defaults = UserDefaults(suiteName: "group.com.dya.azadalkrd") ?? UserDefaults.standard
           if !city.isEmpty { defaults.set(city, forKey: "widget_city") }

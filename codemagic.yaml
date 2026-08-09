@@ -11,12 +11,30 @@ workflows:
       - name: Set up Flutter dependencies
         script: |
           flutter pub get
+      - name: Inspect Source Entitlements
+        script: |
+          echo "=== SOURCE RUNNER ENTITLEMENTS ==="
+          cat ios/Runner/Runner.entitlements || true
+          echo "=== SOURCE WIDGET ENTITLEMENTS ==="
+          cat ios/PrayerWidgetExtension/PrayerWidgetExtension.entitlements || true
       - name: Build iOS App & Extension
         script: |
           flutter build ios --release --no-codesign
-      - name: Package IPA for TrollStore
+      - name: Inspect Built App & Extension Binaries
         script: |
-          # Embed App Group entitlements into Mach-O binaries for TrollStore
+          echo "=== BUILT RUNNER APP CONTENTS ==="
+          ls -la build/ios/iphoneos/Runner.app
+          echo "=== BUILT PLUGINS DIRECTORY ==="
+          ls -la build/ios/iphoneos/Runner.app/PlugIns || true
+          if [ -d "build/ios/iphoneos/Runner.app/PlugIns/PrayerWidgetExtension.appex" ]; then
+            echo "SUCCESS: PrayerWidgetExtension.appex exists inside Runner.app/PlugIns!"
+            ls -la build/ios/iphoneos/Runner.app/PlugIns/PrayerWidgetExtension.appex
+          else
+            echo "ERROR: PrayerWidgetExtension.appex NOT FOUND in Runner.app/PlugIns!"
+          fi
+      - name: Package IPA for TrollStore & Embed Entitlements
+        script: |
+          echo "=== EMBEDDING ENTITLEMENTS FOR TROLLSTORE ==="
           if [ -d "build/ios/iphoneos/Runner.app/PlugIns/PrayerWidgetExtension.appex" ]; then
             codesign --force --deep --sign - --entitlements ios/PrayerWidgetExtension/PrayerWidgetExtension.entitlements build/ios/iphoneos/Runner.app/PlugIns/PrayerWidgetExtension.appex
           fi
@@ -28,6 +46,19 @@ workflows:
           zip -qr TheOpenQuran.ipa Payload
           mkdir -p $CM_BUILD_DIR/build/ios/ipa
           cp TheOpenQuran.ipa $CM_BUILD_DIR/build/ios/ipa/
+      - name: Verify Final IPA Binary Entitlements
+        script: |
+          echo "=== VERIFYING FINAL IPA ENTITLEMENTS ==="
+          mkdir -p /tmp/verify_ipa
+          unzip -q $CM_BUILD_DIR/build/ios/ipa/TheOpenQuran.ipa -d /tmp/verify_ipa
+          
+          echo "=== FINAL RUNNER.APP ENTITLEMENTS ==="
+          codesign -d --entitlements :- /tmp/verify_ipa/Payload/Runner.app || true
+          
+          echo "=== FINAL WIDGET EXTENSION ENTITLEMENTS ==="
+          if [ -d "/tmp/verify_ipa/Payload/Runner.app/PlugIns/PrayerWidgetExtension.appex" ]; then
+            codesign -d --entitlements :- /tmp/verify_ipa/Payload/Runner.app/PlugIns/PrayerWidgetExtension.appex || true
+          fi
     artifacts:
       - build/ios/ipa/*.ipa
       - build/ios/iphoneos/*.app

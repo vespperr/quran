@@ -405,6 +405,17 @@ class PrayerNotificationService {
       } catch (_) {}
     } else if (Platform.isIOS) {
       try {
+        print('=== WIDGET SYNC WRITE START ===');
+        print('city: $city');
+        print('displayTimes: $displayTimes');
+        print('fajr: ${pMap['fajr']}');
+        print('dhuhr: ${pMap['dhuhr']}');
+        print('asr: ${pMap['asr']}');
+        print('maghrib: ${pMap['maghrib']}');
+        print('isha: ${pMap['isha']}');
+        print('nextPrayer: $nextPrayerStr');
+        print('=== WIDGET SYNC WRITE END ===');
+
         await const MethodChannel('com.dya.azadalkrd/prayer_widget').invokeMethod<void>(
           'updateWidgetData',
           {
@@ -419,9 +430,7 @@ class PrayerNotificationService {
           },
         );
       } catch (e) {
-        if (kDebugMode) {
-          print('[PrayerNotificationService] updateWidgetData iOS channel error: $e');
-        }
+        print('[PrayerNotificationService] updateWidgetData iOS channel error: $e');
       }
     }
   }
