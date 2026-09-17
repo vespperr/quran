@@ -16,6 +16,7 @@ class KuMaterialLocalizationsDelegate
       GlobalMaterialLocalizations.delegate.load(const Locale('en'));
 
   @override
-  bool shouldReload(covariant LocalizationsDelegate<MaterialLocalizations> old) =>
+  bool shouldReload(
+          covariant LocalizationsDelegate<MaterialLocalizations> old) =>
       false;
 }

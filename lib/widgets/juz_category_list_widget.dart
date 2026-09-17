@@ -37,7 +37,8 @@ class _JuzCategoryListWidgetState extends State<JuzCategoryListWidget> {
           children: [
             Text(
               context.translate.juz,
-              style: context.theme.textTheme.displayLarge?.copyWith(letterSpacing: 0.4),
+              style: context.theme.textTheme.displayLarge
+                  ?.copyWith(letterSpacing: 0.4),
             ),
             JuzListToggleButton(
               listType: widget.listType,
@@ -69,35 +70,36 @@ class _JuzCategoryListWidgetState extends State<JuzCategoryListWidget> {
         final leftIndex = rowIndex * 2;
         final rightIndex = leftIndex + 1;
         return Padding(
-          padding: EdgeInsets.only(bottom: rowIndex < rowCount - 1 ? DesignSystem.space12 : 0),
+          padding: EdgeInsets.only(
+              bottom: rowIndex < rowCount - 1 ? DesignSystem.space12 : 0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Expanded(
+                child: StaggeredFadeSlide(
+                  index: leftIndex,
+                  child: JuzItemCard(
+                    juzId: leftIndex + 1,
+                    surahs: widget.juzList[leftIndex],
+                    onTap: () => widget.onTapGridCard(leftIndex + 1),
+                  ),
+                ),
+              ),
+              if (rightIndex < count) ...[
+                const SizedBox(width: DesignSystem.space12),
                 Expanded(
                   child: StaggeredFadeSlide(
-                    index: leftIndex,
+                    index: rightIndex,
                     child: JuzItemCard(
-                      juzId: leftIndex + 1,
-                      surahs: widget.juzList[leftIndex],
-                      onTap: () => widget.onTapGridCard(leftIndex + 1),
+                      juzId: rightIndex + 1,
+                      surahs: widget.juzList[rightIndex],
+                      onTap: () => widget.onTapGridCard(rightIndex + 1),
                     ),
                   ),
                 ),
-                if (rightIndex < count) ...[
-                  const SizedBox(width: DesignSystem.space12),
-                  Expanded(
-                    child: StaggeredFadeSlide(
-                      index: rightIndex,
-                      child: JuzItemCard(
-                        juzId: rightIndex + 1,
-                        surahs: widget.juzList[rightIndex],
-                        onTap: () => widget.onTapGridCard(rightIndex + 1),
-                      ),
-                    ),
-                  ),
-                ],
               ],
-            ),
+            ],
+          ),
         );
       },
     );

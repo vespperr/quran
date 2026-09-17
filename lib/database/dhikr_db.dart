@@ -60,12 +60,14 @@ class DhikrDb {
   static Future<List<DhikrModel>> getDhikrs() async {
     final db = await database;
     final list = await db.query('dhikr', orderBy: 'id ASC');
-    return list.map((row) => DhikrModel(
-      id: row['id'] as int,
-      dhikrid: row['dhikrid'] as String?,
-      ardhikr: row['ardhikr'] as String?,
-      krdhikr: row['krdhikr'] as String?,
-    )).toList();
+    return list
+        .map((row) => DhikrModel(
+              id: row['id'] as int,
+              dhikrid: row['dhikrid'] as String?,
+              ardhikr: row['ardhikr'] as String?,
+              krdhikr: row['krdhikr'] as String?,
+            ))
+        .toList();
   }
 
   /// Three folders only: Morning, Evening, Bedtime. dhikrid → folder key.
@@ -85,9 +87,9 @@ class DhikrDb {
   static const _folderOrder = [_folderMorning, _folderEvening, _folderBedtime];
 
   static const Map<String, String> _folderTitles = {
-    _folderMorning: 'بەیانیان',   // Morning
-    _folderEvening: 'ئێواران',   // Evening
-    _folderBedtime: 'پێشخەوتن',  // Bedtime
+    _folderMorning: 'بەیانیان', // Morning
+    _folderEvening: 'ئێواران', // Evening
+    _folderBedtime: 'پێشخەوتن', // Bedtime
   };
 
   static const Map<String, String> _folderSubtitles = {
@@ -120,12 +122,14 @@ class DhikrDb {
         'SELECT * FROM dhikr WHERE dhikrid = ? ORDER BY id ASC',
         [id],
       );
-      final dhikrs = dhikrRows.map((r) => DhikrModel(
-        id: r['id'] as int,
-        dhikrid: r['dhikrid'] as String?,
-        ardhikr: r['ardhikr'] as String?,
-        krdhikr: r['krdhikr'] as String?,
-      )).toList();
+      final dhikrs = dhikrRows
+          .map((r) => DhikrModel(
+                id: r['id'] as int,
+                dhikrid: r['dhikrid'] as String?,
+                ardhikr: r['ardhikr'] as String?,
+                krdhikr: r['krdhikr'] as String?,
+              ))
+          .toList();
       if (dhikrs.isEmpty) continue;
       byFolder.putIfAbsent(folder, () => []).addAll(dhikrs);
     }

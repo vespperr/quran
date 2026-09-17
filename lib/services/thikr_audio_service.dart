@@ -14,10 +14,12 @@ class ThikrAudioService {
   ThikrAudioService._();
 
   static final AudioPlayer _player = AudioPlayer();
-  static final ValueNotifier<String?> currentSectionId = ValueNotifier<String?>(null);
+  static final ValueNotifier<String?> currentSectionId =
+      ValueNotifier<String?>(null);
   static final ValueNotifier<Duration> position = ValueNotifier(Duration.zero);
   static final ValueNotifier<Duration> duration = ValueNotifier(Duration.zero);
-  static final ValueNotifier<PlayerState> state = ValueNotifier(PlayerState.stopped);
+  static final ValueNotifier<PlayerState> state =
+      ValueNotifier(PlayerState.stopped);
 
   static bool _listenersAttached = false;
 

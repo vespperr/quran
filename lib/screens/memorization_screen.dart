@@ -67,87 +67,88 @@ class _MemorizationScreenState extends State<MemorizationScreen> {
               vertical: NonQuranStyle.screenPaddingV,
             ),
             children: [
-            Container(
-              decoration: NonQuranStyle.sectionCardDecoration(),
-              child: TableCalendar(
-                firstDay: DateTime.now().subtract(const Duration(days: 365)),
-                lastDay: DateTime.now().add(const Duration(days: 365)),
-                focusedDay: _focusedDay,
-                calendarFormat: CalendarFormat.month,
-                onDaySelected: (_, __) {},
-                onPageChanged: (day) => setState(() => _focusedDay = day),
-                calendarBuilders: CalendarBuilders(
-                  defaultBuilder: (context, day, focusedDay) {
-                    final isInPlan = _isDayInAnyPlan(day);
-                    return Container(
-                      margin: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: isInPlan
-                            ? DesignSystem.primary.withValues(alpha: 0.2)
-                            : null,
-                        shape: BoxShape.circle,
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        '${day.day}',
-                        style: context.theme.textTheme.bodyMedium?.copyWith(
+              Container(
+                decoration: NonQuranStyle.sectionCardDecoration(),
+                child: TableCalendar(
+                  firstDay: DateTime.now().subtract(const Duration(days: 365)),
+                  lastDay: DateTime.now().add(const Duration(days: 365)),
+                  focusedDay: _focusedDay,
+                  calendarFormat: CalendarFormat.month,
+                  onDaySelected: (_, __) {},
+                  onPageChanged: (day) => setState(() => _focusedDay = day),
+                  calendarBuilders: CalendarBuilders(
+                    defaultBuilder: (context, day, focusedDay) {
+                      final isInPlan = _isDayInAnyPlan(day);
+                      return Container(
+                        margin: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
                           color: isInPlan
-                              ? DesignSystem.primary
-                              : DesignSystem.textForest,
-                          fontWeight:
-                              isInPlan ? FontWeight.w600 : FontWeight.normal,
+                              ? DesignSystem.primary.withValues(alpha: 0.2)
+                              : null,
+                          shape: BoxShape.circle,
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              context.translate.ayat,
-              style: context.theme.textTheme.headlineMedium?.copyWith(
-                color: NonQuranStyle.sectionTitleColor,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 8),
-            if (_plans.isEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Center(
-                  child: Text(
-                    'No memorization plans yet.\nLong-press a verse → Memorize → pick dates.',
-                    textAlign: TextAlign.center,
-                    style: context.theme.textTheme.bodyMedium?.copyWith(
-                      color: NonQuranStyle.sectionSubtitleColor.withValues(alpha: 0.8),
-                    ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          '${day.day}',
+                          style: context.theme.textTheme.bodyMedium?.copyWith(
+                            color: isInPlan
+                                ? DesignSystem.primary
+                                : DesignSystem.textForest,
+                            fontWeight:
+                                isInPlan ? FontWeight.w600 : FontWeight.normal,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
-              )
-            else
-              ..._plans.map((plan) => _PlanTile(
-                    plan: plan,
-                    onTap: () {
-                      final surahId = plan.verse.surahId;
-                      final verseId = plan.verse.verseNumber;
-                      if (surahId != null && verseId != null) {
-                        SurahDetailNavigationManager.goToSurah(
-                          context,
-                          surahId,
-                          verseId: verseId,
-                        );
-                      }
-                    },
-                    onMarkMemorized: () async {
-                      await LocalDb.setPlanMemorized(plan, !plan.isMemorized);
-                      _loadPlans();
-                    },
-                    onRemove: () async {
-                      await LocalDb.removeMemorizationPlan(plan);
-                      _loadPlans();
-                    },
-                  )),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                context.translate.ayat,
+                style: context.theme.textTheme.headlineMedium?.copyWith(
+                  color: NonQuranStyle.sectionTitleColor,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 8),
+              if (_plans.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Center(
+                    child: Text(
+                      'No memorization plans yet.\nLong-press a verse → Memorize → pick dates.',
+                      textAlign: TextAlign.center,
+                      style: context.theme.textTheme.bodyMedium?.copyWith(
+                        color: NonQuranStyle.sectionSubtitleColor
+                            .withValues(alpha: 0.8),
+                      ),
+                    ),
+                  ),
+                )
+              else
+                ..._plans.map((plan) => _PlanTile(
+                      plan: plan,
+                      onTap: () {
+                        final surahId = plan.verse.surahId;
+                        final verseId = plan.verse.verseNumber;
+                        if (surahId != null && verseId != null) {
+                          SurahDetailNavigationManager.goToSurah(
+                            context,
+                            surahId,
+                            verseId: verseId,
+                          );
+                        }
+                      },
+                      onMarkMemorized: () async {
+                        await LocalDb.setPlanMemorized(plan, !plan.isMemorized);
+                        _loadPlans();
+                      },
+                      onRemove: () async {
+                        await LocalDb.removeMemorizationPlan(plan);
+                        _loadPlans();
+                      },
+                    )),
             ],
           ),
         ),
@@ -206,13 +207,17 @@ class _PlanTile extends StatelessWidget {
                       ),
                       IconButton(
                         icon: Icon(
-                          plan.isMemorized ? Icons.check_circle : Icons.check_circle_outline,
+                          plan.isMemorized
+                              ? Icons.check_circle
+                              : Icons.check_circle_outline,
                           color: plan.isMemorized
                               ? DesignSystem.primary
                               : DesignSystem.textForest.withValues(alpha: 0.64),
                         ),
                         onPressed: onMarkMemorized,
-                        tooltip: plan.isMemorized ? context.translate.memorized : context.translate.markAsMemorized,
+                        tooltip: plan.isMemorized
+                            ? context.translate.memorized
+                            : context.translate.markAsMemorized,
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete_outline),
@@ -238,7 +243,8 @@ class _PlanTile extends StatelessWidget {
                   Text(
                     '${fmt.format(plan.startDate)} – ${fmt.format(plan.endDate)} · ${plan.daysCount} days',
                     style: context.theme.textTheme.bodySmall?.copyWith(
-                      color: NonQuranStyle.sectionSubtitleColor.withValues(alpha: 0.8),
+                      color: NonQuranStyle.sectionSubtitleColor
+                          .withValues(alpha: 0.8),
                     ),
                   ),
                 ],

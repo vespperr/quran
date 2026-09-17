@@ -22,8 +22,7 @@ class CustomCalendarView extends StatefulWidget {
 }
 
 class _CustomCalendarViewState extends State<CustomCalendarView> {
-  static DateTime _normalize(DateTime d) =>
-      DateTime(d.year, d.month, d.day);
+  static DateTime _normalize(DateTime d) => DateTime(d.year, d.month, d.day);
 
   late DateTime _firstDay;
   late DateTime _lastDay;

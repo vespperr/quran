@@ -25,11 +25,13 @@ class NonQuranStyle {
   static Color get unselectedText => DesignSystem.textForest;
 
   // ---- Inactive ----
-  static Color get inactiveBackground => AppColors.grey12.withValues(alpha: 0.5);
+  static Color get inactiveBackground =>
+      AppColors.grey12.withValues(alpha: 0.5);
   static Color get inactiveText => AppColors.white;
 
   // ---- Section cards ----
   static Color get sectionCardBackground => DesignSystem.cardBackground;
+
   /// Shadow color for section cards (use with alpha, e.g. .withValues(alpha: 0.06)).
   static Color get sectionCardShadow => DesignSystem.textForest;
   static Color get sectionTitleColor => DesignSystem.primaryGreen;

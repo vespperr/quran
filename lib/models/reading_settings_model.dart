@@ -1,4 +1,3 @@
-
 import '../constants/enums.dart';
 
 class ReadingSettingsModel {

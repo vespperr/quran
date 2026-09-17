@@ -51,7 +51,8 @@ class _LanguageScreenState extends State<LanguageScreen> {
             const SizedBox(height: 30),
             CustomLanguageCard(
               defaultLocale: context.watch<AppSettingsProvider>().appLocale,
-              changedLocale: context.read<AppSettingsProvider>().changeAppLanguage,
+              changedLocale:
+                  context.read<AppSettingsProvider>().changeAppLanguage,
             ),
           ],
         ),

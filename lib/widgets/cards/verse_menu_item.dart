@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:the_open_quran/constants/constants.dart';
 
-
 class VerseMenuItem extends StatelessWidget {
   const VerseMenuItem({
     super.key,

@@ -28,46 +28,47 @@ class AdhanLearningLinksCard extends StatelessWidget {
     return LightSweepContainer(
       borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
       child: Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(DesignSystem.space16),
-      decoration: BoxDecoration(
-        color: DesignSystem.surface,
-        borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
-        border: Border.all(color: DesignSystem.outline.withValues(alpha: 0.5)),
-        boxShadow: DesignSystem.shadowSoft,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            context.translate.adhanLearnSectionTitle,
-            style: context.theme.textTheme.titleMedium?.copyWith(
-              color: DesignSystem.onSurface,
-              fontWeight: FontWeight.w700,
+        width: double.infinity,
+        padding: const EdgeInsets.all(DesignSystem.space16),
+        decoration: BoxDecoration(
+          color: DesignSystem.surface,
+          borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
+          border:
+              Border.all(color: DesignSystem.outline.withValues(alpha: 0.5)),
+          boxShadow: DesignSystem.shadowSoft,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              context.translate.adhanLearnSectionTitle,
+              style: context.theme.textTheme.titleMedium?.copyWith(
+                color: DesignSystem.onSurface,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          ),
-          const SizedBox(height: DesignSystem.space8),
-          _tile(
-            context,
-            icon: Icons.menu_book_outlined,
-            label: context.translate.adhanLearnBookLink,
-            onTap: () => _launch(context, AdhanLinks.adhanBookOrLesson),
-          ),
-          _tile(
-            context,
-            icon: Icons.play_circle_outline,
-            label: context.translate.adhanLearnVideosLink,
-            onTap: () => _launch(context, AdhanLinks.adhanVideoPlaylist),
-          ),
-          _tile(
-            context,
-            icon: Icons.telegram,
-            label: context.translate.bilalAcademyTelegram,
-            onTap: () => _launch(context, AdhanLinks.bilalAcademyTelegram),
-          ),
-        ],
+            const SizedBox(height: DesignSystem.space8),
+            _tile(
+              context,
+              icon: Icons.menu_book_outlined,
+              label: context.translate.adhanLearnBookLink,
+              onTap: () => _launch(context, AdhanLinks.adhanBookOrLesson),
+            ),
+            _tile(
+              context,
+              icon: Icons.play_circle_outline,
+              label: context.translate.adhanLearnVideosLink,
+              onTap: () => _launch(context, AdhanLinks.adhanVideoPlaylist),
+            ),
+            _tile(
+              context,
+              icon: Icons.telegram,
+              label: context.translate.bilalAcademyTelegram,
+              onTap: () => _launch(context, AdhanLinks.bilalAcademyTelegram),
+            ),
+          ],
+        ),
       ),
-    ),
     );
   }
 

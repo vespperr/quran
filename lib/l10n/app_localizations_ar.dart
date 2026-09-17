@@ -839,4 +839,50 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get fridayNotificationBody =>
       'لا تنسَ قراءة سورة الكهف والصلاة على النبي ﷺ اليوم!';
+
+  @override
+  String get sunrise => 'الشروق';
+
+  @override
+  String get duhaPrayer => 'صلاة الضحى';
+
+  @override
+  String get duhaStartsAfterSunrise =>
+      'يبدأ وقت صلاة الضحى بعد شروق الشمس بحوالي ٢٠ دقيقة';
+
+  @override
+  String get prayerGuide => 'دليل';
+
+  @override
+  String get tapForGuide => 'اضغط للدليل';
+
+  @override
+  String get worshipGuideTitle => 'دليل الصلاة والسنن';
+
+  @override
+  String get howToPray => 'صفة الصلاة';
+
+  @override
+  String get sunnahPrayers => 'السنن والنوافل';
+
+  @override
+  String get prohibitedTimes => 'أوقات النهي';
+
+  @override
+  String get congregationalMistakes => 'أخطاء الجماعة';
+
+  @override
+  String get prohibitedAfterFajr => 'أوقات النهي (بعد الفجر حتى ارتفاع الشمس)';
+
+  @override
+  String get duhaTimeActive => 'وقت صلاة الضحى المستحب';
+
+  @override
+  String get prohibitedZenith => 'أوقات النهي (استواء الشمس قبل الظهر)';
+
+  @override
+  String get prohibitedAfterAsr => 'أوقات النهي (بعد العصر حتى الغروب)';
+
+  @override
+  String get sunnahAndProhibitedGuide => 'السنن الرواتب وأوقات النهي';
 }

@@ -27,7 +27,8 @@ class PrayerPrefs {
     return box.read(key) ?? false;
   }
 
-  static Future<void> setNotificationEnabled(String prayerName, bool value) async {
+  static Future<void> setNotificationEnabled(
+      String prayerName, bool value) async {
     await GetStorage(_box).write('$_storageKeyPrefix$prayerName', value);
   }
 
@@ -71,7 +72,8 @@ class PrayerPrefs {
     return box.read('$_offsetKeyPrefix$prayerName') as int? ?? 0;
   }
 
-  static Future<void> setNotificationOffset(String prayerName, int minutes) async {
+  static Future<void> setNotificationOffset(
+      String prayerName, int minutes) async {
     await GetStorage(_box).write('$_offsetKeyPrefix$prayerName', minutes);
   }
 

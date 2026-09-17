@@ -39,12 +39,16 @@ class FeaturedSurahCard extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       color: DesignSystem.primary.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusPill),
+                      borderRadius:
+                          BorderRadius.circular(DesignSystem.radiusPill),
                     ),
                     child: Center(
                       child: Text(
                         '${surahModel.id}',
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
                               color: DesignSystem.primary,
                               fontWeight: FontWeight.w700,
                             ),
@@ -77,4 +81,3 @@ class FeaturedSurahCard extends StatelessWidget {
     );
   }
 }
-

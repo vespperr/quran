@@ -8,7 +8,8 @@ class HelpGuideCard extends StatefulWidget {
   final String text;
   final String description;
 
-  const HelpGuideCard({super.key, required this.text, required this.description});
+  const HelpGuideCard(
+      {super.key, required this.text, required this.description});
 
   @override
   State<HelpGuideCard> createState() => _HelpGuideCardState();
@@ -63,7 +64,8 @@ class _HelpGuideCardState extends State<HelpGuideCard> {
             onExpansionChanged: changeExpanded,
             backgroundColor: Colors.transparent,
             collapsedBackgroundColor: Colors.transparent,
-            childrenPadding: const EdgeInsets.only(bottom: kSizeM, left: kSizeXL, right: kSizeXL),
+            childrenPadding: const EdgeInsets.only(
+                bottom: kSizeM, left: kSizeXL, right: kSizeXL),
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),

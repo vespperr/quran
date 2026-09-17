@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_open_quran/constants/constants.dart';
 
-
 class GridCard extends StatelessWidget {
   final String text;
   final Function()? onTap;

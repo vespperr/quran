@@ -55,13 +55,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     const _HomePrayerTimesCard(),
                     const SizedBox(height: kSizeL),
                     JuzSurahSearchToggleButton(
-                      toggleSearchButtonIndex: context.read<SearchProvider>().toggleSearchOptions.index,
-                      onChanged: context.watch<HomeProvider>().changeJuzOrSurahToggleOptionType,
-                      onTapSearchButton: context.read<SearchProvider>().changeToggleSearchOptions,
-                      toggleListType: context.watch<HomeProvider>().juzSurahToggleOptionType,
+                      toggleSearchButtonIndex: context
+                          .read<SearchProvider>()
+                          .toggleSearchOptions
+                          .index,
+                      onChanged: context
+                          .watch<HomeProvider>()
+                          .changeJuzOrSurahToggleOptionType,
+                      onTapSearchButton: context
+                          .read<SearchProvider>()
+                          .changeToggleSearchOptions,
+                      toggleListType: context
+                          .watch<HomeProvider>()
+                          .juzSurahToggleOptionType,
                     ),
                     FadeIndexedStack(
-                      index: context.watch<SearchProvider>().toggleSearchOptions.index,
+                      index: context
+                          .watch<SearchProvider>()
+                          .toggleSearchOptions
+                          .index,
                       children: [
                         buildToggleSearchPages(context),
                         const SearchResultScreen(isHome: true),
@@ -78,7 +90,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHomeHeader(BuildContext context) {
-    final hasFavorites = context.watch<FavoritesProvider>().favoriteVerses.isNotEmpty;
+    final hasFavorites =
+        context.watch<FavoritesProvider>().favoriteVerses.isNotEmpty;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(
@@ -107,7 +120,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 24,
                 height: 24,
                 colorFilter: ColorFilter.mode(
-                  hasFavorites ? DesignSystem.secondary : DesignSystem.onSurface.withValues(alpha: 0.6),
+                  hasFavorites
+                      ? DesignSystem.secondary
+                      : DesignSystem.onSurface.withValues(alpha: 0.6),
                   BlendMode.srcIn,
                 ),
               ),
@@ -230,32 +245,34 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Expanded(
               child: _buildNavCard(
-              context: context,
-              icon: Icons.notifications_outlined,
-              label: context.translate.permissions,
-              onTap: () {
-                Navigator.of(context).push(
-                  AppRoutes.fadeSlideRoute<void>(builder: (_) => const PermissionsScreen()),
-                );
-              },
+                context: context,
+                icon: Icons.notifications_outlined,
+                label: context.translate.permissions,
+                onTap: () {
+                  Navigator.of(context).push(
+                    AppRoutes.fadeSlideRoute<void>(
+                        builder: (_) => const PermissionsScreen()),
+                  );
+                },
+              ),
             ),
-          ),
-          const SizedBox(width: DesignSystem.space12),
-          Expanded(
-            child: _buildNavCard(
-              context: context,
-              icon: Icons.calendar_month,
-              label: context.translate.memorizationProgram,
-              onTap: () {
-                Navigator.of(context).push(
-                  AppRoutes.fadeSlideRoute<void>(builder: (_) => const MemorizationScreen()),
-                );
-              },
+            const SizedBox(width: DesignSystem.space12),
+            Expanded(
+              child: _buildNavCard(
+                context: context,
+                icon: Icons.calendar_month,
+                label: context.translate.memorizationProgram,
+                onTap: () {
+                  Navigator.of(context).push(
+                    AppRoutes.fadeSlideRoute<void>(
+                        builder: (_) => const MemorizationScreen()),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
     );
   }
 
@@ -356,7 +373,8 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: kSizeL),
               child: Text(
                 context.translate.recent,
-                style: context.theme.textTheme.displayLarge?.copyWith(letterSpacing: 0.04),
+                style: context.theme.textTheme.displayLarge
+                    ?.copyWith(letterSpacing: 0.04),
               ),
             ),
             const SizedBox(height: kSizeL),
@@ -442,7 +460,8 @@ class _HomePrayerTimesCardState extends State<_HomePrayerTimesCard> {
 
   @override
   Widget build(BuildContext context) {
-    final city = GetStorage(PrayerTimesStorage.boxName).read(PrayerTimesStorage.keyCity) ??
+    final city = GetStorage(PrayerTimesStorage.boxName)
+            .read(PrayerTimesStorage.keyCity) ??
         PrayerTimesSourceRegistry.instance.defaultCity;
     final includeIraq = PrayerTimesStorage.readIncludeIraq();
     final countryIso = PrayerTimesStorage.readCountryIso();
@@ -471,7 +490,8 @@ class _HomePrayerTimesCardState extends State<_HomePrayerTimesCard> {
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
-                AppRoutes.fadeSlideRoute(builder: (_) => const PrayerTimesScreen(selected: true)),
+                AppRoutes.fadeSlideRoute(
+                    builder: (_) => const PrayerTimesScreen(selected: true)),
               );
             },
             borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
@@ -490,7 +510,9 @@ class _HomePrayerTimesCardState extends State<_HomePrayerTimesCard> {
               child: Row(
                 children: [
                   Icon(
-                    info.next.name == 'Fajr' || info.next.name == 'Dhuhr' || info.next.name == 'Asr'
+                    info.next.name == 'Fajr' ||
+                            info.next.name == 'Dhuhr' ||
+                            info.next.name == 'Asr'
                         ? Icons.wb_sunny_outlined
                         : Icons.nightlight_round_outlined,
                     color: DesignSystem.primary,
@@ -505,14 +527,16 @@ class _HomePrayerTimesCardState extends State<_HomePrayerTimesCard> {
                         Text(
                           context.translate.nextPrayer,
                           style: context.theme.textTheme.titleSmall?.copyWith(
-                            color: DesignSystem.onSurface.withValues(alpha: 0.8),
+                            color:
+                                DesignSystem.onSurface.withValues(alpha: 0.8),
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           info.next.name.translatedPrayerName(context),
-                          style: context.theme.textTheme.headlineSmall?.copyWith(
+                          style:
+                              context.theme.textTheme.headlineSmall?.copyWith(
                             color: DesignSystem.primary,
                             fontWeight: FontWeight.w700,
                           ),
@@ -520,7 +544,8 @@ class _HomePrayerTimesCardState extends State<_HomePrayerTimesCard> {
                         Text(
                           _formatWallClock(_now),
                           style: context.theme.textTheme.labelLarge?.copyWith(
-                            color: DesignSystem.onSurface.withValues(alpha: 0.8),
+                            color:
+                                DesignSystem.onSurface.withValues(alpha: 0.8),
                             fontFeatures: const [FontFeature.tabularFigures()],
                             letterSpacing: 0.5,
                           ),

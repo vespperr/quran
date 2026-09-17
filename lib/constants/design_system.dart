@@ -40,12 +40,16 @@ class DesignSystem {
   // ---- Layout & shapes ----
   /// Corner radius for cards and bottom sheets (20px).
   static const double cornerRadius = 20.0;
+
   /// Corner radius for buttons and pills (12px).
   static const double radiusPill = 12.0;
+
   /// Standard padding for screen edges (20px).
   static const double screenPadding = 20.0;
+
   /// Bottom sheet height as fraction of screen (60%).
   static const double bottomSheetHeightFraction = 0.6;
+
   /// Grab handle bar height at top of bottom sheet (40px).
   static const double grabHandleHeight = 40.0;
 
@@ -57,6 +61,7 @@ class DesignSystem {
           blurRadius: 8,
         ),
       ];
+
   /// Legacy alias.
   static List<BoxShadow> get softGlowShadow => shadowSoft;
 

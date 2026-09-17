@@ -18,14 +18,17 @@ class QuranRecitationService {
   static final AudioPlayer _player = AudioPlayer();
   static bool _listenersAttached = false;
 
-  static final ValueNotifier<String?> currentVerseKey = ValueNotifier<String?>(null);
+  static final ValueNotifier<String?> currentVerseKey =
+      ValueNotifier<String?>(null);
   static final ValueNotifier<PlayerState> playerState =
       ValueNotifier<PlayerState>(PlayerState.stopped);
-  static final ValueNotifier<double?> downloadProgress = ValueNotifier<double?>(null);
+  static final ValueNotifier<double?> downloadProgress =
+      ValueNotifier<double?>(null);
 
   static Future<RecitationManifest> loadManifest() async {
     if (_manifest != null) return _manifest!;
-    final raw = await rootBundle.loadString('assets/json/recitations_manifest.json');
+    final raw =
+        await rootBundle.loadString('assets/json/recitations_manifest.json');
     _manifest = RecitationManifest.parse(raw);
     return _manifest!;
   }
@@ -74,7 +77,9 @@ class QuranRecitationService {
     final uri = Uri.parse(template.replaceAll('{ayahId}', '$ayahId'));
     final file = await _localAyahFile(reciter.id, ayahId);
     final res = await http.get(uri);
-    if (res.statusCode >= 200 && res.statusCode < 300 && res.bodyBytes.isNotEmpty) {
+    if (res.statusCode >= 200 &&
+        res.statusCode < 300 &&
+        res.bodyBytes.isNotEmpty) {
       await file.writeAsBytes(res.bodyBytes, flush: true);
     }
   }
@@ -129,7 +134,8 @@ class QuranRecitationService {
       await _player.stop();
       currentVerseKey.value = key;
       final data = await rootBundle.load(reciter.bundledDemoAssetPath!);
-      await _player.play(BytesSource(data.buffer.asUint8List(), mimeType: 'audio/mpeg'));
+      await _player
+          .play(BytesSource(data.buffer.asUint8List(), mimeType: 'audio/mpeg'));
       return;
     }
 

@@ -64,7 +64,12 @@ class _IslamicStarPainter extends CustomPainter {
       }
     }
     path.close();
-    canvas.drawPath(path, Paint()..color = color..style = PaintingStyle.stroke..strokeWidth = 1.5);
+    canvas.drawPath(
+        path,
+        Paint()
+          ..color = color
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.5);
   }
 
   @override

@@ -25,8 +25,8 @@ class ReadingPageBottomBar extends StatelessWidget {
                     ? context.translate.previousSurah
                     : "",
                 textAlign: TextAlign.center,
-                style: context.theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.grey),
+                style: context.theme.textTheme.bodySmall
+                    ?.copyWith(color: AppColors.grey),
               ),
               context.read<SurahDetailsProvider>().previousButtonOnTap,
               context.watch<SurahDetailsProvider>().readingSettings.surahId > 1
@@ -38,8 +38,8 @@ class ReadingPageBottomBar extends StatelessWidget {
               Text(
                 context.translate.beggingOfSurah,
                 textAlign: TextAlign.center,
-                style: context.theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.grey),
+                style: context.theme.textTheme.bodySmall
+                    ?.copyWith(color: AppColors.grey),
               ),
               context.read<SurahDetailsProvider>().beggingOfSurahButtonOnTap,
               BoxDecoration(
@@ -52,11 +52,12 @@ class ReadingPageBottomBar extends StatelessWidget {
                     ? context.translate.nextSurah
                     : "",
                 textAlign: TextAlign.center,
-                style: context.theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.grey),
+                style: context.theme.textTheme.bodySmall
+                    ?.copyWith(color: AppColors.grey),
               ),
               context.read<SurahDetailsProvider>().nextButtonOnTap,
-              context.watch<SurahDetailsProvider>().readingSettings.surahId < 114
+              context.watch<SurahDetailsProvider>().readingSettings.surahId <
+                      114
                   ? BoxDecoration(
                       color: AppColors.black3,
                       borderRadius: BorderRadius.circular(10))

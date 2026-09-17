@@ -26,7 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onTap,
     this.bottomHeight,
     this.elevation,
-  })  : preferredSize = bottom != null
+  }) : preferredSize = bottom != null
             ? Size.fromHeight(bottomHeight!)
             : const Size.fromHeight(60.0);
 

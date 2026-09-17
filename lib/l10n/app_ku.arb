@@ -311,5 +311,20 @@
   "fridayReminders": "بیرخەرەوەکانی ڕۆژی هەینی",
   "fridayRemindersDesc": "پێگەیشتنی بیرخەرەوەی هەفتانە بۆ سورەتی الكهف و سوننەتەکان",
   "fridayNotificationTitle": "بیرخەرەوەی سوننەتەکانی ڕۆژی هەینی",
-  "fridayNotificationBody": "لەبیرت نەچێت ئیمڕۆ سورەتی الكهف بخوێنیتەوە و سڵاوات بنێریت!"
+  "fridayNotificationBody": "لەبیرت نەچێت ئیمڕۆ سورەتی الكهف بخوێنیتەوە و سڵاوات بنێریت!",
+  "sunrise": "خۆرهەڵاتن",
+  "duhaPrayer": "نوێژی چێشتەنگاو (الضحى)",
+  "duhaStartsAfterSunrise": "کاتی نوێژی زوحا نزیکەی ٢٠ خولەک دوای خۆرهەڵاتن دەستپێدەکات",
+  "prayerGuide": "ڕێبەر",
+  "tapForGuide": "کلیک بکە بۆ ڕێبەر",
+  "worshipGuideTitle": "ڕێبەری نوێژ و سوننەتەکان",
+  "howToPray": "شێوازی نوێژکردن",
+  "sunnahPrayers": "نوێژە سوننەتەکان",
+  "prohibitedTimes": "کاتەکانی نەهی",
+  "congregationalMistakes": "هەڵەکانی جەماعەت",
+  "prohibitedAfterFajr": "کاتەکانی نەهی (پاش بەیانی تا بەرزی خۆر)",
+  "duhaTimeActive": "کاتی نوێژی چێشتەنگاوە (الضحى)",
+  "prohibitedZenith": "کاتەکانی نەهی (وەستانی خۆر پێش نیوەڕۆ)",
+  "prohibitedAfterAsr": "کاتەکانی نەهی (پاش عەسر تا ئاوابوون)",
+  "sunnahAndProhibitedGuide": "نوێژە سوننەتەکان و کاتەکانی نەهی"
 }

@@ -60,7 +60,8 @@ class CustomSearchBar extends StatelessWidget {
         ),
         suffixIcon: CancelIcon(onCollapse: onCollapse),
         suffixIconColor: DesignSystem.onSurface.withValues(alpha: 0.7),
-        suffixIconConstraints: const BoxConstraints(maxHeight: 40, maxWidth: 40),
+        suffixIconConstraints:
+            const BoxConstraints(maxHeight: 40, maxWidth: 40),
         border: InputBorder.none,
         hintText: context.translate.searchSurahJuzOrPage,
         hintStyle: context.theme.textTheme.titleMedium?.copyWith(

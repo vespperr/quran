@@ -4,20 +4,20 @@ import 'package:flutter/material.dart';
 /// default padding `EdgeInsets.symmetric(horizontal: 20.0)`.
 // ignore: must_be_immutable
 class ScrollBody extends StatelessWidget {
-
   ScrollBody({
     super.key,
     required this.body,
     this.controller,
     EdgeInsets? padding,
-  })  : padding = padding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 0);
+  }) : padding =
+            padding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 0);
 
   /// Scrollable body
   final Widget body;
 
   /// Content padding [EdgeInsets]
   /// Default .symectric(horizontal:20.0)
-   EdgeInsets padding;
+  EdgeInsets padding;
 
   /// Scroll controller
   final ScrollController? controller;

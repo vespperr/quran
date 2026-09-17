@@ -37,15 +37,15 @@ double qiblaBearingFrom(double latitude, double longitude) {
   final lambda1 = longitude * math.pi / 180.0;
   final phi2 = 21.422487 * math.pi / 180.0;
   final lambda2 = 39.826206 * math.pi / 180.0;
-  
+
   final deltaLambda = lambda2 - lambda1;
 
   final y = math.sin(deltaLambda) * math.cos(phi2);
   final x = math.cos(phi1) * math.sin(phi2) -
       math.sin(phi1) * math.cos(phi2) * math.cos(deltaLambda);
-      
+
   final theta = math.atan2(y, x) * 180.0 / math.pi;
   final bearing = (theta + 360.0) % 360.0;
-  
+
   return bearing;
 }

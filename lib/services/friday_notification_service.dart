@@ -27,7 +27,8 @@ class FridayNotificationService {
     tz.TZDateTime scheduledDate =
         tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
 
-    while (scheduledDate.weekday != DateTime.friday || scheduledDate.isBefore(now)) {
+    while (scheduledDate.weekday != DateTime.friday ||
+        scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
@@ -55,7 +56,8 @@ class FridayNotificationService {
       const androidDetails = AndroidNotificationDetails(
         'friday_reminders_channel_v2',
         'Friday Reminders',
-        channelDescription: 'Notifications for Friday Sunnahs and Surah Al-Kahf',
+        channelDescription:
+            'Notifications for Friday Sunnahs and Surah Al-Kahf',
         importance: Importance.max,
         priority: Priority.high,
         playSound: true,
@@ -125,11 +127,13 @@ class FridayNotificationService {
       }
 
       if (kDebugMode) {
-        print('[FridayNotificationService] Scheduled Friday notifications for $scheduledKahf and $scheduledDua');
+        print(
+            '[FridayNotificationService] Scheduled Friday notifications for $scheduledKahf and $scheduledDua');
       }
     } catch (e) {
       if (kDebugMode) {
-        print('[FridayNotificationService] Error scheduling Friday notifications: $e');
+        print(
+            '[FridayNotificationService] Error scheduling Friday notifications: $e');
       }
     }
   }

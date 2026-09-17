@@ -26,11 +26,12 @@ class SurahNameSvg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tint = color ?? DesignSystem.textForest;
-    final style = fallbackStyle ?? TextStyle(
-      fontSize: height * 0.75,
-      fontWeight: FontWeight.w600,
-      color: tint,
-    );
+    final style = fallbackStyle ??
+        TextStyle(
+          fontSize: height * 0.75,
+          fontWeight: FontWeight.w600,
+          color: tint,
+        );
     return SvgPicture.asset(
       ImageConstants.surahNameSvg(surahId),
       height: height,
@@ -39,7 +40,8 @@ class SurahNameSvg extends StatelessWidget {
       placeholderBuilder: (_) => SizedBox(height: height, width: height * 2),
       errorBuilder: (_, __, ___) {
         if (fallbackText != null && fallbackText!.isNotEmpty) {
-          return Text(fallbackText!, style: style, maxLines: 1, overflow: TextOverflow.ellipsis);
+          return Text(fallbackText!,
+              style: style, maxLines: 1, overflow: TextOverflow.ellipsis);
         }
         return SizedBox(height: height, width: height * 2);
       },

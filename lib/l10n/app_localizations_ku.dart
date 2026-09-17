@@ -842,4 +842,50 @@ class AppLocalizationsKu extends AppLocalizations {
   @override
   String get fridayNotificationBody =>
       'لەبیرت نەچێت ئیمڕۆ سورەتی الكهف بخوێنیتەوە و سڵاوات بنێریت!';
+
+  @override
+  String get sunrise => 'خۆرهەڵاتن';
+
+  @override
+  String get duhaPrayer => 'نوێژی چێشتەنگاو (الضحى)';
+
+  @override
+  String get duhaStartsAfterSunrise =>
+      'کاتی نوێژی زوحا نزیکەی ٢٠ خولەک دوای خۆرهەڵاتن دەستپێدەکات';
+
+  @override
+  String get prayerGuide => 'ڕێبەر';
+
+  @override
+  String get tapForGuide => 'کلیک بکە بۆ ڕێبەر';
+
+  @override
+  String get worshipGuideTitle => 'ڕێبەری نوێژ و سوننەتەکان';
+
+  @override
+  String get howToPray => 'شێوازی نوێژکردن';
+
+  @override
+  String get sunnahPrayers => 'نوێژە سوننەتەکان';
+
+  @override
+  String get prohibitedTimes => 'کاتەکانی نەهی';
+
+  @override
+  String get congregationalMistakes => 'هەڵەکانی جەماعەت';
+
+  @override
+  String get prohibitedAfterFajr => 'کاتەکانی نەهی (پاش بەیانی تا بەرزی خۆر)';
+
+  @override
+  String get duhaTimeActive => 'کاتی نوێژی چێشتەنگاوە (الضحى)';
+
+  @override
+  String get prohibitedZenith => 'کاتەکانی نەهی (وەستانی خۆر پێش نیوەڕۆ)';
+
+  @override
+  String get prohibitedAfterAsr => 'کاتەکانی نەهی (پاش عەسر تا ئاوابوون)';
+
+  @override
+  String get sunnahAndProhibitedGuide => 'نوێژە سوننەتەکان و کاتەکانی نەهی';
 }

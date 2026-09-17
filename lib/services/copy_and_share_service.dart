@@ -33,7 +33,10 @@ class CopyAndShareService {
                 kAyahAttribution,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Theme.of(context).colorScheme.onInverseSurface.withOpacity(0.9),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onInverseSurface
+                      .withOpacity(0.9),
                 ),
               ),
             ],

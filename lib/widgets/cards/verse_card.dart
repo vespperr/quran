@@ -42,8 +42,8 @@ class VerseCard extends StatelessWidget {
   final Function(VerseModel verseModel, bool isPlaying) playFunction;
   final Function(VerseModel verseModel, bool isFavorite) favoriteFunction;
   final Function(
-      EBookMarkType bookMarkType, VerseModel verseModel, bool isBookmark)
-  bookmarkFunction;
+          EBookMarkType bookMarkType, VerseModel verseModel, bool isBookmark)
+      bookmarkFunction;
   final Function(VerseModel) copyFunction;
   final Function(VerseModel) shareFunction;
   final String? selectedVerseKey;
@@ -68,32 +68,32 @@ class VerseCard extends StatelessWidget {
         key: globalKey,
         decoration: selectedVerseKey == verseModel.verseKey || isPlaying
             ? BoxDecoration(
-          color: AppColors.black9.withOpacity(0.26),
-          borderRadius: BorderRadius.circular(kSizeM),
-          boxShadow: const [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.25),
-              offset: Offset(0, 4),
-              blurRadius: 4,
-            )
-          ],
-          border: Border.all(
-            color: const Color.fromRGBO(0, 0, 0, 1),
-            width: 1,
-          ),
-        )
+                color: AppColors.black9.withOpacity(0.26),
+                borderRadius: BorderRadius.circular(kSizeM),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.25),
+                    offset: Offset(0, 4),
+                    blurRadius: 4,
+                  )
+                ],
+                border: Border.all(
+                  color: const Color.fromRGBO(0, 0, 0, 1),
+                  width: 1,
+                ),
+              )
             : BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: context
-                  .watch<QuranProvider>()
-                  .surahDetailsPageThemeColor
-                  .titleVectorColor
-                  .withOpacity(0.5),
-              width: 1,
-            ),
-          ),
-        ),
+                border: Border(
+                  top: BorderSide(
+                    color: context
+                        .watch<QuranProvider>()
+                        .surahDetailsPageThemeColor
+                        .titleVectorColor
+                        .withOpacity(0.5),
+                    width: 1,
+                  ),
+                ),
+              ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -110,16 +110,16 @@ class VerseCard extends StatelessWidget {
                 ),
                 isBookmark
                     ? Padding(
-                  padding:
-                  const EdgeInsets.only(left: kSizeM, top: kSizeM),
-                  child: SvgPicture.asset(
-                    ImageConstants.bookmarkIconCard,
-                    color: context
-                        .watch<QuranProvider>()
-                        .surahDetailsPageThemeColor
-                        .textColor,
-                  ),
-                )
+                        padding:
+                            const EdgeInsets.only(left: kSizeM, top: kSizeM),
+                        child: SvgPicture.asset(
+                          ImageConstants.bookmarkIconCard,
+                          color: context
+                              .watch<QuranProvider>()
+                              .surahDetailsPageThemeColor
+                              .textColor,
+                        ),
+                      )
                     : Container(),
               ],
             ),
@@ -197,14 +197,14 @@ class VerseCard extends StatelessWidget {
             width: double.infinity,
             decoration: isPlaying
                 ? BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.black10.withOpacity(0),
-                  AppColors.brandy.withOpacity(0.24),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(kSizeM),
-            )
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.black10.withOpacity(0),
+                        AppColors.brandy.withOpacity(0.24),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(kSizeM),
+                  )
                 : null,
             padding: const EdgeInsets.all(kSizeM),
             child: RichText(
@@ -224,7 +224,8 @@ class VerseCard extends StatelessWidget {
                         .textColor),
               ),
               textDirection: TextDirection.rtl,
-              textAlign: TextAlign.start, textScaler: TextScaler.linear(textScaleFactor),
+              textAlign: TextAlign.start,
+              textScaler: TextScaler.linear(textScaleFactor),
               /* style: context.theme.textTheme.displayLarge?.copyWith(
                 color: context.watch<QuranProvider>().surahDetailsPageThemeColor.textColor,
                 fontSize: 27,

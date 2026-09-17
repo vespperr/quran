@@ -847,4 +847,51 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get fridayNotificationBody =>
       'Don\'t forget to read Surah Al-Kahf & send Salawat today!';
+
+  @override
+  String get sunrise => 'Sunrise';
+
+  @override
+  String get duhaPrayer => 'Duha Prayer';
+
+  @override
+  String get duhaStartsAfterSunrise =>
+      'Duha prayer time begins approximately 20 minutes after sunrise';
+
+  @override
+  String get prayerGuide => 'Guide';
+
+  @override
+  String get tapForGuide => 'Tap for guide';
+
+  @override
+  String get worshipGuideTitle => 'Prayer & Sunnah Guide';
+
+  @override
+  String get howToPray => 'How to Pray';
+
+  @override
+  String get sunnahPrayers => 'Sunnah Prayers';
+
+  @override
+  String get prohibitedTimes => 'Prohibited Times';
+
+  @override
+  String get congregationalMistakes => 'Congregational Mistakes';
+
+  @override
+  String get prohibitedAfterFajr =>
+      'Prohibited time (After Fajr until sunrise)';
+
+  @override
+  String get duhaTimeActive => 'Time for Duha prayer (Salat al-Duha)';
+
+  @override
+  String get prohibitedZenith => 'Prohibited time (Sun at zenith before Dhuhr)';
+
+  @override
+  String get prohibitedAfterAsr => 'Prohibited time (After Asr until sunset)';
+
+  @override
+  String get sunnahAndProhibitedGuide => 'Sunnah prayers & prohibited times';
 }

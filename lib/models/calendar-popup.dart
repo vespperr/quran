@@ -80,13 +80,13 @@ class _CalendarPopupViewState extends State<CalendarPopupView>
                     child: Container(
                       decoration: BoxDecoration(
                         color: DesignSystem.surface,
-                        borderRadius: BorderRadius.circular(
-                            DesignSystem.cornerRadius),
+                        borderRadius:
+                            BorderRadius.circular(DesignSystem.cornerRadius),
                         boxShadow: DesignSystem.shadowSoft,
                       ),
                       child: InkWell(
-                        borderRadius: BorderRadius.circular(
-                            DesignSystem.cornerRadius),
+                        borderRadius:
+                            BorderRadius.circular(DesignSystem.cornerRadius),
                         onTap: () {},
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -194,7 +194,8 @@ class _CalendarPopupViewState extends State<CalendarPopupView>
                                     if (startDate != null &&
                                         endDate != null &&
                                         widget.onApplyClick != null) {
-                                      widget.onApplyClick!(startDate!, endDate!);
+                                      widget.onApplyClick!(
+                                          startDate!, endDate!);
                                       Navigator.pop(context);
                                     }
                                   },

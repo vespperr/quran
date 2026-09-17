@@ -25,27 +25,27 @@ class SecondaryButton extends StatelessWidget {
       child: ScaleTapWidget(
         onTap: onPressed,
         child: Container(
-            height: 65,
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: kSizeXL),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(NonQuranStyle.cardRadiusSmall),
-              color: DesignSystem.primary,
-              boxShadow: DesignSystem.softGlowShadow,
-            ),
-            child: Row(
-              children: [
-                const SizedBox(width: kSizeXXL),
-                icon,
-                const SizedBox(width: kSizeXXL),
-                Text(
-                  text,
-                  style: context.theme.textTheme.headlineSmall
-                      ?.copyWith(color: DesignSystem.onPrimary),
-                  textAlign: TextAlign.left,
-                ),
-              ],
-            ),
+          height: 65,
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: kSizeXL),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(NonQuranStyle.cardRadiusSmall),
+            color: DesignSystem.primary,
+            boxShadow: DesignSystem.softGlowShadow,
+          ),
+          child: Row(
+            children: [
+              const SizedBox(width: kSizeXXL),
+              icon,
+              const SizedBox(width: kSizeXXL),
+              Text(
+                text,
+                style: context.theme.textTheme.headlineSmall
+                    ?.copyWith(color: DesignSystem.onPrimary),
+                textAlign: TextAlign.left,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -97,27 +97,34 @@ class QuranPageWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.auto_stories_outlined,
-                    size: 13,
-                    color: surahDetailsPageTheme.titleVectorColor
-                        .withValues(alpha: 0.6),
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    surahName.isNotEmpty ? surahName : '',
-                    style: TextStyle(
-                      fontFamily: Fonts.surahNames,
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: textColor,
+              Flexible(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.auto_stories_outlined,
+                      size: 13,
+                      color: surahDetailsPageTheme.titleVectorColor
+                          .withValues(alpha: 0.6),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 5),
+                    Flexible(
+                      child: Text(
+                        surahName.isNotEmpty ? surahName : '',
+                        style: TextStyle(
+                          fontFamily: Fonts.surahNames,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 6),
               Text(
                 '۞',
                 style: TextStyle(
@@ -126,6 +133,7 @@ class QuranPageWidget extends StatelessWidget {
                       .withValues(alpha: 0.5),
                 ),
               ),
+              const SizedBox(width: 6),
               Text(
                 'الجُزْءُ ${Utils.getArabicVerseNo(juzNumber.toString())}',
                 style: TextStyle(
@@ -182,7 +190,6 @@ class QuranPageWidget extends StatelessWidget {
             fontSize: 20,
             fontFamily: Fonts.getArabicFont(fontTypeArabic),
             color: quran.surahDetailsPageThemeColor.textColor,
-            letterSpacing: -0.7,
           ) ??
           const TextStyle();
       return SizedBox(
@@ -205,7 +212,6 @@ class QuranPageWidget extends StatelessWidget {
                       style: context.theme.textTheme.headlineLarge?.copyWith(
                         fontFamily: Fonts.uthmanicIcon,
                         fontSize: 16,
-                        letterSpacing: -2.5,
                         height: 1.2,
                         color: quran.surahDetailsPageThemeColor.titleVectorColor
                             .withValues(alpha: 0.85),
@@ -247,7 +253,6 @@ class QuranPageWidget extends StatelessWidget {
           fontSize: 20,
           fontFamily: Fonts.getArabicFont(fontTypeArabic),
           color: quran.surahDetailsPageThemeColor.textColor,
-          letterSpacing: -0.7,
         ) ??
         const TextStyle();
     final verseSpans = quran.getVerseDisplaySpans(verse, baseStyle);
@@ -268,7 +273,6 @@ class QuranPageWidget extends StatelessWidget {
               style: context.theme.textTheme.headlineLarge?.copyWith(
                 fontFamily: Fonts.uthmanicIcon,
                 fontSize: 16,
-                letterSpacing: -2.5,
                 height: 1.2,
                 color: quran.surahDetailsPageThemeColor.titleVectorColor
                     .withValues(alpha: 0.85),
@@ -302,12 +306,16 @@ class QuranPageWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'حِزْبُ ${Utils.getArabicVerseNo(verse.hizbNumber?.toString() ?? '1')}',
-              style: TextStyle(
-                fontSize: 11.5,
-                fontWeight: FontWeight.w500,
-                color: subColor,
+            Flexible(
+              child: Text(
+                'حِزْبُ ${Utils.getArabicVerseNo(verse.hizbNumber?.toString() ?? '1')}',
+                style: TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w500,
+                  color: subColor,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             Container(
@@ -341,15 +349,15 @@ class QuranPageWidget extends StatelessWidget {
                       color: const Color(0xFFD4AF37).withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('۩ ',
+                        const Text('۩ ',
                             style: TextStyle(
                                 fontSize: 12, color: Color(0xFFD4AF37))),
                         Text(
-                          'سَجْدَة',
-                          style: TextStyle(
+                          context.translate.sajda,
+                          style: const TextStyle(
                             fontSize: 10.5,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFFD4AF37),
@@ -358,11 +366,16 @@ class QuranPageWidget extends StatelessWidget {
                       ],
                     ),
                   )
-                : Text(
-                    '${context.translate.page} ${verse.pageNumber ?? ""}',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: subColor.withValues(alpha: 0.7),
+                : Flexible(
+                    child: Text(
+                      '${context.translate.page} ${verse.pageNumber ?? ""}',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: subColor.withValues(alpha: 0.7),
+                      ),
+                      textAlign: TextAlign.end,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
           ],

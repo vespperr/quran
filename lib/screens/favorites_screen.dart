@@ -27,7 +27,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         title: context.translate.favorites,
         leading: widget.showBackButton
             ? IconButton(
-                icon: Icon(Icons.arrow_back, color: context.theme.appBarTheme.iconTheme?.color),
+                icon: Icon(Icons.arrow_back,
+                    color: context.theme.appBarTheme.iconTheme?.color),
                 onPressed: () => Navigator.of(context).pop(),
               )
             : null,

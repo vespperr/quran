@@ -81,8 +81,8 @@ class JuzItemCard extends StatelessWidget {
 
   static const double _surahChipHeight = 22.0;
   static const int _compactMaxLines = 3;
-  static const double _compactMaxHeight =
-      _surahChipHeight * _compactMaxLines + DesignSystem.space8 * (_compactMaxLines - 1);
+  static const double _compactMaxHeight = _surahChipHeight * _compactMaxLines +
+      DesignSystem.space8 * (_compactMaxLines - 1);
 
   Widget _buildSurahList() {
     final wrap = Wrap(

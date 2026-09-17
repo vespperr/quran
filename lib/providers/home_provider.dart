@@ -11,7 +11,8 @@ class HomeProvider extends ChangeNotifier {
   EJuzListType juzListType = EJuzListType.list;
 
   /// Home juz and surah toggle buttons (default: show surah list)
-  EJuzSurahToggleOptions juzSurahToggleOptionType = EJuzSurahToggleOptions.surah;
+  EJuzSurahToggleOptions juzSurahToggleOptionType =
+      EJuzSurahToggleOptions.surah;
 
   /// Change type Juz, Surah or Search
   void changeJuzOrSurahToggleOptionType(EJuzSurahToggleOptions newOptionType) {

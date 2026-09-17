@@ -11,10 +11,8 @@ class AssetQuranService {
   static Future<List<SurahModel>> getAllOfSurahs() async {
     String data = await rootBundle.loadString(JsonPathConstants.quran);
     var result = json.decode(data) as List;
-    final list = result
-        .map((e) => SurahModel.fromJson(e))
-        .toList()
-        .cast<SurahModel>();
+    final list =
+        result.map((e) => SurahModel.fromJson(e)).toList().cast<SurahModel>();
     // Ensure canonical order by id so surahs[index] always has id == index + 1 (fixes wrong surah opening, e.g. Al-Furqan -> An-Nur)
     list.sort((a, b) => (a.id ?? 0).compareTo(b.id ?? 0));
     return list;

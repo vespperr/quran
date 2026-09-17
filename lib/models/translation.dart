@@ -1,4 +1,3 @@
-
 import '../constants/enums.dart';
 import '../utils/utils.dart';
 
@@ -28,7 +27,8 @@ class TranslationCountry {
 
   List<TranslationAuthor> get downloadedList {
     return translationsAuthor
-        .where((element) => element.verseTranslationState == EVerseTranslationState.downloaded)
+        .where((element) =>
+            element.verseTranslationState == EVerseTranslationState.downloaded)
         .toList();
   }
 }
@@ -38,7 +38,8 @@ class TranslationAuthor {
   String? authorName;
   int? resourceId;
   bool isTranslationSelected = false;
-  EVerseTranslationState verseTranslationState = EVerseTranslationState.download;
+  EVerseTranslationState verseTranslationState =
+      EVerseTranslationState.download;
   List<VerseTranslation> verseTranslations = [];
 
   TranslationAuthor({this.translationName, this.authorName, this.resourceId});
@@ -71,7 +72,8 @@ class TranslationAuthor {
     data['resource_id'] = resourceId;
     data['isTranslationSelected'] = isTranslationSelected;
     data['verseTranslationState'] = verseTranslationState.index;
-    data['verseTranslations'] = verseTranslations.map((e) => e.toJson()).toList();
+    data['verseTranslations'] =
+        verseTranslations.map((e) => e.toJson()).toList();
     return data;
   }
 }

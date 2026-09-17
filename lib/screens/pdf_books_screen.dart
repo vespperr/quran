@@ -16,7 +16,8 @@ class PdfBooksScreen extends StatefulWidget {
 }
 
 class _PdfBooksScreenState extends State<PdfBooksScreen> {
-  Future<void> _openBook(BuildContext context, String assetPath, String title) async {
+  Future<void> _openBook(
+      BuildContext context, String assetPath, String title) async {
     final navigator = Navigator.of(context);
     showDialog<void>(
       context: context,
@@ -169,5 +170,4 @@ class _PdfBooksScreenState extends State<PdfBooksScreen> {
       ),
     );
   }
-
 }

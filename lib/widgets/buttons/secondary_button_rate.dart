@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_open_quran/constants/constants.dart';
 
-
 class SecondaryButtonRate extends StatelessWidget {
   /// Button label [String]
   final String text;

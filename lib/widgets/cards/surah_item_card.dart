@@ -44,7 +44,9 @@ class SurahItemCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        surahModel.nameTranslated ?? surahModel.nameSimple ?? '',
+                        surahModel.nameTranslated ??
+                            surahModel.nameSimple ??
+                            '',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -56,28 +58,30 @@ class SurahItemCard extends StatelessWidget {
                         surahId: surahModel.id!,
                         color: DesignSystem.onSurface.withValues(alpha: 0.8),
                         height: 20,
-                        fallbackText: surahModel.nameArabic ?? surahModel.nameSimple ?? '',
+                        fallbackText: surahModel.nameArabic ??
+                            surahModel.nameSimple ??
+                            '',
                       ),
                       Row(
-                      children: [
-                        Text(
-                          _revelationLabel(surahModel.revelationPlace),
-                          style: mutedStyle,
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          child: _SmallDot(),
-                        ),
-                        Text(
-                          "${surahModel.verses.length} ${context.translate.ayat}",
-                          style: mutedStyle,
-                        ),
-                        const Spacer(),
-                      ],
-                    ),
-                  ],
+                        children: [
+                          Text(
+                            _revelationLabel(surahModel.revelationPlace),
+                            style: mutedStyle,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: _SmallDot(),
+                          ),
+                          Text(
+                            "${surahModel.verses.length} ${context.translate.ayat}",
+                            style: mutedStyle,
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
                 Icon(
                   Icons.arrow_forward_ios_outlined,
                   size: 14,
@@ -153,7 +157,11 @@ class _SmallDot extends StatelessWidget {
       height: 4,
       width: 4,
       decoration: BoxDecoration(
-            color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.4) ??
+        color: Theme.of(context)
+                .textTheme
+                .bodyLarge
+                ?.color
+                ?.withValues(alpha: 0.4) ??
             DesignSystem.onSurface.withValues(alpha: 0.4),
         shape: BoxShape.circle,
       ),

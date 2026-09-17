@@ -46,7 +46,8 @@ class PermissionsScreen extends StatelessWidget {
             _PermissionCard(
               icon: Icons.notifications_outlined,
               title: context.translate.permissionsNotifications,
-              description: context.translate.permissionsNotificationsDescription,
+              description:
+                  context.translate.permissionsNotificationsDescription,
               buttonLabel: context.translate.openSettings,
               onPressed: () async {
                 final status = await Permission.notification.request();
@@ -61,7 +62,8 @@ class PermissionsScreen extends StatelessWidget {
             _PermissionCard(
               icon: Icons.alarm,
               title: 'ئاگادارکردنەوەی دقیق (Alarms & Reminders)',
-              description: 'بۆ کارکردنی ئاگادارکردنەوەی نوێژەکان و بانگ دان لە کاتی دیاریکراودا لە پاشبنەمادا.',
+              description:
+                  'بۆ کارکردنی ئاگادارکردنەوەی نوێژەکان و بانگ دان لە کاتی دیاریکراودا لە پاشبنەمادا.',
               buttonLabel: context.translate.openSettings,
               onPressed: () async {
                 await openAppSettings();

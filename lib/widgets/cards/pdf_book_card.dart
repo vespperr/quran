@@ -30,6 +30,7 @@ class _PdfBookCardState extends State<PdfBookCard>
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
   Uint8List? _thumbnailBytes;
+
   /// True while loading a native thumbnail (Android).
   bool _thumbnailLoading = false;
 
@@ -203,7 +204,8 @@ class _PdfBookCardState extends State<PdfBookCard>
                 ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 0, right: 4, top: 4, bottom: 4),
+            padding:
+                const EdgeInsets.only(left: 0, right: 4, top: 4, bottom: 4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -242,9 +244,12 @@ class _PdfBookCardState extends State<PdfBookCard>
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Row(
               children: [
-                _buildInfoChip(context, context.translate.pdf, context.translate.format),
-                _buildInfoChip(context, context.translate.book, context.translate.type),
-                _buildInfoChip(context, context.translate.read, context.translate.openBook),
+                _buildInfoChip(
+                    context, context.translate.pdf, context.translate.format),
+                _buildInfoChip(
+                    context, context.translate.book, context.translate.type),
+                _buildInfoChip(context, context.translate.read,
+                    context.translate.openBook),
               ],
             ),
           ),

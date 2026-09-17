@@ -28,8 +28,7 @@ class MemorizationPlanModel {
         'isMemorized': isMemorized,
       };
 
-  MemorizationPlanModel copyWith({bool? isMemorized}) =>
-      MemorizationPlanModel(
+  MemorizationPlanModel copyWith({bool? isMemorized}) => MemorizationPlanModel(
         verse: verse,
         startDate: startDate,
         endDate: endDate,

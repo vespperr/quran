@@ -23,7 +23,8 @@ class SupportUsScreen extends StatelessWidget {
       SnackBar(
         content: Row(
           children: [
-            const Icon(Icons.check_circle_rounded, color: Colors.white, size: 20),
+            const Icon(Icons.check_circle_rounded,
+                color: Colors.white, size: 20),
             const SizedBox(width: 10),
             Text(context.translate.copiedToast(label)),
           ],
@@ -68,7 +69,8 @@ class SupportUsScreen extends StatelessWidget {
   }
 
   Future<void> _openSuperQiApp(BuildContext context) async {
-    _copyToClipboard(context, superQiAccountNumber, context.translate.superQiTitle);
+    _copyToClipboard(
+        context, superQiAccountNumber, context.translate.superQiTitle);
     final uris = [
       Uri.parse('superqi://transfer?account=910142284272'),
       Uri.parse('superqi://send?account=910142284272'),
@@ -205,10 +207,12 @@ class SupportUsScreen extends StatelessWidget {
 
                   // Prominent Tappable Number Badge with Copy Button
                   InkWell(
-                    onTap: () => _copyToClipboard(context, fibPhoneNumber, context.translate.fibTitle),
+                    onTap: () => _copyToClipboard(
+                        context, fibPhoneNumber, context.translate.fibTitle),
                     borderRadius: BorderRadius.circular(14),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(14),
@@ -236,7 +240,8 @@ class SupportUsScreen extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
                               color: const Color(0xFFD4AF37),
                               borderRadius: BorderRadius.circular(10),
@@ -244,7 +249,8 @@ class SupportUsScreen extends StatelessWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(Icons.copy_rounded, color: Color(0xFF0E2E25), size: 16),
+                                const Icon(Icons.copy_rounded,
+                                    color: Color(0xFF0E2E25), size: 16),
                                 const SizedBox(width: 4),
                                 Text(
                                   context.translate.copy,
@@ -318,10 +324,12 @@ class SupportUsScreen extends StatelessWidget {
 
                   // Prominent Tappable Account Number Badge with Copy Button
                   InkWell(
-                    onTap: () => _copyToClipboard(context, superQiAccountNumber, context.translate.superQiTitle),
+                    onTap: () => _copyToClipboard(context, superQiAccountNumber,
+                        context.translate.superQiTitle),
                     borderRadius: BorderRadius.circular(14),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(14),
@@ -349,7 +357,8 @@ class SupportUsScreen extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
                               color: const Color(0xFFD4AF37),
                               borderRadius: BorderRadius.circular(10),
@@ -357,7 +366,8 @@ class SupportUsScreen extends StatelessWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(Icons.copy_rounded, color: Color(0xFF0E2E25), size: 16),
+                                const Icon(Icons.copy_rounded,
+                                    color: Color(0xFF0E2E25), size: 16),
                                 const SizedBox(width: 4),
                                 Text(
                                   context.translate.copy,

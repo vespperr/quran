@@ -153,14 +153,16 @@ class _FridaySunnahsScreenState extends State<FridaySunnahsScreen> {
                         children: [
                           Text(
                             context.translate.readSurahKahf,
-                            style: context.theme.textTheme.titleMedium?.copyWith(
+                            style:
+                                context.theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             context.translate.readSurahKahfDesc,
                             style: context.theme.textTheme.bodySmall?.copyWith(
-                              color: DesignSystem.onSurface.withValues(alpha: 0.6),
+                              color:
+                                  DesignSystem.onSurface.withValues(alpha: 0.6),
                             ),
                           ),
                         ],
@@ -189,7 +191,8 @@ class _FridaySunnahsScreenState extends State<FridaySunnahsScreen> {
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(DesignSystem.radiusPill),
+                        borderRadius:
+                            BorderRadius.circular(DesignSystem.radiusPill),
                       ),
                     ),
                     icon: const Icon(Icons.auto_stories_rounded, size: 20),
@@ -237,13 +240,15 @@ class _FridaySunnahsScreenState extends State<FridaySunnahsScreen> {
                         Text(
                           context.translate.salawatCounterDesc,
                           style: context.theme.textTheme.bodySmall?.copyWith(
-                            color: DesignSystem.onSurface.withValues(alpha: 0.6),
+                            color:
+                                DesignSystem.onSurface.withValues(alpha: 0.6),
                           ),
                         ),
                       ],
                     ),
                     IconButton(
-                      icon: const Icon(Icons.refresh_rounded, color: Colors.grey),
+                      icon:
+                          const Icon(Icons.refresh_rounded, color: Colors.grey),
                       tooltip: context.translate.resetCounter,
                       onPressed: () {
                         HapticFeedback.mediumImpact();
@@ -282,7 +287,8 @@ class _FridaySunnahsScreenState extends State<FridaySunnahsScreen> {
                       children: [
                         Text(
                           '$count',
-                          style: context.theme.textTheme.headlineLarge?.copyWith(
+                          style:
+                              context.theme.textTheme.headlineLarge?.copyWith(
                             color: DesignSystem.primary,
                             fontWeight: FontWeight.bold,
                           ),
@@ -356,7 +362,8 @@ class _FridaySunnahsScreenState extends State<FridaySunnahsScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
                 side: BorderSide(
-                  color: isChecked ? DesignSystem.primary : DesignSystem.outline,
+                  color:
+                      isChecked ? DesignSystem.primary : DesignSystem.outline,
                 ),
               ),
               child: ListTile(

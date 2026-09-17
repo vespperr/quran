@@ -72,7 +72,8 @@ class BottomNavBarScreen extends StatefulWidget {
   State<BottomNavBarScreen> createState() => _BottomNavBarScreenState();
 }
 
-class _BottomNavBarScreenState extends State<BottomNavBarScreen> with RouteAware {
+class _BottomNavBarScreenState extends State<BottomNavBarScreen>
+    with RouteAware {
   /// Current index of bottom navigation bar: defaults to 2 (Prayer Times)
   int currentIndex = 2;
   bool _subscribed = false;
@@ -132,7 +133,13 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> with RouteAware
   }
 
   /// Bar has 5 items: [Quran, Thikr(FAB), Library, Prayer, Settings]. Pages: 0=Quran, 1=Library, 2=Prayer, 3=Settings. Thikr opens sheet.
-  int get _selectedBarIndex => currentIndex == 0 ? 0 : currentIndex == 1 ? 2 : currentIndex == 2 ? 3 : 4;
+  int get _selectedBarIndex => currentIndex == 0
+      ? 0
+      : currentIndex == 1
+          ? 2
+          : currentIndex == 2
+              ? 3
+              : 4;
 
   Widget get buildBody {
     return IndexedStack(
@@ -192,11 +199,35 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> with RouteAware
                   textDirection: TextDirection.ltr,
                   child: Row(
                     children: [
-                      Expanded(child: _buildNavTab(0, tabOrder[0], tabOrder[0] == _selectedBarIndex, t, metrics.iconSize)),
-                      Expanded(child: _buildNavTab(2, tabOrder[1], tabOrder[1] == _selectedBarIndex, t, metrics.iconSize)),
+                      Expanded(
+                          child: _buildNavTab(
+                              0,
+                              tabOrder[0],
+                              tabOrder[0] == _selectedBarIndex,
+                              t,
+                              metrics.iconSize)),
+                      Expanded(
+                          child: _buildNavTab(
+                              2,
+                              tabOrder[1],
+                              tabOrder[1] == _selectedBarIndex,
+                              t,
+                              metrics.iconSize)),
                       SizedBox(width: metrics.notchRadius * 2),
-                      Expanded(child: _buildNavTab(3, tabOrder[2], tabOrder[2] == _selectedBarIndex, t, metrics.iconSize)),
-                      Expanded(child: _buildNavTab(4, tabOrder[3], tabOrder[3] == _selectedBarIndex, t, metrics.iconSize)),
+                      Expanded(
+                          child: _buildNavTab(
+                              3,
+                              tabOrder[2],
+                              tabOrder[2] == _selectedBarIndex,
+                              t,
+                              metrics.iconSize)),
+                      Expanded(
+                          child: _buildNavTab(
+                              4,
+                              tabOrder[3],
+                              tabOrder[3] == _selectedBarIndex,
+                              t,
+                              metrics.iconSize)),
                     ],
                   ),
                 ),
@@ -216,7 +247,8 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> with RouteAware
     );
   }
 
-  Widget _buildNavTab(int displayIndex, int rawIndex, bool selected, AppLocalizations t, double iconSize) {
+  Widget _buildNavTab(int displayIndex, int rawIndex, bool selected,
+      AppLocalizations t, double iconSize) {
     return _NavTab(
       selected: selected,
       onTap: () => _onTabTap(rawIndex),
@@ -226,7 +258,9 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> with RouteAware
   }
 
   Widget _buildTabIcon(int rawIndex, bool selected, double iconSize) {
-    final color = selected ? DesignSystem.primary : DesignSystem.onSurface.withValues(alpha: 0.6);
+    final color = selected
+        ? DesignSystem.primary
+        : DesignSystem.onSurface.withValues(alpha: 0.6);
     switch (rawIndex) {
       case 0:
         return SvgPicture.asset(
@@ -250,7 +284,8 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> with RouteAware
             width: iconSize,
             height: iconSize,
             fit: BoxFit.contain,
-            errorBuilder: (_, __, ___) => Icon(Icons.schedule, size: iconSize, color: color),
+            errorBuilder: (_, __, ___) =>
+                Icon(Icons.schedule, size: iconSize, color: color),
           ),
         );
       case 4:
@@ -266,11 +301,16 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> with RouteAware
 
   String _tabLabel(int rawIndex, AppLocalizations t) {
     switch (rawIndex) {
-      case 0: return t.quran;
-      case 2: return t.library;
-      case 3: return t.prayer;
-      case 4: return t.settings;
-      default: return '';
+      case 0:
+        return t.quran;
+      case 2:
+        return t.library;
+      case 3:
+        return t.prayer;
+      case 4:
+        return t.settings;
+      default:
+        return '';
     }
   }
 }
@@ -294,23 +334,25 @@ class _NavTab extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon,
-            const SizedBox(height: 4),
-            Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: context.theme.textTheme.labelSmall?.copyWith(
-                color: selected ? DesignSystem.primary : DesignSystem.onSurface.withValues(alpha: 0.6),
-                fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-              ),
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          icon,
+          const SizedBox(height: 4),
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: context.theme.textTheme.labelSmall?.copyWith(
+              color: selected
+                  ? DesignSystem.primary
+                  : DesignSystem.onSurface.withValues(alpha: 0.6),
+              fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -328,20 +370,28 @@ class _NavBarNotchedClipper extends CustomClipper<Path> {
     final v = radius * 2;
     final cx = size.width / 2;
     path.lineTo(0, 0);
-    path.arcTo(Rect.fromLTWH(0, 0, radius, radius), _deg2rad(180), _deg2rad(90), false);
+    path.arcTo(Rect.fromLTWH(0, 0, radius, radius), _deg2rad(180), _deg2rad(90),
+        false);
     path.arcTo(
       Rect.fromLTWH((cx - v / 2) - radius + v * 0.04, 0, radius, radius),
-      _deg2rad(270), _deg2rad(70), false,
+      _deg2rad(270),
+      _deg2rad(70),
+      false,
     );
     path.arcTo(
       Rect.fromLTWH(cx - v / 2, -v / 2, v, v),
-      _deg2rad(160), _deg2rad(-140), false,
+      _deg2rad(160),
+      _deg2rad(-140),
+      false,
     );
     path.arcTo(
       Rect.fromLTWH(cx + v / 2 - v * 0.04, 0, radius, radius),
-      _deg2rad(200), _deg2rad(70), false,
+      _deg2rad(200),
+      _deg2rad(70),
+      false,
     );
-    path.arcTo(Rect.fromLTWH(size.width - radius, 0, radius, radius), _deg2rad(270), _deg2rad(90), false);
+    path.arcTo(Rect.fromLTWH(size.width - radius, 0, radius, radius),
+        _deg2rad(270), _deg2rad(90), false);
     path.lineTo(size.width, 0);
     path.lineTo(size.width, size.height);
     path.lineTo(0, size.height);
@@ -350,11 +400,13 @@ class _NavBarNotchedClipper extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(_NavBarNotchedClipper oldClipper) => oldClipper.radius != radius;
+  bool shouldReclip(_NavBarNotchedClipper oldClipper) =>
+      oldClipper.radius != radius;
 }
 
 class _CenterFab extends StatelessWidget {
-  const _CenterFab({required this.size, required this.iconSize, required this.onTap});
+  const _CenterFab(
+      {required this.size, required this.iconSize, required this.onTap});
   final double size;
   final double iconSize;
   final VoidCallback onTap;
@@ -390,7 +442,8 @@ class _CenterFab extends StatelessWidget {
             fit: BoxFit.contain,
             color: DesignSystem.onPrimary,
             colorBlendMode: BlendMode.srcIn,
-            errorBuilder: (_, __, ___) => Icon(Icons.favorite, color: DesignSystem.onPrimary, size: iconSize),
+            errorBuilder: (_, __, ___) => Icon(Icons.favorite,
+                color: DesignSystem.onPrimary, size: iconSize),
           ),
         ),
       ),

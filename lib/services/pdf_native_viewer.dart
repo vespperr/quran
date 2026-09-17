@@ -1,6 +1,7 @@
 import 'dart:io' show Directory, File;
 
-import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform;
+import 'package:flutter/foundation.dart'
+    show TargetPlatform, defaultTargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,7 +13,8 @@ import '../screens/pdf_viewer_screen.dart';
 class PdfNativeViewer {
   PdfNativeViewer._();
 
-  static const MethodChannel _channel = MethodChannel('com.dya.azadalkrd/pdf_viewer');
+  static const MethodChannel _channel =
+      MethodChannel('com.dya.azadalkrd/pdf_viewer');
 
   static final Map<String, File> _materializedFiles = {};
   static final Map<String, Future<File>> _materializeInflight = {};
@@ -69,7 +71,8 @@ class PdfNativeViewer {
     try {
       final file = await materializeAssetToCache(assetPath);
       final uri = Uri.file(file.path);
-      final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+      final launched =
+          await launchUrl(uri, mode: LaunchMode.externalApplication);
       if (launched) return;
     } catch (_) {
       // Fall through to stub.

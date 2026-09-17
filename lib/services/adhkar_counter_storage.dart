@@ -53,7 +53,8 @@ class AdhkarTargetStorage {
     return null;
   }
 
-  static Future<void> setTarget(String sectionId, int dhikrId, int target) async {
+  static Future<void> setTarget(
+      String sectionId, int dhikrId, int target) async {
     final t = target < 1 ? 1 : target;
     await _box.write(_key(sectionId, dhikrId), t);
   }

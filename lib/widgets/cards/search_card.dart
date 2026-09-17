@@ -26,17 +26,21 @@ class SearchCard extends StatelessWidget {
           child: Container(
             width: double.infinity,
             height: 50,
-            padding: const EdgeInsets.symmetric(horizontal: DesignSystem.space16),
+            padding:
+                const EdgeInsets.symmetric(horizontal: DesignSystem.space16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
               color: DesignSystem.surface,
-              border: Border.all(color: DesignSystem.outline.withValues(alpha: 0.4)),
+              border: Border.all(
+                  color: DesignSystem.outline.withValues(alpha: 0.4)),
               boxShadow: DesignSystem.shadowSoft,
             ),
             child: Row(
               children: [
                 Expanded(child: searchFor(context)),
-                Icon(Icons.arrow_forward_ios, size: 14, color: DesignSystem.onSurface.withValues(alpha: 0.5)),
+                Icon(Icons.arrow_forward_ios,
+                    size: 14,
+                    color: DesignSystem.onSurface.withValues(alpha: 0.5)),
               ],
             ),
           ),

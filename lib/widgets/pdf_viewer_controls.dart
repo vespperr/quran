@@ -116,7 +116,8 @@ class PdfViewerControls extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: DesignSystem.primary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(DesignSystem.radiusPill),
+                    borderRadius:
+                        BorderRadius.circular(DesignSystem.radiusPill),
                   ),
                   child: Text(
                     '${d.currentPage} / ${d.totalPages}',

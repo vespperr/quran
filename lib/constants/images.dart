@@ -18,16 +18,22 @@ class ImageConstants {
       "${_iconsPath}ic_favorite_active.svg";
   static const String favoriteInactiveIcon =
       "${_iconsPath}ic_favorite_inactive.svg";
+
   /// Athkars / Thikr (person in prayer) — use assets/images/ so they bundle
   static const String athkarsIcon = "${_basePath}thikr.png";
+
   /// Bottom nav Quran tab — SVG (use with SvgPicture.asset)
   static const String quranNavIcon = "lib/assets/quranlogo.svg";
+
   /// Prayer times (minaret) — under lib/assets/ (in pubspec)
   static const String prayerTimesIcon = "lib/assets/prayertimes.png";
+
   /// Decorative mihrab background for prayer times (768×1024, portrait 3:4).
   static const String adhanTimesBackground = "lib/assets/adhtantimesBG.png";
+
   /// Center nav tab (athkars / prayer beads) — replaces heart icon
   static const String athkarsNavIcon = "lib/assets/athkars2.svg";
+
   /// Decorative circular frame for surah numbers (green on black center)
   static const String surahNumberShape = "lib/assets/shapenumb.png";
   static const String playActiveIcon = "${_iconsPath}ic_play_active.svg";
@@ -43,6 +49,7 @@ class ImageConstants {
   static const String referencesIcon = "${_iconsPath}ic_references.svg";
   static const String surahNumberFrame =
       "${_iconsPath}ic_surah_number_frame.svg";
+
   /// Surah name SVGs (1.svg–114.svg) in assets/surahSVG/; use with ColorFilter to match design.
   static const String _surahSvgPath = "assets/surahSVG";
   static String surahNameSvg(int surahId) => "$_surahSvgPath/$surahId.svg";
@@ -87,6 +94,7 @@ class ImageConstants {
   static const String downloadIcon = "${_iconsPath}ic_download.svg";
   static const String okayBorderIcon = "${_iconsPath}ic_okay_border.svg";
   static const String launchIcon = "${_iconsPath}ic_launch.png";
+
   /// App logo (used in references, about, etc.)
   static const String appLogo = "lib/assets/logo.png";
   static const String versNumberFrame =

@@ -311,5 +311,20 @@
     "fridayReminders": "تنبيهات الجمعة",
     "fridayRemindersDesc": "تلقي تذكيرات أسبوعية لسورة الكهف وسُنن الجمعة",
     "fridayNotificationTitle": "تذكير بسُنن الجمعة",
-    "fridayNotificationBody": "لا تنسَ قراءة سورة الكهف والصلاة على النبي ﷺ اليوم!"
+    "fridayNotificationBody": "لا تنسَ قراءة سورة الكهف والصلاة على النبي ﷺ اليوم!",
+    "sunrise": "الشروق",
+    "duhaPrayer": "صلاة الضحى",
+    "duhaStartsAfterSunrise": "يبدأ وقت صلاة الضحى بعد شروق الشمس بحوالي ٢٠ دقيقة",
+    "prayerGuide": "دليل",
+    "tapForGuide": "اضغط للدليل",
+    "worshipGuideTitle": "دليل الصلاة والسنن",
+    "howToPray": "صفة الصلاة",
+    "sunnahPrayers": "السنن والنوافل",
+    "prohibitedTimes": "أوقات النهي",
+    "congregationalMistakes": "أخطاء الجماعة",
+    "prohibitedAfterFajr": "أوقات النهي (بعد الفجر حتى ارتفاع الشمس)",
+    "duhaTimeActive": "وقت صلاة الضحى المستحب",
+    "prohibitedZenith": "أوقات النهي (استواء الشمس قبل الظهر)",
+    "prohibitedAfterAsr": "أوقات النهي (بعد العصر حتى الغروب)",
+    "sunnahAndProhibitedGuide": "السنن الرواتب وأوقات النهي"
 }

@@ -55,7 +55,8 @@ class _SplashScreenState extends State<SplashScreen>
             transitionDuration: const Duration(milliseconds: 300),
             pageBuilder: (context, animation, secondaryAnimation) =>
                 BottomNavBarScreen(routeObserver: widget.routeObserver),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
               return FadeTransition(
                 opacity: animation,
                 child: child,

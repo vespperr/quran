@@ -159,7 +159,9 @@ class VersePopUpMenu extends StatelessWidget {
       position: RelativeRect.fromRect(
         Rect.fromLTWH(
           position.dx + kSizeM,
-          position.dy + (menuSourceSize.height - 200 - kSizeM).clamp(0.0, double.infinity),
+          position.dy +
+              (menuSourceSize.height - 200 - kSizeM)
+                  .clamp(0.0, double.infinity),
           0,
           0,
         ),
@@ -183,8 +185,8 @@ class VersePopUpMenu extends StatelessWidget {
           ),
         ),
         PopupMenuItem(
-          onTap: () =>
-              bookmarkProvider.onTapBookMarkButton(EBookMarkType.verse, verse, isBookmark),
+          onTap: () => bookmarkProvider.onTapBookMarkButton(
+              EBookMarkType.verse, verse, isBookmark),
           child: VerseMenuItem(
             iconPath: isBookmark
                 ? ImageConstants.bookmarkActiveIcon

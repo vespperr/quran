@@ -311,5 +311,20 @@
     "fridayReminders": "Friday Reminders",
     "fridayRemindersDesc": "Get weekly reminders for Surah Al-Kahf & Friday Sunnahs",
     "fridayNotificationTitle": "Friday Sunnahs Reminder",
-    "fridayNotificationBody": "Don't forget to read Surah Al-Kahf & send Salawat today!"
+    "fridayNotificationBody": "Don't forget to read Surah Al-Kahf & send Salawat today!",
+    "sunrise": "Sunrise",
+    "duhaPrayer": "Duha Prayer",
+    "duhaStartsAfterSunrise": "Duha prayer time begins approximately 20 minutes after sunrise",
+    "prayerGuide": "Guide",
+    "tapForGuide": "Tap for guide",
+    "worshipGuideTitle": "Prayer & Sunnah Guide",
+    "howToPray": "How to Pray",
+    "sunnahPrayers": "Sunnah Prayers",
+    "prohibitedTimes": "Prohibited Times",
+    "congregationalMistakes": "Congregational Mistakes",
+    "prohibitedAfterFajr": "Prohibited time (After Fajr until sunrise)",
+    "duhaTimeActive": "Time for Duha prayer (Salat al-Duha)",
+    "prohibitedZenith": "Prohibited time (Sun at zenith before Dhuhr)",
+    "prohibitedAfterAsr": "Prohibited time (After Asr until sunset)",
+    "sunnahAndProhibitedGuide": "Sunnah prayers & prohibited times"
 }

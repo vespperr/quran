@@ -21,8 +21,10 @@ class SurahDetailsScreen extends StatefulWidget {
 class _SurahDetailsScreenState extends State<SurahDetailsScreen> {
   @override
   Widget build(BuildContext context) {
-    final themeIndex = context.watch<QuranProvider>().localSetting.surahDetailsPageThemeIndex;
-    final themeColor = context.watch<QuranProvider>().surahDetailsPageThemeColor;
+    final themeIndex =
+        context.watch<QuranProvider>().localSetting.surahDetailsPageThemeIndex;
+    final themeColor =
+        context.watch<QuranProvider>().surahDetailsPageThemeColor;
     final useLuxuryGradient = themeIndex == 0;
 
     return Scaffold(
@@ -55,10 +57,12 @@ class _SurahDetailsScreenState extends State<SurahDetailsScreen> {
                       context.watch<SurahDetailsProvider>().appBarDescription,
                   showSoundButton: true,
                   isActiveSoundIcon: soundActive,
-                  onTapSound: (_) =>
-                      context.read<SurahDetailsProvider>().onTapSoundIcon(false),
-                  isBookmarked:
-                      context.watch<SurahDetailsProvider>().appBarBookmarkActive,
+                  onTapSound: (_) => context
+                      .read<SurahDetailsProvider>()
+                      .onTapSoundIcon(false),
+                  isBookmarked: context
+                      .watch<SurahDetailsProvider>()
+                      .appBarBookmarkActive,
                   onTapBookmark: context
                       .read<SurahDetailsProvider>()
                       .onTapAppBarBookmarkIcon,
@@ -82,8 +86,6 @@ class _SurahDetailsScreenState extends State<SurahDetailsScreen> {
       ),
     );
   }
-
-
 
   /// Switch toggles
   /// [EQuranType.translation] and [EQuranType.reading]

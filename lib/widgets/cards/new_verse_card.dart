@@ -110,13 +110,15 @@ class VerseCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        context
-                            .read<SurahDetailsProvider>()
-                            .changeAyahNumberStyle();
-                      },
-                      child: _verseNumberBadge(context, themeColor),
+                    Flexible(
+                      child: GestureDetector(
+                        onTap: () {
+                          context
+                              .read<SurahDetailsProvider>()
+                              .changeAyahNumberStyle();
+                        },
+                        child: _verseNumberBadge(context, themeColor),
+                      ),
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.min,
@@ -191,12 +193,15 @@ class VerseCard extends StatelessWidget {
             color: themeColor.titleVectorColor.withValues(alpha: 0.7),
           ),
           const SizedBox(width: 5),
-          Text(
-            verseModel.verseKey ?? verseNumStr,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: themeColor.textColor,
+          Flexible(
+            child: Text(
+              verseModel.verseKey ?? verseNumStr,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: themeColor.textColor,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],
@@ -222,19 +227,19 @@ class VerseCard extends StatelessWidget {
             child: RichText(
               text: TextSpan(
                 style: context.theme.textTheme.headlineLarge?.copyWith(
-                    height:
-                        context.watch<QuranProvider>().localSetting.lineHeight,
-                    fontSize: 21,
-                    fontFamily: Fonts.getArabicFont(context
-                        .watch<QuranProvider>()
-                        .localSetting
-                        .fontTypeArabic),
-                    fontFamilyFallback: [Fonts.amiri],
-                    color: context
-                        .watch<QuranProvider>()
-                        .surahDetailsPageThemeColor
-                        .textColor,
-                    letterSpacing: -0.7),
+                  height:
+                      context.watch<QuranProvider>().localSetting.lineHeight,
+                  fontSize: 21,
+                  fontFamily: Fonts.getArabicFont(context
+                      .watch<QuranProvider>()
+                      .localSetting
+                      .fontTypeArabic),
+                  fontFamilyFallback: [Fonts.amiri],
+                  color: context
+                      .watch<QuranProvider>()
+                      .surahDetailsPageThemeColor
+                      .textColor,
+                ),
                 children: context.watch<QuranProvider>().getVerseDisplaySpans(
                       verseModel,
                       context.theme.textTheme.headlineLarge!.copyWith(
@@ -252,7 +257,6 @@ class VerseCard extends StatelessWidget {
                             .watch<QuranProvider>()
                             .surahDetailsPageThemeColor
                             .textColor,
-                        letterSpacing: -0.7,
                       ),
                     ),
               ),

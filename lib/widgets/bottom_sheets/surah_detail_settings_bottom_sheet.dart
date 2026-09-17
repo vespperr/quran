@@ -45,27 +45,29 @@ class SurahDetailSettingsBottomSheet extends StatelessWidget {
         onPrimary: DesignSystem.onPrimary,
         outline: DesignSystem.outline,
       ),
-      textTheme: base.textTheme.apply(
-        bodyColor: DesignSystem.onSurface,
-        displayColor: DesignSystem.onSurface,
-      ).copyWith(
-        bodyLarge: base.textTheme.bodyLarge?.copyWith(
-          color: DesignSystem.onSurface,
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        ),
-        bodyMedium: base.textTheme.bodyMedium?.copyWith(
-          color: DesignSystem.onSurface,
-          fontSize: 15,
-        ),
-        labelMedium: base.textTheme.labelMedium?.copyWith(
-          color: DesignSystem.onSurface,
-          fontSize: 14,
-        ),
-        labelSmall: base.textTheme.labelSmall?.copyWith(
-          color: DesignSystem.onSurface.withValues(alpha: 0.9),
-        ),
-      ),
+      textTheme: base.textTheme
+          .apply(
+            bodyColor: DesignSystem.onSurface,
+            displayColor: DesignSystem.onSurface,
+          )
+          .copyWith(
+            bodyLarge: base.textTheme.bodyLarge?.copyWith(
+              color: DesignSystem.onSurface,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+            bodyMedium: base.textTheme.bodyMedium?.copyWith(
+              color: DesignSystem.onSurface,
+              fontSize: 15,
+            ),
+            labelMedium: base.textTheme.labelMedium?.copyWith(
+              color: DesignSystem.onSurface,
+              fontSize: 14,
+            ),
+            labelSmall: base.textTheme.labelSmall?.copyWith(
+              color: DesignSystem.onSurface.withValues(alpha: 0.9),
+            ),
+          ),
       cardTheme: CardThemeData(
         color: DesignSystem.cardBackground,
         elevation: 0,
@@ -121,44 +123,79 @@ class SurahDetailSettingsBottomSheet extends StatelessWidget {
                     children: [
                       ReadOptionsToggleButton(
                         isPopUp: false,
-                        listType: context.watch<QuranProvider>().localSetting.readOptions,
-                        onValueChanged: context.read<QuranProvider>().changeReadingType,
+                        listType: context
+                            .watch<QuranProvider>()
+                            .localSetting
+                            .readOptions,
+                        onValueChanged:
+                            context.read<QuranProvider>().changeReadingType,
                       ),
                       SurahSizeSlider(
                         isPopUp: false,
-                        size: context.watch<QuranProvider>().localSetting.textScaleFactor,
+                        size: context
+                            .watch<QuranProvider>()
+                            .localSetting
+                            .textScaleFactor,
                         onChanged: context.read<QuranProvider>().changeFontSize,
                       ),
                       LineSpacingSlider(
                         isPopUp: false,
-                        lineHeight: context.watch<QuranProvider>().localSetting.lineHeight,
-                        onChanged: context.read<QuranProvider>().changeLineHeight,
+                        lineHeight: context
+                            .watch<QuranProvider>()
+                            .localSetting
+                            .lineHeight,
+                        onChanged:
+                            context.read<QuranProvider>().changeLineHeight,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           QuranFontButton(
-                            selectedFont: context.watch<QuranProvider>().localSetting.fontTypeArabic,
-                            onChangeArabicFont: context.watch<QuranProvider>().changeFontTypeArabic,
+                            selectedFont: context
+                                .watch<QuranProvider>()
+                                .localSetting
+                                .fontTypeArabic,
+                            onChangeArabicFont: context
+                                .watch<QuranProvider>()
+                                .changeFontTypeArabic,
                           ),
                           LayoutOptionsToggleButton(
                             isPopUp: false,
-                            layoutOptions: context.watch<QuranProvider>().localSetting.layoutOptions,
-                            onChanged: context.read<QuranProvider>().changeLayoutOptions,
+                            layoutOptions: context
+                                .watch<QuranProvider>()
+                                .localSetting
+                                .layoutOptions,
+                            onChanged: context
+                                .read<QuranProvider>()
+                                .changeLayoutOptions,
                           ),
                         ],
                       ),
                       TranslationBox(
                         onTap: () {
-                          Navigator.push(context, AppRoutes.fadeSlideRoute(
-                            builder: (context) => const QuranTranslationsScreen(),
-                          ));
+                          Navigator.push(
+                              context,
+                              AppRoutes.fadeSlideRoute(
+                                builder: (context) =>
+                                    const QuranTranslationsScreen(),
+                              ));
                         },
                       ),
                       BackgroundColorSelect(
-                        colors: const [AppColors.white2, AppColors.oasis, AppColors.white3, AppColors.grey7, AppColors.pink],
-                        defaultIndex: context.watch<QuranProvider>().localSetting.surahDetailsPageThemeIndex,
-                        onChangedColor: context.read<QuranProvider>().changeSurahDetailsPageTheme,
+                        colors: const [
+                          AppColors.white2,
+                          AppColors.oasis,
+                          AppColors.white3,
+                          AppColors.grey7,
+                          AppColors.pink
+                        ],
+                        defaultIndex: context
+                            .watch<QuranProvider>()
+                            .localSetting
+                            .surahDetailsPageThemeIndex,
+                        onChangedColor: context
+                            .read<QuranProvider>()
+                            .changeSurahDetailsPageTheme,
                       ),
                       const SizedBox(height: kSizeXL),
                       const _RecitationSettingsBlock(),
@@ -178,7 +215,8 @@ class _RecitationSettingsBlock extends StatefulWidget {
   const _RecitationSettingsBlock();
 
   @override
-  State<_RecitationSettingsBlock> createState() => _RecitationSettingsBlockState();
+  State<_RecitationSettingsBlock> createState() =>
+      _RecitationSettingsBlockState();
 }
 
 class _RecitationSettingsBlockState extends State<_RecitationSettingsBlock> {
@@ -240,7 +278,8 @@ class _RecitationSettingsBlockState extends State<_RecitationSettingsBlock> {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: kSizeM),
                     child: Text(
-                      context.translate.recitationDownloading((prog * 100).round()),
+                      context.translate
+                          .recitationDownloading((prog * 100).round()),
                     ),
                   );
                 }

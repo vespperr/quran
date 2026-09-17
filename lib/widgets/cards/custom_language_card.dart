@@ -22,7 +22,8 @@ class _CustomLanguageCardState extends State<CustomLanguageCard> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
-        color: NonQuranStyle.sectionCardBackground.withValues(alpha: isDark ? 0.3 : 0.7),
+        color: NonQuranStyle.sectionCardBackground
+            .withValues(alpha: isDark ? 0.3 : 0.7),
         borderRadius: BorderRadius.circular(NonQuranStyle.cardRadiusSmall),
         border: Border.all(
           color: NonQuranStyle.sectionAccentColor.withValues(alpha: 0.12),
@@ -34,16 +35,20 @@ class _CustomLanguageCardState extends State<CustomLanguageCard> {
           ...ESupportedLanguage.values.map(
             (e) => InkWell(
               onTap: () => widget.changedLocale(e.name.toLowerCase()),
-              borderRadius: BorderRadius.circular(NonQuranStyle.cardRadiusSmall),
+              borderRadius:
+                  BorderRadius.circular(NonQuranStyle.cardRadiusSmall),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: kSizeL, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: kSizeL, vertical: 14),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       e.title(context),
                       style: context.theme.textTheme.titleLarge?.copyWith(
-                        color: isDark ? AppColors.royalOnSurface : NonQuranStyle.unselectedText,
+                        color: isDark
+                            ? AppColors.royalOnSurface
+                            : NonQuranStyle.unselectedText,
                         fontWeight: FontWeight.w600,
                         fontSize: 17,
                       ),
@@ -62,7 +67,8 @@ class _CustomLanguageCardState extends State<CustomLanguageCard> {
                               child: SvgPicture.asset(
                                 ImageConstants.onSelectLetter,
                                 height: 16,
-                                colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+                                colorFilter: const ColorFilter.mode(
+                                    AppColors.white, BlendMode.srcIn),
                               ),
                             ),
                           )

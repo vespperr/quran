@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_open_quran/constants/constants.dart';
 
-
 class CustomTagList extends StatelessWidget {
   final List<String> tags;
   final Function(String) selectedTag;

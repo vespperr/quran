@@ -48,24 +48,34 @@ class AppColors {
   // ---- Premium design system (Material green 600) ----
   /// Primary — headers, primary actions, selected tab (#43A047)
   static const Color primary = Color(0xFF43A047);
+
   /// Primary variant — pressed / darker states (#2E7D32)
   static const Color primaryVariant = Color(0xFF2E7D32);
+
   /// Secondary — accents only: search, favorite when active (#4F46E5)
   static const Color secondary = Color(0xFF4F46E5);
+
   /// Background — scaffold / canvas (#FAFAF9)
   static const Color background = Color(0xFFFAFAF9);
+
   /// Surface — cards, app bar, bottom nav (#FFFFFF)
   static const Color surface = Color(0xFFFFFFFF);
+
   /// On background — primary UI text (#1C1917)
   static const Color onBackground = Color(0xFF1C1917);
+
   /// On surface — text on cards (#1C1917)
   static const Color onSurface = Color(0xFF1C1917);
+
   /// On primary — text on primary buttons (#FFFFFF)
   static const Color onPrimary = Color(0xFFFFFFFF);
+
   /// Outline — dividers, light borders (#E7E5E4)
   static const Color outline = Color(0xFFE7E5E4);
+
   /// Outline variant — disabled borders (#D6D3D1)
   static const Color outlineVariant = Color(0xFFD6D3D1);
+
   /// Error — errors only (#B91C1C)
   static const Color error = Color(0xFFB91C1C);
 
@@ -76,6 +86,7 @@ class AppColors {
   static const Color cardBackground = surface;
   static const Color textForest = onSurface;
   static const Color iconGreen = primary;
+
   /// For mushaf / theme options only
   static const Color palettePrimary = Color(0xFF4E56C0);
   static const Color paletteSecondary = Color(0xFF9B5DE0);
@@ -85,12 +96,16 @@ class AppColors {
   // Light theme — mint green palette (legacy; aligns with [primary])
   /// Very light mint green background (#F0FCF0)
   static const Color surfaceCream = Color(0xFFF0FCF0);
+
   /// Primary green accents (#43A047)
   static const Color accentGreen = Color(0xFF43A047);
+
   /// Header / title green (same family)
   static const Color accentGreenTitle = Color(0xFF43A047);
+
   /// Lighter green for subtitles (#66BB6A)
   static const Color accentGreenSecondary = Color(0xFF66BB6A);
+
   /// Dark gray for body text (#333333)
   static const Color textDark = Color(0xFF333333);
 
@@ -103,6 +118,7 @@ class AppColors {
   /// Royal palette — settings panel / bottom sheets (deep purple-indigo)
   static const Color royalSurface = Color(0xFF252038);
   static const Color royalAccent = Color(0xFF6B5B95);
+
   /// Lighter surface for cards/buttons on royal so they stand out
   static const Color royalCard = Color(0xFF3D3552);
   static const Color royalOnSurface = Color(0xFFE8E6ED);

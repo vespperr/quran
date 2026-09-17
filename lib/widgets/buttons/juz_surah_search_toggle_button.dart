@@ -58,24 +58,26 @@ class JuzSurahSearchToggleButton extends StatelessWidget {
                 key: const ValueKey<int>(1),
                 width: controlWidth,
                 child: CustomSearchBar(
-                  onCollapse: () => context.read<SearchProvider>().changeToggleSearchOptions(EToggleSearchOptions.toggles),
+                  onCollapse: () => context
+                      .read<SearchProvider>()
+                      .changeToggleSearchOptions(EToggleSearchOptions.toggles),
                 ),
               )
-                       : Row(
+            : Row(
                 key: const ValueKey<int>(0),
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SizedBox(
                     // Subtract the extra space (e.g. 8) from the width so it doesn't overflow
-                    width: controlWidth - 44 - 8, 
-                    child: buildJuzAndSurahToggles(controlWidth - 44 - 8, context),
+                    width: controlWidth - 44 - 8,
+                    child:
+                        buildJuzAndSurahToggles(controlWidth - 44 - 8, context),
                   ),
                   // Add your desired space here!
-                  const SizedBox(width: 8), 
+                  const SizedBox(width: 8),
                   buildSearchButton(context),
                 ],
               ),
-
       ),
     );
   }
@@ -97,7 +99,8 @@ class JuzSurahSearchToggleButton extends StatelessWidget {
         ),
         child: SvgPicture.asset(
           ImageConstants.searchIcon,
-          colorFilter: const ColorFilter.mode(DesignSystem.onPrimary, BlendMode.srcIn),
+          colorFilter:
+              const ColorFilter.mode(DesignSystem.onPrimary, BlendMode.srcIn),
         ),
       ),
     );
@@ -106,7 +109,7 @@ class JuzSurahSearchToggleButton extends StatelessWidget {
   /// Juz and Surah toggles — segmented control style (todo 8 will refine).
   Widget buildJuzAndSurahToggles(double controlWidth, BuildContext context) {
     final bool isJuz = toggleListType.index == 0;
-    
+
     return Container(
       width: controlWidth,
       height: 44,

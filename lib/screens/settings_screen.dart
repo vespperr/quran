@@ -86,7 +86,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    AppRoutes.fadeSlideRoute(builder: (context) => const LanguageScreen()),
+                    AppRoutes.fadeSlideRoute(
+                        builder: (context) => const LanguageScreen()),
                   );
                 },
               ),
@@ -195,10 +196,8 @@ class SettingsMenuCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconColor =
-        DesignSystem.textForest.withValues(alpha: 0.64);
-    final subtitleColor =
-        DesignSystem.textForest.withValues(alpha: 0.54);
+    final iconColor = DesignSystem.textForest.withValues(alpha: 0.64);
+    final subtitleColor = DesignSystem.textForest.withValues(alpha: 0.54);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),

@@ -135,10 +135,15 @@ class SearchProvider extends ChangeNotifier {
     List<VerseModel> searchResult = [];
     for (var verse in searchList) {
       if (verse.text!.toLowerCase().contains(queryText) ||
-          searchListSurah[verse.surahId! - 1].nameTranslated!.toLowerCase().contains(queryText)) {
+          searchListSurah[verse.surahId! - 1]
+              .nameTranslated!
+              .toLowerCase()
+              .contains(queryText)) {
         if (searchListSurah[verse.surahId! - 1].id == (verse.surahId!)) {
-          verse.surahNameTranslated = searchListSurah[verse.surahId! - 1].nameSimple;
-          verse.surahNameArabic = searchListSurah[verse.surahId! - 1].nameArabic;
+          verse.surahNameTranslated =
+              searchListSurah[verse.surahId! - 1].nameSimple;
+          verse.surahNameArabic =
+              searchListSurah[verse.surahId! - 1].nameArabic;
         }
         searchResult.add(verse);
       }
@@ -204,15 +209,19 @@ class SearchProvider extends ChangeNotifier {
     List<SurahModel> searchList = _context.read<QuranProvider>().surahs;
     List<SurahModel> searchResult = [];
     for (var surah in searchList) {
-      final byId = surah.id.toString() == trimmed || surah.id.toString() == queryLower;
-      final byTranslated = (surah.nameTranslated ?? '')
-          .toLowerCase()
-          .contains(queryLower);
-      final bySimple = (surah.nameSimple ?? '').toLowerCase().contains(queryLower);
-      final byComplex = (surah.nameComplex ?? '').toLowerCase().contains(queryLower);
-      final byPlace = (surah.revelationPlace ?? '').toLowerCase().contains(queryLower);
+      final byId =
+          surah.id.toString() == trimmed || surah.id.toString() == queryLower;
+      final byTranslated =
+          (surah.nameTranslated ?? '').toLowerCase().contains(queryLower);
+      final bySimple =
+          (surah.nameSimple ?? '').toLowerCase().contains(queryLower);
+      final byComplex =
+          (surah.nameComplex ?? '').toLowerCase().contains(queryLower);
+      final byPlace =
+          (surah.revelationPlace ?? '').toLowerCase().contains(queryLower);
       final byArabic = containsNormalized(surah.nameArabic ?? '', trimmed);
-      final byTurkish = (surah.nameTurkish ?? '').toLowerCase().contains(queryLower);
+      final byTurkish =
+          (surah.nameTurkish ?? '').toLowerCase().contains(queryLower);
       if (byId ||
           byTranslated ||
           bySimple ||
@@ -288,9 +297,11 @@ class SearchProvider extends ChangeNotifier {
         filterJuzNumber != null;
   }
 
-  Future<void> goToSurah(BuildContext context, int surahId, bool isHome, {int verseId = 1}) async {
+  Future<void> goToSurah(BuildContext context, int surahId, bool isHome,
+      {int verseId = 1}) async {
     if (!isHome) Navigator.pop(context);
-    await SurahDetailNavigationManager.goToSurah(context, surahId, verseId: verseId);
+    await SurahDetailNavigationManager.goToSurah(context, surahId,
+        verseId: verseId);
     notifyListeners();
   }
 
@@ -300,7 +311,8 @@ class SearchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> goToMushaf(BuildContext context, int pageNumber, bool isHome) async {
+  Future<void> goToMushaf(
+      BuildContext context, int pageNumber, bool isHome) async {
     if (!isHome) Navigator.pop(context);
     await SurahDetailNavigationManager.goToMushaf(context, pageNumber);
     notifyListeners();

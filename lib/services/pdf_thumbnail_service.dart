@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform;
+import 'package:flutter/foundation.dart'
+    show TargetPlatform, defaultTargetPlatform;
 import 'package:flutter/services.dart';
 
 import 'pdf_native_viewer.dart';
@@ -7,7 +8,8 @@ import 'pdf_native_viewer.dart';
 class PdfThumbnailService {
   PdfThumbnailService._();
 
-  static const MethodChannel _channel = MethodChannel('com.dya.azadalkrd/pdf_viewer');
+  static const MethodChannel _channel =
+      MethodChannel('com.dya.azadalkrd/pdf_viewer');
 
   static final Map<String, Future<Uint8List?>> _inflight = {};
 

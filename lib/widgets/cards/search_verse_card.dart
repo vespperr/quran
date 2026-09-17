@@ -24,7 +24,8 @@ class SearchVerseCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
           color: DesignSystem.surface,
-          border: Border.all(color: DesignSystem.outline.withValues(alpha: 0.4)),
+          border:
+              Border.all(color: DesignSystem.outline.withValues(alpha: 0.4)),
           boxShadow: DesignSystem.shadowSoft,
         ),
         child: Column(

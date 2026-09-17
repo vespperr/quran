@@ -68,14 +68,18 @@ class QuranProvider extends ChangeNotifier {
   /// Selecting translation
   /// If translation is not downloaded - Download it
   /// If translation is downloaded then select translation
-  Future<void> onTapTranslationAuthorCard(TranslationAuthor translationAuthor) async {
+  Future<void> onTapTranslationAuthorCard(
+      TranslationAuthor translationAuthor) async {
     switch (translationAuthor.verseTranslationState) {
       case EVerseTranslationState.download:
-        translationAuthor.verseTranslationState = EVerseTranslationState.downloading;
-        notifyListeners();
-        var result = await translationService.downloadTranslationFromNetwork(translationAuthor);
         translationAuthor.verseTranslationState =
-            result ? EVerseTranslationState.downloaded : EVerseTranslationState.download;
+            EVerseTranslationState.downloading;
+        notifyListeners();
+        var result = await translationService
+            .downloadTranslationFromNetwork(translationAuthor);
+        translationAuthor.verseTranslationState = result
+            ? EVerseTranslationState.downloaded
+            : EVerseTranslationState.download;
 
         break;
       case EVerseTranslationState.downloading:
@@ -84,11 +88,13 @@ class QuranProvider extends ChangeNotifier {
         if (translationAuthor.isTranslationSelected) {
           if (translationService.selectedTranslationAuthors.length > 1) {
             translationAuthor.isTranslationSelected = false;
-            TranslationDownloadManager.changeSelectedStateOfAuthor(translationAuthor.resourceId!, false);
+            TranslationDownloadManager.changeSelectedStateOfAuthor(
+                translationAuthor.resourceId!, false);
           }
         } else {
           translationAuthor.isTranslationSelected = true;
-          TranslationDownloadManager.changeSelectedStateOfAuthor(translationAuthor.resourceId!, true);
+          TranslationDownloadManager.changeSelectedStateOfAuthor(
+              translationAuthor.resourceId!, true);
         }
         break;
     }
@@ -178,7 +184,8 @@ class QuranProvider extends ChangeNotifier {
   }
 
   /// Delete a Downloaded Translation
-  Future<void> deleteTranslationAuthor(TranslationAuthor translationAuthor) async {
+  Future<void> deleteTranslationAuthor(
+      TranslationAuthor translationAuthor) async {
     await translationService.deleteTranslationAuthor(translationAuthor);
     notifyListeners();
   }

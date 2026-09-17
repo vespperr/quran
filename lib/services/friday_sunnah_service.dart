@@ -72,7 +72,7 @@ class FridaySunnahService {
     final box = GetStorage(boxName);
     final current = isChecked(key);
     final newValue = !current;
-    
+
     final map = Map<String, bool>.from(checklistNotifier.value);
     map[key] = newValue;
     checklistNotifier.value = map;

@@ -49,7 +49,8 @@ class LocalDbPrayerTimesSource implements PrayerTimesSource {
       PrayerTimesDb.getCities(includeIraq: includeIraq);
 
   @override
-  Future<List<PrayerCountryModel>> getPrayerCountries() => PrayerTimesDb.getPrayerCountries();
+  Future<List<PrayerCountryModel>> getPrayerCountries() =>
+      PrayerTimesDb.getPrayerCountries();
 
   @override
   Future<List<PrayerCityModel>> getCitiesForCountryIso(String iso) =>
@@ -77,7 +78,8 @@ class LocalDbPrayerTimesSource implements PrayerTimesSource {
     bool includeIraq = false,
     String? countryIso,
   }) =>
-      PrayerTimesDb.getTodayPrayerTimes(city, includeIraq: includeIraq, countryIso: countryIso);
+      PrayerTimesDb.getTodayPrayerTimes(city,
+          includeIraq: includeIraq, countryIso: countryIso);
 
   /// See [PrayerTimesDb.fetchTodayPrayerTimesForCity] (explicit name for SQL “today + city” loads).
   Future<List<PrayerTimeModel>> fetchTodayPrayerTimesForCity(
@@ -97,7 +99,8 @@ class LocalDbPrayerTimesSource implements PrayerTimesSource {
     bool includeIraq = false,
     String? countryIso,
   }) =>
-      PrayerTimesDb.getTomorrowPrayerTimes(city, includeIraq: includeIraq, countryIso: countryIso);
+      PrayerTimesDb.getTomorrowPrayerTimes(city,
+          includeIraq: includeIraq, countryIso: countryIso);
 }
 
 /// Placeholder for future HTTP/API-backed regions (Phase C2).
@@ -107,17 +110,20 @@ class ApiPrayerTimesSource implements PrayerTimesSource {
 
   @override
   Future<List<PrayerCityModel>> getCities({bool includeIraq = false}) async {
-    throw UnimplementedError('ApiPrayerTimesSource: wire preferred API + cache');
+    throw UnimplementedError(
+        'ApiPrayerTimesSource: wire preferred API + cache');
   }
 
   @override
   Future<List<PrayerCountryModel>> getPrayerCountries() async {
-    throw UnimplementedError('ApiPrayerTimesSource: wire preferred API + cache');
+    throw UnimplementedError(
+        'ApiPrayerTimesSource: wire preferred API + cache');
   }
 
   @override
   Future<List<PrayerCityModel>> getCitiesForCountryIso(String iso) async {
-    throw UnimplementedError('ApiPrayerTimesSource: wire preferred API + cache');
+    throw UnimplementedError(
+        'ApiPrayerTimesSource: wire preferred API + cache');
   }
 
   @override
@@ -128,7 +134,8 @@ class ApiPrayerTimesSource implements PrayerTimesSource {
     bool includeIraq = false,
     String? countryIso,
   }) async {
-    throw UnimplementedError('ApiPrayerTimesSource: wire preferred API + cache');
+    throw UnimplementedError(
+        'ApiPrayerTimesSource: wire preferred API + cache');
   }
 
   @override
@@ -137,7 +144,8 @@ class ApiPrayerTimesSource implements PrayerTimesSource {
     bool includeIraq = false,
     String? countryIso,
   }) async {
-    throw UnimplementedError('ApiPrayerTimesSource: wire preferred API + cache');
+    throw UnimplementedError(
+        'ApiPrayerTimesSource: wire preferred API + cache');
   }
 
   @override
@@ -146,7 +154,8 @@ class ApiPrayerTimesSource implements PrayerTimesSource {
     bool includeIraq = false,
     String? countryIso,
   }) async {
-    throw UnimplementedError('ApiPrayerTimesSource: wire preferred API + cache');
+    throw UnimplementedError(
+        'ApiPrayerTimesSource: wire preferred API + cache');
   }
 }
 

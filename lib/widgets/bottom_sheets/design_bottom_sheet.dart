@@ -17,7 +17,8 @@ class DesignBottomSheet {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        height: MediaQuery.sizeOf(context).height * DesignSystem.bottomSheetHeightFraction,
+        height: MediaQuery.sizeOf(context).height *
+            DesignSystem.bottomSheetHeightFraction,
         decoration: BoxDecoration(
           color: DesignSystem.cardBackground,
           borderRadius: const BorderRadius.vertical(
@@ -32,7 +33,8 @@ class DesignBottomSheet {
             if (showHandle) const SizedBox(height: 8),
             Flexible(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: DesignSystem.screenPadding),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: DesignSystem.screenPadding),
                 child: child,
               ),
             ),

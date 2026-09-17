@@ -70,14 +70,14 @@ class _MushafSettingsCardState extends State<MushafSettingsCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-            QuranFontButton(
-              selectedFont: context
-                  .watch<QuranProvider>()
-                  .localSetting
-                  .fontTypeArabic,
-              onChangeArabicFont:
-                  context.read<QuranProvider>().changeFontTypeArabic,
-            ),
+                QuranFontButton(
+                  selectedFont: context
+                      .watch<QuranProvider>()
+                      .localSetting
+                      .fontTypeArabic,
+                  onChangeArabicFont:
+                      context.read<QuranProvider>().changeFontTypeArabic,
+                ),
                 LayoutOptionsToggleButton(
                   isPopUp: true,
                   layoutOptions:
@@ -87,9 +87,11 @@ class _MushafSettingsCardState extends State<MushafSettingsCard> {
               ],
             ),
             TranslationBox(onTap: () {
-              Navigator.push(context, AppRoutes.fadeSlideRoute(
-                builder: (context) => const QuranTranslationsScreen(),
-              ));
+              Navigator.push(
+                  context,
+                  AppRoutes.fadeSlideRoute(
+                    builder: (context) => const QuranTranslationsScreen(),
+                  ));
             }),
             BackgroundColorSelect(
               colors: const [

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_open_quran/constants/constants.dart';
@@ -8,14 +7,11 @@ class RecentModel {
   late final ERecentVisitedType eRecentVisitedType;
   late final int index;
 
-  RecentModel({
-    required this.index,
-    required this.eRecentVisitedType
-  });
+  RecentModel({required this.index, required this.eRecentVisitedType});
 
   RecentModel.fromJson(Map<String, dynamic> json) {
     eRecentVisitedType =
-    ERecentVisitedType.values[json['eRecentVisitedType'] as int];
+        ERecentVisitedType.values[json['eRecentVisitedType'] as int];
     index = json['index'];
   }
 

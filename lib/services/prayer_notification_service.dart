@@ -65,7 +65,8 @@ class PrayerNotificationService {
   /// Returns trilingual body for "It is time for {Prayer} prayer".
   /// Format: Kurdish line \n Arabic line \n English line.
   static String trilingualBodyForPrayerTime(String prayerName) {
-    final names = _prayerNames[prayerName] ?? [prayerName, prayerName, prayerName];
+    final names =
+        _prayerNames[prayerName] ?? [prayerName, prayerName, prayerName];
     const kuPrefix = 'کاتی نوێژی ';
     const kuSuffix = ' هات';
     const arPrefix = 'حان الآن موعد صلاة ';
@@ -91,7 +92,8 @@ class PrayerNotificationService {
       importance: Importance.max,
       priority: Priority.high,
       playSound: true,
-      sound: null, // System default on Android; native AlarmManager plays Adhan audio
+      sound:
+          null, // System default on Android; native AlarmManager plays Adhan audio
     );
     return NotificationDetails(
       android: androidDetails,
@@ -124,12 +126,14 @@ class PrayerNotificationService {
     Future.delayed(const Duration(milliseconds: 600), () async {
       if (Platform.isAndroid) {
         try {
-          await MethodChannel(_prayerAlarmsChannel).invokeMethod<void>('playAdhan', {'rawName': PrayerPrefs.adhanRawName});
+          await MethodChannel(_prayerAlarmsChannel).invokeMethod<void>(
+              'playAdhan', {'rawName': PrayerPrefs.adhanRawName});
         } catch (_) {}
       } else {
         final adhan = PrayerPrefs.adhanAsset;
         if (adhan.isNotEmpty) {
-          AdhanAudioService.play(adhan, durationMs: PrayerPrefs.adhanDurationMs);
+          AdhanAudioService.play(adhan,
+              durationMs: PrayerPrefs.adhanDurationMs);
         }
       }
     });
@@ -156,7 +160,8 @@ class PrayerNotificationService {
     // Prayer alarms use [DateTime] wall-clock + epoch millis. Do not use
     // [DateTime.timeZoneName] with [tz.getLocation] — it is not a reliable IANA id on Android.
     if (kDebugMode) {
-      print('[PrayerNotificationService] init: device local DateTime ${DateTime.now()}');
+      print(
+          '[PrayerNotificationService] init: device local DateTime ${DateTime.now()}');
     }
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
     const ios = DarwinInitializationSettings(
@@ -198,7 +203,8 @@ class PrayerNotificationService {
         );
         await androidPlugin.createNotificationChannel(remindersChannel);
         if (kDebugMode) {
-          print('[PrayerNotificationService] init: created Android channels with Importance.max');
+          print(
+              '[PrayerNotificationService] init: created Android channels with Importance.max');
         }
       }
     }
@@ -221,7 +227,8 @@ class PrayerNotificationService {
       );
       if (granted == true) {
         if (kDebugMode) {
-          print('[PrayerNotificationService] ensurePermissions (iOS): notification permission granted');
+          print(
+              '[PrayerNotificationService] ensurePermissions (iOS): notification permission granted');
         }
         return true;
       }
@@ -234,15 +241,18 @@ class PrayerNotificationService {
     }
     if (!status.isGranted) {
       if (kDebugMode) {
-        print('[PrayerNotificationService] ensurePermissions: notification permission not granted');
+        print(
+            '[PrayerNotificationService] ensurePermissions: notification permission not granted');
       }
       return false;
     }
     if (kDebugMode) {
-      print('[PrayerNotificationService] ensurePermissions: notification granted');
+      print(
+          '[PrayerNotificationService] ensurePermissions: notification granted');
     }
     if (Platform.isAndroid && kDebugMode) {
-      print('[PrayerNotificationService] ensurePermissions: on Android 12+, enable Alarms & reminders in app settings if notifications do not fire.');
+      print(
+          '[PrayerNotificationService] ensurePermissions: on Android 12+, enable Alarms & reminders in app settings if notifications do not fire.');
     }
     return true;
   }
@@ -259,12 +269,14 @@ class PrayerNotificationService {
   /// Call once at app start so reminders are scheduled even if user never opens Prayer tab.
   static Future<void> rescheduleFromStoredPrefs() async {
     if (!_initialized) await init();
-    final city = GetStorage(PrayerTimesStorage.boxName).read(PrayerTimesStorage.keyCity) as String? ??
+    final city = GetStorage(PrayerTimesStorage.boxName)
+            .read(PrayerTimesStorage.keyCity) as String? ??
         PrayerTimesSourceRegistry.instance.defaultCity;
     final includeIraq = PrayerTimesStorage.readIncludeIraq();
     final countryIso = PrayerTimesStorage.readCountryIso();
     try {
-      final times = await PrayerTimesSourceRegistry.instance.getTodayPrayerTimes(
+      final times =
+          await PrayerTimesSourceRegistry.instance.getTodayPrayerTimes(
         city,
         includeIraq: includeIraq,
         countryIso: countryIso,
@@ -275,7 +287,8 @@ class PrayerNotificationService {
       final granted = await ensurePermissions();
       if (!granted) {
         if (kDebugMode) {
-          print('[PrayerNotificationService] rescheduleFromStoredPrefs: notification permission not granted, skipping alarm schedule');
+          print(
+              '[PrayerNotificationService] rescheduleFromStoredPrefs: notification permission not granted, skipping alarm schedule');
         }
         return;
       }
@@ -289,11 +302,13 @@ class PrayerNotificationService {
         countryIso: countryIso,
       );
       if (kDebugMode && count != null) {
-        print('[PrayerNotificationService] rescheduleFromStoredPrefs: scheduled $count notification(s) for city=$city');
+        print(
+            '[PrayerNotificationService] rescheduleFromStoredPrefs: scheduled $count notification(s) for city=$city');
       }
     } catch (e, st) {
       if (kDebugMode) {
-        print('[PrayerNotificationService] rescheduleFromStoredPrefs failed: $e');
+        print(
+            '[PrayerNotificationService] rescheduleFromStoredPrefs failed: $e');
         print(st);
       }
     }
@@ -331,12 +346,14 @@ class PrayerNotificationService {
     for (var i = 0; i < timesToday.length; i++) {
       final model = timesToday[i];
       if (!(notifyEnabled[model.name] ?? false)) continue;
-      final minutes = parsePrayerTimeMinutesForPrayer(model.name, model.timeString);
+      final minutes =
+          parsePrayerTimeMinutesForPrayer(model.name, model.timeString);
       if (minutes == null) continue;
       final hour = minutes ~/ 60;
       final minute = minutes % 60;
       final offsetMinutes = PrayerPrefs.getNotificationOffset(model.name);
-      var scheduled = DateTime(today.year, today.month, today.day, hour, minute);
+      var scheduled =
+          DateTime(today.year, today.month, today.day, hour, minute);
       if (offsetMinutes != 0) {
         scheduled = scheduled.add(Duration(minutes: offsetMinutes));
       }
@@ -361,12 +378,14 @@ class PrayerNotificationService {
     for (var i = 0; i < timesTomorrow.length; i++) {
       final model = timesTomorrow[i];
       if (!(notifyEnabled[model.name] ?? false)) continue;
-      final minutes = parsePrayerTimeMinutesForPrayer(model.name, model.timeString);
+      final minutes =
+          parsePrayerTimeMinutesForPrayer(model.name, model.timeString);
       if (minutes == null) continue;
       final hour = minutes ~/ 60;
       final minute = minutes % 60;
       final offsetMinutes = PrayerPrefs.getNotificationOffset(model.name);
-      var scheduled = DateTime(tomorrow.year, tomorrow.month, tomorrow.day, hour, minute);
+      var scheduled =
+          DateTime(tomorrow.year, tomorrow.month, tomorrow.day, hour, minute);
       if (offsetMinutes != 0) {
         scheduled = scheduled.add(Duration(minutes: offsetMinutes));
       }
@@ -401,10 +420,12 @@ class PrayerNotificationService {
         pMap[t.name.toLowerCase()] = t.timeString;
       }
     }
-    final nextInfo = PrayerTimesDb.getNextPrayerWithDuration(times, DateTime.now());
-    final nextPrayerStr = (nextInfo.next.name.isNotEmpty && nextInfo.next.timeString != '--:--')
-        ? 'Next: ${nextInfo.next.name} ${nextInfo.next.timeString}'
-        : 'Next: --:--';
+    final nextInfo =
+        PrayerTimesDb.getNextPrayerWithDuration(times, DateTime.now());
+    final nextPrayerStr =
+        (nextInfo.next.name.isNotEmpty && nextInfo.next.timeString != '--:--')
+            ? 'Next: ${nextInfo.next.name} ${nextInfo.next.timeString}'
+            : 'Next: --:--';
 
     await WidgetService.updatePrayerWidget(
       prayerTimes: pMap,
@@ -435,7 +456,8 @@ class PrayerNotificationService {
         print('nextPrayer: $nextPrayerStr');
         print('=== WIDGET SYNC WRITE END ===');
 
-        await const MethodChannel('com.dya.azadalkrd/prayer_widget').invokeMethod<void>(
+        await const MethodChannel('com.dya.azadalkrd/prayer_widget')
+            .invokeMethod<void>(
           'updateWidgetData',
           {
             'widgetCity': city,
@@ -449,7 +471,8 @@ class PrayerNotificationService {
           },
         );
       } catch (e) {
-        print('[PrayerNotificationService] updateWidgetData iOS channel error: $e');
+        print(
+            '[PrayerNotificationService] updateWidgetData iOS channel error: $e');
       }
     }
   }
@@ -469,7 +492,8 @@ class PrayerNotificationService {
     final enabledCount = notifyEnabled.values.where((v) => v == true).length;
     if (enabledCount == 0) {
       if (kDebugMode) {
-        print('[PrayerNotificationService] schedule: no prayers enabled for notifications, nothing scheduled');
+        print(
+            '[PrayerNotificationService] schedule: no prayers enabled for notifications, nothing scheduled');
       }
       return 0;
     }
@@ -505,8 +529,10 @@ class PrayerNotificationService {
             pMap[t.name.toLowerCase()] = t.timeString;
           }
         }
-        final nextInfo = PrayerTimesDb.getNextPrayerWithDuration(times, DateTime.now());
-        final nextPrayerStr = (nextInfo.next.name.isNotEmpty && nextInfo.next.timeString != '--:--')
+        final nextInfo =
+            PrayerTimesDb.getNextPrayerWithDuration(times, DateTime.now());
+        final nextPrayerStr = (nextInfo.next.name.isNotEmpty &&
+                nextInfo.next.timeString != '--:--')
             ? 'Next: ${nextInfo.next.name} ${nextInfo.next.timeString}'
             : 'Next: --:--';
         await WidgetService.updatePrayerWidget(
@@ -515,11 +541,13 @@ class PrayerNotificationService {
           city: city,
         );
         if (kDebugMode) {
-          print('[PrayerNotificationService] schedule (native): ${alarms.length} alarms (today + tomorrow)');
+          print(
+              '[PrayerNotificationService] schedule (native): ${alarms.length} alarms (today + tomorrow)');
         }
         return alarms.length;
       } catch (e) {
-        if (kDebugMode) print('[PrayerNotificationService] schedule native failed: $e');
+        if (kDebugMode)
+          print('[PrayerNotificationService] schedule native failed: $e');
         return 0;
       }
     }
@@ -532,12 +560,14 @@ class PrayerNotificationService {
     for (var i = 0; i < times.length; i++) {
       final model = times[i];
       if (!(notifyEnabled[model.name] ?? false)) continue;
-      final minutes = parsePrayerTimeMinutesForPrayer(model.name, model.timeString);
+      final minutes =
+          parsePrayerTimeMinutesForPrayer(model.name, model.timeString);
       if (minutes == null) continue;
       final hour = minutes ~/ 60;
       final minute = minutes % 60;
       final offsetMinutes = PrayerPrefs.getNotificationOffset(model.name);
-      var scheduled = DateTime(today.year, today.month, today.day, hour, minute);
+      var scheduled =
+          DateTime(today.year, today.month, today.day, hour, minute);
       if (offsetMinutes != 0) {
         scheduled = scheduled.add(Duration(minutes: offsetMinutes));
       }
@@ -556,7 +586,8 @@ class PrayerNotificationService {
       );
       scheduledCount++;
       if (kDebugMode) {
-        print('[PrayerNotificationService] scheduled ${model.name} at $scheduled (local)');
+        print(
+            '[PrayerNotificationService] scheduled ${model.name} at $scheduled (local)');
       }
     }
 
@@ -566,7 +597,8 @@ class PrayerNotificationService {
             .where((t) => t.timeString.isNotEmpty && t.timeString != '--:--')
             .map((t) => '${t.name}|${t.timeString}')
             .join(';');
-        const MethodChannel('com.dya.azadalkrd/prayer_widget').invokeMethod<void>(
+        const MethodChannel('com.dya.azadalkrd/prayer_widget')
+            .invokeMethod<void>(
           'updateWidgetData',
           {
             'widgetCity': city,
@@ -635,7 +667,8 @@ class PrayerNotificationService {
     if (!_initialized) return;
     if (Platform.isAndroid) {
       try {
-        await MethodChannel(_prayerAlarmsChannel).invokeMethod<void>('cancelPrayerAlarms');
+        await MethodChannel(_prayerAlarmsChannel)
+            .invokeMethod<void>('cancelPrayerAlarms');
       } catch (_) {}
       return;
     }
@@ -657,8 +690,7 @@ class PrayerNotificationService {
       await _scheduleDailyRepeating(
         id: _idAdhkarMorning,
         title: 'Morning adhkar',
-        body:
-            'کاتی ئەذکاری بەیانی\nوقت أذكار الصباح\nTime for morning adhkar',
+        body: 'کاتی ئەذکاری بەیانی\nوقت أذكار الصباح\nTime for morning adhkar',
         hour: PrayerPrefs.adhkarMorningHour,
         minute: PrayerPrefs.adhkarMorningMinute,
       );
@@ -667,8 +699,7 @@ class PrayerNotificationService {
       await _scheduleDailyRepeating(
         id: _idAdhkarEvening,
         title: 'Evening adhkar',
-        body:
-            'کاتی ئەذکاری ئێواران\nوقت أذكار المساء\nTime for evening adhkar',
+        body: 'کاتی ئەذکاری ئێواران\nوقت أذكار المساء\nTime for evening adhkar',
         hour: PrayerPrefs.adhkarEveningHour,
         minute: PrayerPrefs.adhkarEveningMinute,
       );

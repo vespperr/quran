@@ -4,8 +4,7 @@ class AdhanLinks {
   AdhanLinks._();
 
   /// Adhan academy — Telegram.
-  static const String bilalAcademyTelegram =
-      'https://t.me/akademyay_bangbezhy';
+  static const String bilalAcademyTelegram = 'https://t.me/akademyay_bangbezhy';
 
   /// Official YouTube channel (Book of Adhan / lessons & resources).
   static const String adhanBookOrLesson =

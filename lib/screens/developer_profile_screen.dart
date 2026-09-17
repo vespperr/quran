@@ -68,52 +68,52 @@ class DeveloperProfileScreen extends StatelessWidget {
                   ],
                 ),
                 child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundColor: const Color(0xFFD4AF37),
-                    child: const CircleAvatar(
-                      radius: 37,
-                      backgroundColor: Color(0xFF0F2E25),
-                      child: Icon(
-                        Icons.code_rounded,
-                        color: Color(0xFFD4AF37),
-                        size: 36,
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundColor: const Color(0xFFD4AF37),
+                      child: const CircleAvatar(
+                        radius: 37,
+                        backgroundColor: Color(0xFF0F2E25),
+                        child: Icon(
+                          Icons.code_rounded,
+                          color: Color(0xFFD4AF37),
+                          size: 36,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'AbdulrahmanMh',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.5,
+                    const SizedBox(height: 12),
+                    const Text(
+                      'AbdulrahmanMh',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Open Source Developer',
-                    style: TextStyle(
-                      color: const Color(0xFFD4AF37),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                    const SizedBox(height: 4),
+                    Text(
+                      'Open Source Developer',
+                      style: TextStyle(
+                        color: const Color(0xFFD4AF37),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Developed & Maintained by AbdulrahmanMh',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.85),
-                      fontSize: 12,
+                    const SizedBox(height: 8),
+                    Text(
+                      'Developed & Maintained by AbdulrahmanMh',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.85),
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
 
             const SizedBox(height: 24),
 
@@ -161,7 +161,8 @@ class DeveloperProfileScreen extends StatelessWidget {
                   ),
                 );
               },
-              icon: const Icon(Icons.favorite_rounded, color: Color(0xFF0E2E25)),
+              icon:
+                  const Icon(Icons.favorite_rounded, color: Color(0xFF0E2E25)),
               label: Text(
                 '${context.translate.supportUsTitle} (FIB & SuperQi)',
                 style: const TextStyle(

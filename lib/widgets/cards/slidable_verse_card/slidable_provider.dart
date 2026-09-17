@@ -3,7 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 class SlidableProvider extends ChangeNotifier {
   /// Class Constructor
-  SlidableProvider(this._context){
+  SlidableProvider(this._context) {
     actionPaneTypeValueNotifier = Slidable.of(_context)?.actionPaneType;
     actionPaneTypeValueNotifier?.addListener(_onActionPaneTypeChanged);
   }
@@ -22,5 +22,4 @@ class SlidableProvider extends ChangeNotifier {
   }
 
   ValueNotifier<ActionPaneType>? actionPaneTypeValueNotifier;
-
 }

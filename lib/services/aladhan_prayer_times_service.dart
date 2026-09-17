@@ -10,7 +10,13 @@ class AladhanPrayerTimesService {
   AladhanPrayerTimesService._();
 
   static const String _base = 'api.aladhan.com';
-  static const List<String> _order = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+  static const List<String> _order = [
+    'Fajr',
+    'Dhuhr',
+    'Asr',
+    'Maghrib',
+    'Isha'
+  ];
 
   /// Returns null on failure or empty response.
   static Future<List<PrayerTimeModel>?> fetchTimingsByCity({

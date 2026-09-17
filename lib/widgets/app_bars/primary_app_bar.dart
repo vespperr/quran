@@ -19,7 +19,7 @@ class PrimaryAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onPressed,
     this.bottomHeight,
     this.elevation,
-  })  : preferredSize = const Size.fromHeight(75.0);
+  }) : preferredSize = const Size.fromHeight(75.0);
 
   @override
   Widget build(BuildContext context) {

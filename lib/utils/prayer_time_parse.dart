@@ -49,7 +49,10 @@ int? parsePrayerTimeMinutesForPrayer(String prayerName, String timeString) {
   if (mins == null) return null;
 
   final upper = raw.toUpperCase();
-  final hasAmPm = upper.contains('AM') || upper.contains('PM') || upper.contains('A.M.') || upper.contains('P.M.');
+  final hasAmPm = upper.contains('AM') ||
+      upper.contains('PM') ||
+      upper.contains('A.M.') ||
+      upper.contains('P.M.');
   if (hasAmPm) return mins;
 
   const pmPrayers = {'ASR', 'MAGHRIB', 'ISHA'};

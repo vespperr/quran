@@ -6,13 +6,13 @@ import '../constants/fonts.dart';
 
 /// Card theme data (premium: surface, soft shadow, radius 20).
 CardThemeData get _cardThemeData => CardThemeData(
-  color: DesignSystem.surface,
-  elevation: 0,
-  shadowColor: Colors.transparent,
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
-  ),
-);
+      color: DesignSystem.surface,
+      elevation: 0,
+      shadowColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
+      ),
+    );
 
 /// Theme — premium: primary #43A047, secondary #4F46E5, background #FAFAF9, surface white.
 ThemeData get theme => themeForLocale(null);
@@ -58,82 +58,82 @@ ThemeData themeForLocale(Locale? locale) {
     fontFamily: fontFamily,
     dividerColor: DesignSystem.outline,
     textTheme: TextTheme(
-    displayLarge: const TextStyle(
-      fontSize: 20,
-      fontWeight: FontWeight.w400,
-      color: DesignSystem.onSurface,
-    ),
-    displayMedium: const TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.w700,
-      color: DesignSystem.primary,
-    ),
-    displaySmall: const TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.w600,
-      color: DesignSystem.onSurface,
-    ),
-    headlineLarge: const TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w500,
-      color: DesignSystem.onSurface,
-    ),
-    headlineMedium: const TextStyle(
-      fontSize: 15,
-      fontWeight: FontWeight.w600,
-      color: DesignSystem.onSurface,
-    ),
-    headlineSmall: const TextStyle(
-      fontSize: 15,
-      fontWeight: FontWeight.w500,
-      color: DesignSystem.onSurface,
-    ),
-    titleLarge: const TextStyle(
-      fontSize: 15,
-      fontWeight: FontWeight.w400,
-      color: DesignSystem.onSurface,
-    ),
-    titleMedium: const TextStyle(
-      fontSize: 13,
-      fontWeight: FontWeight.w400,
-      color: DesignSystem.onSurface,
-    ),
-    titleSmall: const TextStyle(
-      fontSize: 13,
-      fontWeight: FontWeight.w300,
-      color: DesignSystem.onSurface,
-    ),
-    bodyLarge: const TextStyle(
-      fontSize: 12,
-      fontWeight: FontWeight.w600,
-      color: DesignSystem.onSurface,
-    ),
-    bodyMedium: const TextStyle(
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-      color: DesignSystem.onSurface,
-    ),
-    bodySmall: const TextStyle(
-      fontSize: 12,
-      fontWeight: FontWeight.w400,
-      color: DesignSystem.onSurface,
-    ),
-    labelSmall: const TextStyle(
-      fontSize: 10,
-      fontWeight: FontWeight.w700,
-      color: DesignSystem.onSurface,
-    ),
-    labelMedium: const TextStyle(
-      fontSize: 10,
-      fontWeight: FontWeight.w500,
-      color: DesignSystem.onSurface,
-    ),
-    labelLarge: const TextStyle(
-      fontSize: 10,
-      fontWeight: FontWeight.w300,
-      color: DesignSystem.onSurface,
-    ),
-  ).apply(fontFamily: fontFamily),
+      displayLarge: const TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w400,
+        color: DesignSystem.onSurface,
+      ),
+      displayMedium: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w700,
+        color: DesignSystem.primary,
+      ),
+      displaySmall: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: DesignSystem.onSurface,
+      ),
+      headlineLarge: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: DesignSystem.onSurface,
+      ),
+      headlineMedium: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w600,
+        color: DesignSystem.onSurface,
+      ),
+      headlineSmall: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+        color: DesignSystem.onSurface,
+      ),
+      titleLarge: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w400,
+        color: DesignSystem.onSurface,
+      ),
+      titleMedium: const TextStyle(
+        fontSize: 13,
+        fontWeight: FontWeight.w400,
+        color: DesignSystem.onSurface,
+      ),
+      titleSmall: const TextStyle(
+        fontSize: 13,
+        fontWeight: FontWeight.w300,
+        color: DesignSystem.onSurface,
+      ),
+      bodyLarge: const TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+        color: DesignSystem.onSurface,
+      ),
+      bodyMedium: const TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: DesignSystem.onSurface,
+      ),
+      bodySmall: const TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: DesignSystem.onSurface,
+      ),
+      labelSmall: const TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w700,
+        color: DesignSystem.onSurface,
+      ),
+      labelMedium: const TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w500,
+        color: DesignSystem.onSurface,
+      ),
+      labelLarge: const TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w300,
+        color: DesignSystem.onSurface,
+      ),
+    ).apply(fontFamily: fontFamily),
   );
 }
 
@@ -196,7 +196,9 @@ BottomNavigationBarThemeData get _bottomNavigationBarThemeData {
 TabBarThemeData get _tabBarThemeData {
   return const TabBarThemeData(
     labelStyle: TextStyle(
-        fontSize: 16, fontWeight: FontWeight.w600, color: DesignSystem.onSurface),
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        color: DesignSystem.onSurface),
     indicatorColor: DesignSystem.primary,
   );
 }

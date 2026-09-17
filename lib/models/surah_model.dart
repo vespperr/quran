@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:the_open_quran/models/verse_model.dart';
 
-
 class SurahModel {
   int? id;
   String? revelationPlace;

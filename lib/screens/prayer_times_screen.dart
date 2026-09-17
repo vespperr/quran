@@ -1243,7 +1243,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     if (fajrM != null && duhaM != null) {
       if (nowM >= fajrM && nowM < duhaM) {
         return {
-          'label': 'کاتەکانی نەهی (پاش بەیانی تا بەرزی خۆر)',
+          'label': context.translate.prohibitedAfterFajr,
           'color': const Color(0xFFE53935),
           'isProhibited': true,
         };
@@ -1254,7 +1254,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     if (duhaM != null && dhuhrM != null) {
       if (nowM >= duhaM && nowM < (dhuhrM - 15)) {
         return {
-          'label': 'کاتی نوێژی چێشتەنگاوە (الضحى)',
+          'label': context.translate.duhaTimeActive,
           'color': const Color(0xFFD4AF37),
           'isProhibited': false,
         };
@@ -1265,7 +1265,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     if (dhuhrM != null) {
       if (nowM >= (dhuhrM - 15) && nowM < dhuhrM) {
         return {
-          'label': 'کاتەکانی نەهی (وەستانی خۆر پێش نیوەڕۆ)',
+          'label': context.translate.prohibitedZenith,
           'color': const Color(0xFFE53935),
           'isProhibited': true,
         };
@@ -1276,7 +1276,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     if (asrM != null && maghribM != null) {
       if (nowM >= asrM && nowM < maghribM) {
         return {
-          'label': 'کاتەکانی نەهی (پاش عەسر تا ئاوابوون)',
+          'label': context.translate.prohibitedAfterAsr,
           'color': const Color(0xFFE53935),
           'isProhibited': true,
         };
@@ -1285,13 +1285,13 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
 
     // Default: Regular / Permissible Sunnah time
     return {
-      'label': 'نوێژە سوننەتەکان و کاتەکانی نەهی',
+      'label': context.translate.sunnahAndProhibitedGuide,
       'color': const Color(0xFF43A047),
       'isProhibited': false,
     };
   }
 
-  /// Informational card showing Sunrise and Duha (نوێژی زوحا) with live status & guide sheet
+  /// Informational card showing Sunrise and Duha with live status & guide sheet
   Widget _buildDuhaSunriseCard() {
     if (_sunriseTime == '--:--' && _duhaTime == '--:--') {
       return const SizedBox.shrink();
@@ -1340,10 +1340,13 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Row(
+                        Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 8,
+                          runSpacing: 2,
                           children: [
                             Text(
-                              'خۆرهەڵاتن: $_sunriseTime',
+                              '${context.translate.sunrise}: $_sunriseTime',
                               style:
                                   context.theme.textTheme.bodyMedium?.copyWith(
                                 fontWeight: FontWeight.w600,
@@ -1354,14 +1357,12 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 10),
                             Text(
                               '•',
                               style: TextStyle(color: DesignSystem.outline),
                             ),
-                            const SizedBox(width: 10),
                             Text(
-                              'نوێژی الضحى: $_duhaTime',
+                              '${context.translate.duhaPrayer}: $_duhaTime',
                               style:
                                   context.theme.textTheme.bodyMedium?.copyWith(
                                 fontWeight: FontWeight.w800,
@@ -1375,7 +1376,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                         ),
                         const SizedBox(height: 3),
                         Text(
-                          'کاتی نوێژی زوحا نزیکەی ٢٠ خولەک دوای خۆرهەڵاتن دەستپێدەکات',
+                          context.translate.duhaStartsAfterSunrise,
                           style: context.theme.textTheme.bodySmall?.copyWith(
                             color:
                                 DesignSystem.onSurface.withValues(alpha: 0.55),
@@ -1396,19 +1397,19 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                         color: const Color(0xFF43A047).withValues(alpha: 0.3),
                       ),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'ڕێبەر',
-                          style: TextStyle(
+                          context.translate.prayerGuide,
+                          style: const TextStyle(
                             color: Color(0xFF43A047),
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 2),
-                        Icon(Icons.chevron_right,
+                        const SizedBox(width: 2),
+                        const Icon(Icons.chevron_right,
                             size: 14, color: Color(0xFF43A047)),
                       ],
                     ),
@@ -1442,10 +1443,13 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                           fontSize: 11.5,
                           fontWeight: FontWeight.bold,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
+                    const SizedBox(width: 6),
                     Text(
-                      'کلیک بکە بۆ ڕێبەر',
+                      context.translate.tapForGuide,
                       style: TextStyle(
                         color: statusColor.withValues(alpha: 0.7),
                         fontSize: 10,

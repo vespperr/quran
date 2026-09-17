@@ -22,25 +22,33 @@ class TranslationsSettingCard extends StatefulWidget {
   final bool isDownloaded;
 
   @override
-  State<TranslationsSettingCard> createState() => _TranslationsSettingCardState();
+  State<TranslationsSettingCard> createState() =>
+      _TranslationsSettingCardState();
 }
 
-class _TranslationsSettingCardState extends State<TranslationsSettingCard> with SingleTickerProviderStateMixin {
+class _TranslationsSettingCardState extends State<TranslationsSettingCard>
+    with SingleTickerProviderStateMixin {
   /// Animation controller for the [SlidablePlayer]
   AnimationController? animationController;
 
   @override
   void initState() {
     /// Animate delete button
-    animationController =
-        AnimationController(vsync: this, upperBound: 0.5, duration: const Duration(microseconds: 2000));
+    animationController = AnimationController(
+        vsync: this,
+        upperBound: 0.5,
+        duration: const Duration(microseconds: 2000));
     super.initState();
   }
 
   /// Returns number of all translations
   int isDownloadedListEmpty() {
     int numberOfTranslations = 0;
-    context.watch<QuranProvider>().translationService.allTranslationCountry.forEach((element) {
+    context
+        .watch<QuranProvider>()
+        .translationService
+        .allTranslationCountry
+        .forEach((element) {
       numberOfTranslations += element.downloadedList.length;
     });
     return numberOfTranslations;
@@ -58,7 +66,9 @@ class _TranslationsSettingCardState extends State<TranslationsSettingCard> with 
                 motion: const ScrollMotion(),
                 children: [
                   DeleteDownloadedTranslationsButton(onTap: () {
-                    context.read<QuranProvider>().deleteTranslationAuthor(widget.translationAuthor);
+                    context
+                        .read<QuranProvider>()
+                        .deleteTranslationAuthor(widget.translationAuthor);
                   })
                 ],
               ),
@@ -72,17 +82,11 @@ class _TranslationsSettingCardState extends State<TranslationsSettingCard> with 
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    final cardBg = isDark
-        ? AppColors.black3
-        : theme.cardColor;
+    final cardBg = isDark ? AppColors.black3 : theme.cardColor;
 
-    final textColor = isDark
-        ? Colors.white
-        : theme.colorScheme.onSurface;
+    final textColor = isDark ? Colors.white : theme.colorScheme.onSurface;
 
-    final iconColor = isDark
-        ? Colors.white
-        : theme.primaryColor;
+    final iconColor = isDark ? Colors.white : theme.primaryColor;
 
     return InkWell(
       onTap: () => widget.onTap(widget.translationAuthor),

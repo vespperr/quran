@@ -28,13 +28,15 @@ class _TranslationScreenState extends State<TranslationScreen> {
   final ItemScrollController itemScrollController = ItemScrollController();
 
   /// Item position listener of Verse list
-  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      itemScrollController.jumpTo(index: context.read<SurahDetailsProvider>().jumpToVerseIndex);
+      itemScrollController.jumpTo(
+          index: context.read<SurahDetailsProvider>().jumpToVerseIndex);
       itemPositionsListener.itemPositions.addListener(scrollListener);
     });
   }
@@ -95,36 +97,54 @@ class _TranslationScreenState extends State<TranslationScreen> {
         return ValueListenableBuilder<PlayerState>(
           valueListenable: QuranRecitationService.playerState,
           builder: (context, playerState, _) {
-            final isPlaying =
-                playingKey == verse.verseKey && playerState == PlayerState.playing;
+            final isPlaying = playingKey == verse.verseKey &&
+                playerState == PlayerState.playing;
             return VerseCard(
-      verseModel: verse,
-      arabicFontFamily: Fonts.uthmanicIcon,
-      verseTranslations: context.watch<QuranProvider>().translationService.translationsOfVerse(verse.id!),
-      readOptions: context.watch<QuranProvider>().localSetting.readOptions,
-      textScaleFactor: context.watch<QuranProvider>().localSetting.textScaleFactor,
-      translationFontFamily: Fonts.getTranslationFont(context.watch<QuranProvider>().localSetting.fontType),
-      isPlaying: isPlaying,
-      playFunction: (v, playing) {
-        context.read<SurahDetailsProvider>().onTapVerseCardPlayOrPause(index, playing);
-      },
-      isFavorite: context.watch<FavoritesProvider>().isFavoriteVerse(verse),
-      favoriteFunction: context.read<FavoritesProvider>().onTapFavoriteButton,
-      isBookmark: context.watch<BookmarkProvider>().isBookmark(
-            BookMarkModel(bookmarkType: EBookMarkType.verse, verseModel: verse),
-          ),
-      bookmarkFunction: context.read<BookmarkProvider>().onTapBookMarkButton,
-      copyFunction: (verseModel) {
-        context.read<SurahDetailsProvider>().copyVerse(verseModel, index);
-      },
-      shareFunction: (verseModel) {
-        context.read<SurahDetailsProvider>().shareVerse(verseModel, index);
-      },
-      memorizeFunction: (verseModel) {
-        showMemorizationCalendar(context, verseModel);
-      },
-      selectedVerseKey: context.watch<SurahDetailsProvider>().selectedVerseKey,
-      changeSelectedVerseKey: context.read<SurahDetailsProvider>().changeSelectedVerseKey,
+              verseModel: verse,
+              arabicFontFamily: Fonts.uthmanicIcon,
+              verseTranslations: context
+                  .watch<QuranProvider>()
+                  .translationService
+                  .translationsOfVerse(verse.id!),
+              readOptions:
+                  context.watch<QuranProvider>().localSetting.readOptions,
+              textScaleFactor:
+                  context.watch<QuranProvider>().localSetting.textScaleFactor,
+              translationFontFamily: Fonts.getTranslationFont(
+                  context.watch<QuranProvider>().localSetting.fontType),
+              isPlaying: isPlaying,
+              playFunction: (v, playing) {
+                context
+                    .read<SurahDetailsProvider>()
+                    .onTapVerseCardPlayOrPause(index, playing);
+              },
+              isFavorite:
+                  context.watch<FavoritesProvider>().isFavoriteVerse(verse),
+              favoriteFunction:
+                  context.read<FavoritesProvider>().onTapFavoriteButton,
+              isBookmark: context.watch<BookmarkProvider>().isBookmark(
+                    BookMarkModel(
+                        bookmarkType: EBookMarkType.verse, verseModel: verse),
+                  ),
+              bookmarkFunction:
+                  context.read<BookmarkProvider>().onTapBookMarkButton,
+              copyFunction: (verseModel) {
+                context
+                    .read<SurahDetailsProvider>()
+                    .copyVerse(verseModel, index);
+              },
+              shareFunction: (verseModel) {
+                context
+                    .read<SurahDetailsProvider>()
+                    .shareVerse(verseModel, index);
+              },
+              memorizeFunction: (verseModel) {
+                showMemorizationCalendar(context, verseModel);
+              },
+              selectedVerseKey:
+                  context.watch<SurahDetailsProvider>().selectedVerseKey,
+              changeSelectedVerseKey:
+                  context.read<SurahDetailsProvider>().changeSelectedVerseKey,
             );
           },
         );

@@ -1665,6 +1665,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Don\'t forget to read Surah Al-Kahf & send Salawat today!'**
   String get fridayNotificationBody;
+
+  /// No description provided for @sunrise.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise'**
+  String get sunrise;
+
+  /// No description provided for @duhaPrayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Duha Prayer'**
+  String get duhaPrayer;
+
+  /// No description provided for @duhaStartsAfterSunrise.
+  ///
+  /// In en, this message translates to:
+  /// **'Duha prayer time begins approximately 20 minutes after sunrise'**
+  String get duhaStartsAfterSunrise;
+
+  /// No description provided for @prayerGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Guide'**
+  String get prayerGuide;
+
+  /// No description provided for @tapForGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap for guide'**
+  String get tapForGuide;
+
+  /// No description provided for @worshipGuideTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer & Sunnah Guide'**
+  String get worshipGuideTitle;
+
+  /// No description provided for @howToPray.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Pray'**
+  String get howToPray;
+
+  /// No description provided for @sunnahPrayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunnah Prayers'**
+  String get sunnahPrayers;
+
+  /// No description provided for @prohibitedTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Prohibited Times'**
+  String get prohibitedTimes;
+
+  /// No description provided for @congregationalMistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'Congregational Mistakes'**
+  String get congregationalMistakes;
+
+  /// No description provided for @prohibitedAfterFajr.
+  ///
+  /// In en, this message translates to:
+  /// **'Prohibited time (After Fajr until sunrise)'**
+  String get prohibitedAfterFajr;
+
+  /// No description provided for @duhaTimeActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Time for Duha prayer (Salat al-Duha)'**
+  String get duhaTimeActive;
+
+  /// No description provided for @prohibitedZenith.
+  ///
+  /// In en, this message translates to:
+  /// **'Prohibited time (Sun at zenith before Dhuhr)'**
+  String get prohibitedZenith;
+
+  /// No description provided for @prohibitedAfterAsr.
+  ///
+  /// In en, this message translates to:
+  /// **'Prohibited time (After Asr until sunset)'**
+  String get prohibitedAfterAsr;
+
+  /// No description provided for @sunnahAndProhibitedGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunnah prayers & prohibited times'**
+  String get sunnahAndProhibitedGuide;
 }
 
 class _AppLocalizationsDelegate

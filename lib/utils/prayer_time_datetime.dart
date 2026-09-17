@@ -8,7 +8,8 @@ import 'prayer_time_parse.dart';
 /// prayer wall times from the database.
 ///
 /// Returns `null` for invalid or placeholder values (`--:--`).
-DateTime? prayerTimeStringToLocalDateTime(String prayerName, String timeString, DateTime day) {
+DateTime? prayerTimeStringToLocalDateTime(
+    String prayerName, String timeString, DateTime day) {
   final mins = parsePrayerTimeMinutesForPrayer(prayerName, timeString);
   if (mins == null) return null;
   final h = mins ~/ 60;
@@ -32,5 +33,6 @@ bool isSameCalendarMinute(DateTime a, DateTime b) {
 ///
 /// [prayerAt] should be built with [prayerTimeStringToLocalDateTime] (seconds = 0).
 bool isWithinFirstSecondAfterPrayer(DateTime now, DateTime prayerAt) {
-  return !now.isBefore(prayerAt) && now.isBefore(prayerAt.add(const Duration(seconds: 1)));
+  return !now.isBefore(prayerAt) &&
+      now.isBefore(prayerAt.add(const Duration(seconds: 1)));
 }

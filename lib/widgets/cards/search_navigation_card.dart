@@ -12,7 +12,8 @@ class SearchNavigationCard extends StatelessWidget {
   final Function() onTap;
 
   /// Constructor
-  const SearchNavigationCard({super.key, this.titleNumber, required this.onTap, required this.title});
+  const SearchNavigationCard(
+      {super.key, this.titleNumber, required this.onTap, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +27,21 @@ class SearchNavigationCard extends StatelessWidget {
           child: Container(
             width: double.infinity,
             height: 50,
-            padding: const EdgeInsets.symmetric(horizontal: DesignSystem.space16),
+            padding:
+                const EdgeInsets.symmetric(horizontal: DesignSystem.space16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
               color: DesignSystem.surface,
-              border: Border.all(color: DesignSystem.outline.withValues(alpha: 0.4)),
+              border: Border.all(
+                  color: DesignSystem.outline.withValues(alpha: 0.4)),
               boxShadow: DesignSystem.shadowSoft,
             ),
             child: Row(
               children: [
                 Expanded(child: navigationTitle(context)),
-                Icon(Icons.arrow_forward_ios, size: 14, color: DesignSystem.onSurface.withValues(alpha: 0.5)),
+                Icon(Icons.arrow_forward_ios,
+                    size: 14,
+                    color: DesignSystem.onSurface.withValues(alpha: 0.5)),
               ],
             ),
           ),

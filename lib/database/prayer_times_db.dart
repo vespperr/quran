@@ -1,4 +1,3 @@
-
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../constants/iso_country_names.dart';

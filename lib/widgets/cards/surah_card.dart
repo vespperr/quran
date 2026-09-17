@@ -22,7 +22,8 @@ class SurahCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(DesignSystem.cornerRadius),
           boxShadow: DesignSystem.softGlowShadow,
         ),
-        padding: const EdgeInsets.symmetric(horizontal: DesignSystem.screenPadding),
+        padding:
+            const EdgeInsets.symmetric(horizontal: DesignSystem.screenPadding),
         child: Directionality(
           textDirection: TextDirection.ltr,
           child: Row(
@@ -93,7 +94,8 @@ class _SurahNumberBadge extends StatelessWidget {
           Image.asset(
             ImageConstants.surahNumberShape,
             fit: BoxFit.contain,
-            errorBuilder: (_, __, ___) => const SizedBox(width: size, height: size),
+            errorBuilder: (_, __, ___) =>
+                const SizedBox(width: size, height: size),
           ),
           Center(
             child: FittedBox(

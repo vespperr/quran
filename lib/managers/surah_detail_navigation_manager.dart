@@ -48,7 +48,7 @@ class SurahDetailNavigationManager {
   }
 
   /// Navigation to the surah details from juz list
-  static Future<void> goToJuz(BuildContext context, int juzId) async{
+  static Future<void> goToJuz(BuildContext context, int juzId) async {
     await _goToSurahDetail(
       context,
       ReadingSettingsModel(
@@ -56,13 +56,13 @@ class SurahDetailNavigationManager {
         juzId: juzId,
       ),
     );
-    LocalDb.addRecent(RecentModel(
-        eRecentVisitedType: ERecentVisitedType.juz, index: juzId));
+    LocalDb.addRecent(
+        RecentModel(eRecentVisitedType: ERecentVisitedType.juz, index: juzId));
   }
 
   /// Navigation to the reading/mushaf surah details
   static Future<void> goToMushaf(BuildContext context, int pageNumber) async {
-   await _goToSurahDetail(
+    await _goToSurahDetail(
       context,
       ReadingSettingsModel(mushafPageNumber: pageNumber),
       quranType: EQuranType.reading,
@@ -77,7 +77,7 @@ class SurahDetailNavigationManager {
     ReadingSettingsModel readingModel, {
     EQuranType quranType = EQuranType.translation,
   }) async {
-   await Navigator.push(
+    await Navigator.push(
       context,
       AppRoutes.fadeSlideRoute(
         builder: (context) => ChangeNotifierProvider(

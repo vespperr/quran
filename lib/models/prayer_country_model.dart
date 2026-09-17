@@ -11,6 +11,7 @@ class PrayerCountryModel {
   bool matchesSearch(String query) {
     if (query.trim().isEmpty) return true;
     final q = query.toLowerCase().trim();
-    return iso.toLowerCase().contains(q) || displayName.toLowerCase().contains(q);
+    return iso.toLowerCase().contains(q) ||
+        displayName.toLowerCase().contains(q);
   }
 }

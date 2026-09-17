@@ -7,7 +7,8 @@ class Fonts {
   Fonts._();
 
   static final String nunitoW900 =
-      GoogleFonts.nunito(fontWeight: FontWeight.w900).fontFamily ?? 'sans-serif';
+      GoogleFonts.nunito(fontWeight: FontWeight.w900).fontFamily ??
+          'sans-serif';
 
   /// For Verse Signs
   static const String uthmanic = "Uthmani";
@@ -20,10 +21,9 @@ class Fonts {
   static const String noore = "Noore";
   static const String naskh = "Naskh";
   static const String quranFont = "Quran Font";
+
   /// Arabic surah names (e.g. Al-Fatihah) — use with nameArabic
   static const String surahNames = "SurahNames";
-
-
 
   /// UI / app default (clean modern sans — Inter)
   static final String appSans = GoogleFonts.inter().fontFamily ?? 'sans-serif';
@@ -32,7 +32,8 @@ class Fonts {
   static const String kurdish = 'UniQAIDAR_OSMAN';
 
   /// Translation Fonts (fallback to generic if Google Fonts unavailable, e.g. release Android)
-  static final String robotoSlab = GoogleFonts.robotoSlab().fontFamily ?? 'sans-serif';
+  static final String robotoSlab =
+      GoogleFonts.robotoSlab().fontFamily ?? 'sans-serif';
   static final String nunito = GoogleFonts.nunito().fontFamily ?? appSans;
 
   /// Arabic UI Font (Cairo)

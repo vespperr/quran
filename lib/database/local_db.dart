@@ -96,7 +96,7 @@ class LocalDb {
   }
 
   /// Get recents from db
-  static List<RecentModel>get getRecents {
+  static List<RecentModel> get getRecents {
     var recentList = (_localDbBox.read('recents') as List?) ?? [];
     return recentList
         .map((e) => RecentModel.fromJson(e))
@@ -108,8 +108,8 @@ class LocalDb {
   static Future<List<RecentModel>> addRecent(RecentModel recent) async {
     /// Checking if user clicked on same surah, juz, page or recent
     /// Do not add it to the list
-    if(getRecents.isNotEmpty){
-    var firstRecents = getRecents.reversed.first;
+    if (getRecents.isNotEmpty) {
+      var firstRecents = getRecents.reversed.first;
       if (firstRecents.index == recent.index) {
         return getRecents;
       }
@@ -150,7 +150,8 @@ class LocalDb {
   static List<MemorizationPlanModel> get getMemorizationPlans {
     final list = (_localDbBox.read('memorizationPlans') as List?) ?? [];
     return list
-        .map((e) => MemorizationPlanModel.fromJson(Map<String, dynamic>.from(e as Map)))
+        .map((e) =>
+            MemorizationPlanModel.fromJson(Map<String, dynamic>.from(e as Map)))
         .toList()
         .cast<MemorizationPlanModel>();
   }
