@@ -64,6 +64,9 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   int _adhkarEveningM = 0;
   bool _fastingMonThu = false;
   bool _fastingWhiteDays = false;
+  String _sunriseTime = '--:--';
+  String _duhaTime = '--:--';
+  static const String _bgChannel = 'com.dya.azadalkrd/move_to_background';
   Timer? _countdownTimer;
   DateTime _now = DateTime.now();
 
@@ -166,6 +169,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
               .write(PrayerTimesStorage.keyCity, city);
         }
         final times = await src.getTodayPrayerTimes(city, includeIraq: false);
+        final sunInfo = await PrayerTimesDb.getSunriseAndDuhaTimes(city: city);
         if (mounted) {
           _foregroundWatch.updatePrayerTimes(times);
           setState(() {
@@ -173,6 +177,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
             _cities = cities;
             _selectedCity = city;
             _times = times;
+            _sunriseTime = sunInfo['sunrise'] ?? '--:--';
+            _duhaTime = sunInfo['duha'] ?? '--:--';
             _loading = false;
           });
           await PrayerNotificationService.updateWidgetData(
@@ -215,6 +221,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
           includeIraq: true,
           countryIso: countryIso,
         );
+        final sunInfo = await PrayerTimesDb.getSunriseAndDuhaTimes(city: city);
         if (mounted) {
           _foregroundWatch.updatePrayerTimes(times);
           setState(() {
@@ -223,6 +230,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
             _cities = cities;
             _selectedCity = city;
             _times = times;
+            _sunriseTime = sunInfo['sunrise'] ?? '--:--';
+            _duhaTime = sunInfo['duha'] ?? '--:--';
             _loading = false;
           });
           await PrayerNotificationService.updateWidgetData(
@@ -393,6 +402,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                 _buildLocationBar(),
                 const SizedBox(height: DesignSystem.space20),
                 _buildPrayerTimesGrid(nextInfo.next.name),
+                const SizedBox(height: DesignSystem.space14),
+                _buildDuhaSunriseCard(),
                 const SizedBox(height: DesignSystem.space24),
                 _buildQuickActionsRow(),
                 const SizedBox(height: DesignSystem.space16),
@@ -1111,6 +1122,162 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
             ),
             value: _fastingWhiteDays,
             onChanged: _onFastingWhiteDaysToggle,
+          ),
+          if (Platform.isAndroid) ...[
+            const Divider(height: DesignSystem.space24),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF43A047).withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.alarm_on_rounded,
+                    color: Color(0xFF43A047), size: 22),
+              ),
+              title: const Text(
+                'چالاککردنی بانگدان لە کاتی خۆیدا',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+              subtitle: Text(
+                'لابردنی سنوردارکردنی پاتری بۆ ئەوەی بانگەکان لەکاتی خۆیاندا لێبدەن',
+                style: context.theme.textTheme.bodySmall?.copyWith(
+                  color: DesignSystem.onSurface.withValues(alpha: 0.65),
+                ),
+              ),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => _showBackgroundAlarmPermissionDialog(),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  /// Dialog explaining how to allow unrestricted background playback on Android
+  void _showBackgroundAlarmPermissionDialog() {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        title: const Row(
+          children: [
+            Icon(Icons.alarm_on, color: Color(0xFF43A047)),
+            SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                'دڵنیابوون لە لێدانی بانگ',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+        content: const Text(
+          'بۆ ئەوەی سیستەمی مۆبایل لە پاشبنەمادا بانگەکان نەوەستێنێت و لە کاتی دەقیقدا لێبدات، تکایە ئەم ڕێگەپێدانانە چالاک بکە:\n\n١. لابردنی سنورداری پاتری (Unrestricted Battery)\n٢. کاتی دەقیق (Exact Alarms)',
+          style: TextStyle(fontSize: 14, height: 1.5),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              try {
+                const MethodChannel(_bgChannel)
+                    .invokeMethod<void>('openBatteryOptimizationSettings');
+              } catch (_) {}
+            },
+            child: const Text('پاتری (Battery)'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              try {
+                const MethodChannel(_bgChannel)
+                    .invokeMethod<void>('openExactAlarmSettings');
+              } catch (_) {}
+            },
+            child: const Text('کاتی دەقیق (Alarms)'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('داخستن'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Informational card showing Sunrise and Duha (نوێژی زوحا) prayer time
+  Widget _buildDuhaSunriseCard() {
+    if (_sunriseTime == '--:--' && _duhaTime == '--:--') {
+      return const SizedBox.shrink();
+    }
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: DesignSystem.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: DesignSystem.outline.withValues(alpha: 0.4),
+          width: 1.0,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFFD4AF37).withValues(alpha: 0.15),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.wb_sunny_rounded,
+              size: 20,
+              color: Color(0xFFD4AF37),
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'خۆرهەڵاتن: $_sunriseTime',
+                      style: context.theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: DesignSystem.onSurface.withValues(alpha: 0.8),
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      '•',
+                      style: TextStyle(color: DesignSystem.outline),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'نوێژی زوحا: $_duhaTime',
+                      style: context.theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: const Color(0xFFD4AF37),
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'کاتی نوێژی زوحا نزیکەی ٢٠ خولەک دوای خۆرهەڵاتن دەستپێدەکات',
+                  style: context.theme.textTheme.bodySmall?.copyWith(
+                    color: DesignSystem.onSurface.withValues(alpha: 0.55),
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

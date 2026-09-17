@@ -17,6 +17,7 @@ import 'adhan_audio_service.dart';
 import 'prayer_foreground_adhan_watch.dart';
 import 'prayer_prefs.dart';
 import 'prayer_times_source.dart';
+import 'thikr_audio_service.dart';
 import '../utils/prayer_time_parse.dart';
 import 'widget_service.dart';
 
@@ -104,10 +105,18 @@ class PrayerNotificationService {
     );
   }
 
-  /// When user taps a prayer notification, play selected adhan if any.
+  /// When user taps a prayer notification, play selected adhan or open thikr audio.
   static void _onNotificationTapped(NotificationResponse response) {
     final id = response.id;
     if (id == null || id == 0) return;
+    if (id == _idAdhkarMorning) {
+      ThikrAudioService.play('morning');
+      return;
+    }
+    if (id == _idAdhkarEvening) {
+      ThikrAudioService.play('evening');
+      return;
+    }
     _playAdhanAfterNotificationTap();
   }
 
@@ -178,8 +187,18 @@ class PrayerNotificationService {
           enableVibration: true,
         );
         await androidPlugin.createNotificationChannel(channel);
+
+        const remindersChannel = AndroidNotificationChannel(
+          'auxiliary_reminders_channel_v2',
+          'Reminders & Adhkar',
+          description: 'Notifications for Adhkar, Sunnah Fasts, and White Days',
+          importance: Importance.max,
+          playSound: true,
+          enableVibration: true,
+        );
+        await androidPlugin.createNotificationChannel(remindersChannel);
         if (kDebugMode) {
-          print('[PrayerNotificationService] init: created Android channel ${channel.id} with Importance.max');
+          print('[PrayerNotificationService] init: created Android channels with Importance.max');
         }
       }
     }
@@ -679,6 +698,30 @@ class PrayerNotificationService {
     return tz.TZDateTime.from(scheduled, tz.local);
   }
 
+  /// Dedicated sound-enabled notification details for Adhkar, White Days, and Sunnah fasting.
+  static NotificationDetails _detailsForReminders() {
+    const channelId = 'auxiliary_reminders_channel_v2';
+    const androidDetails = AndroidNotificationDetails(
+      channelId,
+      'Reminders & Adhkar',
+      channelDescription:
+          'Notifications for Adhkar, Sunnah Fasts, and White Days',
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      enableVibration: true,
+    );
+    return const NotificationDetails(
+      android: androidDetails,
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentSound: true,
+        presentBadge: true,
+        interruptionLevel: InterruptionLevel.timeSensitive,
+      ),
+    );
+  }
+
   static Future<void> _scheduleDailyRepeating({
     required int id,
     required String title,
@@ -687,7 +730,7 @@ class PrayerNotificationService {
     required int minute,
   }) async {
     final scheduled = _nextInstanceOfLocalTime(hour, minute);
-    final details = _detailsForPrayer(null);
+    final details = _detailsForReminders();
     try {
       await _plugin.zonedSchedule(
         id: id,
@@ -724,7 +767,7 @@ class PrayerNotificationService {
         final at = DateTime(d.year, d.month, d.day, 5, 45);
         final now = DateTime.now();
         if (at.isAfter(now)) {
-          final details = _detailsForPrayer(null);
+          final details = _detailsForReminders();
           final atTz = tz.TZDateTime.from(at, tz.local);
           try {
             await _plugin.zonedSchedule(
@@ -766,7 +809,7 @@ class PrayerNotificationService {
         final at = DateTime(d.year, d.month, d.day, 5, 30);
         final now = DateTime.now();
         if (at.isAfter(now)) {
-          final details = _detailsForPrayer(null);
+          final details = _detailsForReminders();
           final atTz = tz.TZDateTime.from(at, tz.local);
           try {
             await _plugin.zonedSchedule(

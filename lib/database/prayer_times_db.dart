@@ -561,6 +561,50 @@ class PrayerTimesDb {
     );
   }
 
+  /// Fetches Sunrise (Xorhalatn) and calculates Duha prayer time (starts ~20 mins after sunrise).
+  /// Returns a map with 'sunrise' and 'duha' strings, or '--:--' if unavailable.
+  static Future<Map<String, String>> getSunriseAndDuhaTimes({
+    required String city,
+    DateTime? date,
+  }) async {
+    final useDate = date ?? DateTime.now();
+    final dateVariants = _dateStrVariants(useDate);
+    final db = await DhikrDb.database;
+    final hasTable = await db.rawQuery(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='PrayerTimesforKurdistantable'",
+    );
+    if (hasTable.isEmpty) return {'sunrise': '--:--', 'duha': '--:--'};
+
+    final normalizedCity = _normalizeCity(city);
+    final cityVariants = normalizedCity != city.trim()
+        ? [normalizedCity, city.trim()]
+        : [normalizedCity];
+
+    for (final cityKey in cityVariants) {
+      for (final dateVariant in dateVariants) {
+        final rows = await db.rawQuery(
+          "SELECT xorhalatn FROM PrayerTimesforKurdistantable WHERE (cities = ? OR cities = ?) AND (date = ? OR date = ?)",
+          [cityKey, city.trim(), dateVariant, dateVariant],
+        );
+        if (rows.isNotEmpty) {
+          final row = rows.first;
+          final sunrise = (row['xorhalatn'] ?? '').toString().trim();
+          if (sunrise.isNotEmpty && sunrise != '--:--') {
+            final sunriseMin = parsePrayerTimeMinutes(sunrise);
+            if (sunriseMin != null) {
+              final duhaMin = (sunriseMin + 20) % (24 * 60);
+              final dh = (duhaMin ~/ 60).toString().padLeft(2, '0');
+              final dm = (duhaMin % 60).toString().padLeft(2, '0');
+              final duhaTime = '$dh:$dm';
+              return {'sunrise': sunrise, 'duha': duhaTime};
+            }
+          }
+        }
+      }
+    }
+    return {'sunrise': '--:--', 'duha': '--:--'};
+  }
+
   /// Index of the next prayer (first whose time is after [now]).
   /// Times are parsed as HH:mm (prayer-aware). If all are past, returns 0 (next is Fajr tomorrow).
   static int getNextPrayerIndex(List<PrayerTimeModel> times, DateTime now) {

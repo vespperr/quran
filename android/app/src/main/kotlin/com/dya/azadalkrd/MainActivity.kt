@@ -69,6 +69,7 @@ class MainActivity: FlutterActivity() {
                     result.success(null)
                 }
                 "stopAdhan" -> {
+                    AdhanForegroundService.stop(this)
                     AdhanPlayer.stop()
                     result.success(null)
                 }

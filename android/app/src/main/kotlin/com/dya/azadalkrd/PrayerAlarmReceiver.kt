@@ -36,6 +36,7 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {
             ACTION_STOP_ADHAN -> {
+                AdhanForegroundService.stop(context)
                 AdhanPlayer.stop()
                 return
             }
@@ -58,13 +59,12 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
         }
 
         Log.d(TAG, "onReceive id=$id at=${Date(System.currentTimeMillis())} adhanRaw=$adhanRaw title=$title")
-        createChannelIfNeeded(context)
         try {
             PrayerTimesWidgetBaseProvider.refreshAllWidgets(context)
         } catch (_: Exception) {}
 
-        AdhanPlayer.playForAlarm(context, adhanRaw, adhanDurationMs.toLong())
-        showNotification(context, id, title, body)
+        // Use AdhanForegroundService so playback cannot be killed by Doze/cached process lifecycle
+        AdhanForegroundService.start(context, id, title, body, adhanRaw, adhanDurationMs)
     }
 
     private fun showNotification(context: Context, id: Int, title: String, body: String) {

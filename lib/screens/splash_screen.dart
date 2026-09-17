@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1800),
+      duration: const Duration(milliseconds: 500),
     );
 
     _fadeAnimation = CurvedAnimation(
@@ -47,12 +47,12 @@ class _SplashScreenState extends State<SplashScreen>
 
     _animationController.forward();
 
-    // Navigate to BottomNavBarScreen after splash animation completes
-    Future.delayed(const Duration(milliseconds: 2600), () {
+    // Navigate to BottomNavBarScreen promptly
+    Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 800),
+            transitionDuration: const Duration(milliseconds: 300),
             pageBuilder: (context, animation, secondaryAnimation) =>
                 BottomNavBarScreen(routeObserver: widget.routeObserver),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {

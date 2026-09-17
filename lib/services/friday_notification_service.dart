@@ -41,10 +41,10 @@ class FridayNotificationService {
             AndroidFlutterLocalNotificationsPlugin>();
         if (androidPlugin != null) {
           const channel = AndroidNotificationChannel(
-            'friday_reminders_channel',
+            'friday_reminders_channel_v2',
             'Friday Reminders',
             description: 'Notifications for Friday Sunnahs and Surah Al-Kahf',
-            importance: Importance.high,
+            importance: Importance.max,
             playSound: true,
             enableVibration: true,
           );
@@ -53,12 +53,13 @@ class FridayNotificationService {
       }
 
       const androidDetails = AndroidNotificationDetails(
-        'friday_reminders_channel',
+        'friday_reminders_channel_v2',
         'Friday Reminders',
         channelDescription: 'Notifications for Friday Sunnahs and Surah Al-Kahf',
-        importance: Importance.high,
+        importance: Importance.max,
         priority: Priority.high,
         playSound: true,
+        enableVibration: true,
       );
 
       const notificationDetails = NotificationDetails(
@@ -67,6 +68,7 @@ class FridayNotificationService {
           presentAlert: true,
           presentSound: true,
           presentBadge: true,
+          interruptionLevel: InterruptionLevel.timeSensitive,
         ),
       );
 
