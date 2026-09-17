@@ -13,25 +13,29 @@ class BasmalaTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeColor =
+        context.watch<QuranProvider>().surahDetailsPageThemeColor;
     return Visibility(
       visible: isTitleVisible,
       child: Column(
         children: [
+          const SizedBox(height: 8),
           buildTitle(context),
           Visibility(
             visible: isBasmalaVisible,
-            child: Column(
-              children: [
-                const SizedBox(height: kSizeL),
-                SvgPicture.asset(ImageConstants.basmalaIcon,
-                    color: context
-                        .watch<QuranProvider>()
-                        .surahDetailsPageThemeColor
-                        .textColor),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.only(top: 14, bottom: 10),
+              child: SvgPicture.asset(
+                ImageConstants.basmalaIcon,
+                height: 40,
+                colorFilter: ColorFilter.mode(
+                  themeColor.textColor.withValues(alpha: 0.9),
+                  BlendMode.srcIn,
+                ),
+              ),
             ),
           ),
-          const SizedBox(height: kSize3XL),
+          const SizedBox(height: 12),
         ],
       ),
     );
@@ -44,18 +48,69 @@ class BasmalaTitle extends StatelessWidget {
     final surah = surahId >= 1 && surahId <= quranProvider.surahs.length
         ? quranProvider.surahs[surahId - 1]
         : null;
-    return Stack(
-      alignment: AlignmentDirectional.center,
-      children: [
-        SvgPicture.asset(ImageConstants.titleFrame,
-            color: themeColor.titleVectorColor),
-        SurahNameSvg(
-          surahId: surahId,
-          color: themeColor.textColor,
-          height: 32,
-          fallbackText: surah?.nameArabic,
+
+    final isMakkah = surah?.revelationPlace?.toLowerCase() == 'makkah';
+    final revelationText = isMakkah ? 'مَكِّيَّة' : 'مَدَنِيَّة';
+    final versesCount = surah?.verses.length ?? 0;
+
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+        color: themeColor.titleVectorColor.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: themeColor.titleVectorColor.withValues(alpha: 0.25),
+          width: 1.2,
         ),
-      ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              SvgPicture.asset(
+                ImageConstants.titleFrame,
+                colorFilter: ColorFilter.mode(
+                  themeColor.titleVectorColor,
+                  BlendMode.srcIn,
+                ),
+                height: 48,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 2),
+                child: SurahNameSvg(
+                  surahId: surahId,
+                  color: themeColor.textColor,
+                  height: 30,
+                  fallbackText: surah?.nameArabic,
+                ),
+              ),
+            ],
+          ),
+          if (surah != null && versesCount > 0) ...[
+            const SizedBox(height: 4),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              decoration: BoxDecoration(
+                color: themeColor.titleVectorColor.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                '$revelationText • آيَاتُهَا ${Utils.getArabicVerseNo(versesCount.toString())}',
+                style: TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w600,
+                  color: themeColor.textColor.withValues(alpha: 0.75),
+                  letterSpacing: 0.2,
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 

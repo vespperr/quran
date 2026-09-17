@@ -23,9 +23,12 @@ class QuranPageWidget extends StatelessWidget {
 
   final List<SurahModel> versesOfPage;
   final Function()? onTap;
+
   /// When set, long-pressing a verse shows the verse context menu (reading mode).
   /// Called with (context, verse, globalPosition, verseRowSize).
-  final void Function(BuildContext context, VerseModel verse, Offset position, Size size)? onVerseLongPress;
+  final void Function(
+          BuildContext context, VerseModel verse, Offset position, Size size)?
+      onVerseLongPress;
   final double textScaleFactor;
   final double lineHeight;
   final String fontTypeArabic;
@@ -34,18 +37,113 @@ class QuranPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final firstVerse = versesOfPage.first.verses.first;
+    final lastVerse = versesOfPage.last.verses.last;
+    final surahName = versesOfPage.first.nameArabic ?? '';
+    final juzNumber = firstVerse.juzNumber ?? 1;
+    final hasSajda = versesOfPage.any((s) => s.isSajdaVerse);
+
+    final borderColor =
+        surahDetailsPageTheme.titleVectorColor.withValues(alpha: 0.2);
+    final cardBg = surahDetailsPageTheme.backgroundColor;
+
     return InkWell(
       onTap: onTap,
       hoverColor: Colors.transparent,
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      child: Column(
-        children: [
-          buildSurahCard(context),
-          const SizedBox(height: kSize3XL),
-          buildBottomBorder(context, versesOfPage.last.verses.last)
-        ],
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: cardBg,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: borderColor, width: 1.2),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 10,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildMushafPageHeader(context, surahName, juzNumber),
+            const SizedBox(height: 10),
+            buildSurahCard(context),
+            const SizedBox(height: 14),
+            _buildMushafPageFooter(context, lastVerse, hasSajda),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildMushafPageHeader(
+    BuildContext context,
+    String surahName,
+    int juzNumber,
+  ) {
+    final textColor = surahDetailsPageTheme.textColor.withValues(alpha: 0.65);
+    final accentColor =
+        surahDetailsPageTheme.titleVectorColor.withValues(alpha: 0.25);
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.auto_stories_outlined,
+                    size: 13,
+                    color: surahDetailsPageTheme.titleVectorColor
+                        .withValues(alpha: 0.6),
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    surahName.isNotEmpty ? surahName : '',
+                    style: TextStyle(
+                      fontFamily: Fonts.surahNames,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                '۞',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: surahDetailsPageTheme.titleVectorColor
+                      .withValues(alpha: 0.5),
+                ),
+              ),
+              Text(
+                'الجُزْءُ ${Utils.getArabicVerseNo(juzNumber.toString())}',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: textColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 4),
+        Divider(
+          height: 1,
+          thickness: 0.8,
+          color: accentColor,
+        ),
+      ],
     );
   }
 
@@ -85,7 +183,8 @@ class QuranPageWidget extends StatelessWidget {
             fontFamily: Fonts.getArabicFont(fontTypeArabic),
             color: quran.surahDetailsPageThemeColor.textColor,
             letterSpacing: -0.7,
-          ) ?? const TextStyle();
+          ) ??
+          const TextStyle();
       return SizedBox(
         width: double.infinity,
         child: RichText(
@@ -94,32 +193,28 @@ class QuranPageWidget extends StatelessWidget {
               ? TextAlign.justify
               : TextAlign.right,
           text: TextSpan(
-          style: baseStyle,
-          children: verses
-              .map(
-                (e) {
-                  final verseSpans = quran.getVerseDisplaySpans(e, baseStyle);
-                  return TextSpan(
-                    children: [
-                      ...verseSpans,
-                      TextSpan(
-                        text: Utils.getArabicVerseNo(e.verseNumber.toString()),
-                        style: context.theme.textTheme.headlineLarge?.copyWith(
-                          fontFamily: Fonts.uthmanicIcon,
-                          fontSize: 16,
-                          letterSpacing: -2.5,
-                          height: 1.2,
-                          color: context
-                              .watch<QuranProvider>()
-                              .surahDetailsPageThemeColor
-                              .textColor,
-                        ),
+            style: baseStyle,
+            children: verses.map(
+              (e) {
+                final verseSpans = quran.getVerseDisplaySpans(e, baseStyle);
+                return TextSpan(
+                  children: [
+                    ...verseSpans,
+                    TextSpan(
+                      text: Utils.getArabicVerseNo(e.verseNumber.toString()),
+                      style: context.theme.textTheme.headlineLarge?.copyWith(
+                        fontFamily: Fonts.uthmanicIcon,
+                        fontSize: 16,
+                        letterSpacing: -2.5,
+                        height: 1.2,
+                        color: quran.surahDetailsPageThemeColor.titleVectorColor
+                            .withValues(alpha: 0.85),
                       ),
-                    ],
-                  );
-                },
-              )
-              .toList(),
+                    ),
+                  ],
+                );
+              },
+            ).toList(),
           ),
           textScaler: TextScaler.linear(textScaleFactor),
         ),
@@ -153,7 +248,8 @@ class QuranPageWidget extends StatelessWidget {
           fontFamily: Fonts.getArabicFont(fontTypeArabic),
           color: quran.surahDetailsPageThemeColor.textColor,
           letterSpacing: -0.7,
-        ) ?? const TextStyle();
+        ) ??
+        const TextStyle();
     final verseSpans = quran.getVerseDisplaySpans(verse, baseStyle);
     return SizedBox(
       width: double.infinity,
@@ -174,10 +270,8 @@ class QuranPageWidget extends StatelessWidget {
                 fontSize: 16,
                 letterSpacing: -2.5,
                 height: 1.2,
-                color: context
-                    .watch<QuranProvider>()
-                    .surahDetailsPageThemeColor
-                    .textColor,
+                color: quran.surahDetailsPageThemeColor.titleVectorColor
+                    .withValues(alpha: 0.85),
               ),
             ),
           ],
@@ -186,30 +280,94 @@ class QuranPageWidget extends StatelessWidget {
     );
   }
 
-  Widget buildBottomBorder(BuildContext context, VerseModel verse) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: kSizeS),
-      decoration: BoxDecoration(
-          border: Border(
-        bottom: BorderSide(color: surahDetailsPageTheme.transparentVectorColor),
-      )),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            "${context.translate.juz} ${verse.juzNumber} | ${context.translate.hizb} ${verse.hizbNumber} - ${context.translate.page} ${verse.pageNumber}",
-            style: context.theme.textTheme.bodySmall?.copyWith(
-                color: surahDetailsPageTheme.transparentTextColor,
-                letterSpacing: 0.15),
-          ),
-          Text(
-            verse.pageNumber?.quranPageNumber ?? "",
-            style: context.theme.textTheme.bodyMedium?.copyWith(
-                color: surahDetailsPageTheme.transparentVectorColor,
-                letterSpacing: 0.04),
-          ),
-        ],
-      ),
+  Widget _buildMushafPageFooter(
+    BuildContext context,
+    VerseModel verse,
+    bool hasSajda,
+  ) {
+    final dividerColor =
+        surahDetailsPageTheme.titleVectorColor.withValues(alpha: 0.25);
+    final subColor = surahDetailsPageTheme.textColor.withValues(alpha: 0.6);
+    final pageNoArabic =
+        Utils.getArabicVerseNo(verse.pageNumber?.toString() ?? '1');
+
+    return Column(
+      children: [
+        Divider(
+          height: 1,
+          thickness: 0.8,
+          color: dividerColor,
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'حِزْبُ ${Utils.getArabicVerseNo(verse.hizbNumber?.toString() ?? '1')}',
+              style: TextStyle(
+                fontSize: 11.5,
+                fontWeight: FontWeight.w500,
+                color: subColor,
+              ),
+            ),
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 2.5),
+              decoration: BoxDecoration(
+                color: surahDetailsPageTheme.titleVectorColor
+                    .withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: surahDetailsPageTheme.titleVectorColor
+                      .withValues(alpha: 0.2),
+                  width: 0.8,
+                ),
+              ),
+              child: Text(
+                '— $pageNoArabic —',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.5,
+                  color: surahDetailsPageTheme.textColor,
+                ),
+              ),
+            ),
+            hasSajda
+                ? Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFD4AF37).withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('۩ ',
+                            style: TextStyle(
+                                fontSize: 12, color: Color(0xFFD4AF37))),
+                        Text(
+                          'سَجْدَة',
+                          style: TextStyle(
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFFD4AF37),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Text(
+                    '${context.translate.page} ${verse.pageNumber ?? ""}',
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: subColor.withValues(alpha: 0.7),
+                    ),
+                  ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -223,7 +381,9 @@ class _VerseHoverWrapper extends StatefulWidget {
   });
 
   final VerseModel verse;
-  final void Function(BuildContext context, VerseModel verse, Offset position, Size size) onVerseLongPress;
+  final void Function(
+          BuildContext context, VerseModel verse, Offset position, Size size)
+      onVerseLongPress;
   final Widget child;
 
   @override

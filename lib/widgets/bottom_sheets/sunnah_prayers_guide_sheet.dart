@@ -664,7 +664,7 @@ class _SunnahPrayersGuideSheetState extends State<SunnahPrayersGuideSheet>
 
         // Prerequisites
         Text(
-          'پێشمەرجەکانی پێش دەستپێکردنی نوێژ',
+          'مەرجەکانی پێش دەستپێکردنی نوێژ',
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
             color: const Color(0xFF43A047),
@@ -712,7 +712,7 @@ class _SunnahPrayersGuideSheetState extends State<SunnahPrayersGuideSheet>
           arabicText:
               '«سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، وَتَبَارَكَ اسْمُكَ، وَتَعَالَى جَدُّكَ، وَلاَ إِلَهَ غَيْرُكَ»',
           explanation:
-              'دەستی ڕاست لەسەر پشتی دەستی چەپ و مەچەک لەسەر سنگ دادەنرێت. پاشان ئەم دەعایە بە بێدەنگی لە دڵ یان بە چرپە لە ڕکاتی یەکەمدا دەخوێندرێت.',
+              'دەستی ڕاست لەسەر پشتی دەستی چەپ و مەچەک لەسەر سنگ دادەنرێت. پاشان ئەم دوعایە  بە بێدەنگی لە دڵ یان بە چرپە لە ڕکاتی یەکەمدا دەخوێندرێت.',
           note: 'سوننەتە لە ڕکاتی یەکەمدا لە دوای تەكبیرەی ئیحرام بخوێندرێت.',
           isDark: isDark,
         ),

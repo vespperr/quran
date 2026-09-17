@@ -1254,7 +1254,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     if (duhaM != null && dhuhrM != null) {
       if (nowM >= duhaM && nowM < (dhuhrM - 15)) {
         return {
-          'label': 'کاتی نوێژی چێشتەنگاوە (زوحا)',
+          'label': 'کاتی نوێژی چێشتەنگاوە (الضحى)',
           'color': const Color(0xFFD4AF37),
           'isProhibited': false,
         };
@@ -1361,7 +1361,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                             ),
                             const SizedBox(width: 10),
                             Text(
-                              'نوێژی زوحا: $_duhaTime',
+                              'نوێژی الضحى: $_duhaTime',
                               style:
                                   context.theme.textTheme.bodyMedium?.copyWith(
                                 fontWeight: FontWeight.w800,

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
-import '../../constants/padding.dart';
 import '../../providers/quran_provider.dart';
 import '../../providers/surah_details_provider.dart';
 import '../../widgets/bars/reading_page_bottom_bar.dart';
@@ -21,13 +19,16 @@ class _ReadingScreenState extends State<ReadingScreen> {
   final ItemScrollController itemScrollController = ItemScrollController();
 
   /// Item position listener of Verse list
-  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      itemScrollController.jumpTo(index: context.read<SurahDetailsProvider>().jumpToMushafPageListIndex);
+      itemScrollController.jumpTo(
+          index:
+              context.read<SurahDetailsProvider>().jumpToMushafPageListIndex);
       itemPositionsListener.itemPositions.addListener(scrollListener);
     });
   }
@@ -43,7 +44,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
-    final contentMaxWidth = screenWidth * 0.92;
+    final contentMaxWidth = screenWidth > 640 ? 600.0 : screenWidth * 0.95;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -51,10 +52,11 @@ class _ReadingScreenState extends State<ReadingScreen> {
         itemCount: context.watch<SurahDetailsProvider>().mushafPageList.length,
         itemScrollController: itemScrollController,
         itemPositionsListener: itemPositionsListener,
-        padding: const EdgeInsets.symmetric(horizontal: kSizeL),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         physics: const ClampingScrollPhysics(),
         itemBuilder: (context, index) {
-          var versesOfPage = context.watch<SurahDetailsProvider>().mushafPageList[index];
+          var versesOfPage =
+              context.watch<SurahDetailsProvider>().mushafPageList[index];
           return Center(
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: contentMaxWidth),
@@ -64,34 +66,55 @@ class _ReadingScreenState extends State<ReadingScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                  QuranPageWidget(
-                    versesOfPage: versesOfPage,
-                    layoutOptions: context.watch<QuranProvider>().localSetting.layoutOptions,
-                    fontTypeArabic: context.watch<QuranProvider>().localSetting.fontTypeArabic,
-                    textScaleFactor: context.watch<QuranProvider>().localSetting.textScaleFactor,
-                    lineHeight: context.watch<QuranProvider>().localSetting.lineHeight,
-                    onTap: context.read<SurahDetailsProvider>().changeReadingMode,
-                    onVerseLongPress: (ctx, verse, position, size) {
-                      VersePopUpMenu.showVerseMenuAt(
-                        context,
-                        verse: verse,
-                        position: position,
-                        menuSourceSize: size,
-                      );
-                    },
-                    surahDetailsPageTheme: context.watch<QuranProvider>().surahDetailsPageThemeColor,
-                  ),
-                  Visibility(
-                    visible: index == context.read<SurahDetailsProvider>().mushafPageList.length - 1,
-                    child: const ReadingPageBottomBar(),
-                  ),
+                    QuranPageWidget(
+                      versesOfPage: versesOfPage,
+                      layoutOptions: context
+                          .watch<QuranProvider>()
+                          .localSetting
+                          .layoutOptions,
+                      fontTypeArabic: context
+                          .watch<QuranProvider>()
+                          .localSetting
+                          .fontTypeArabic,
+                      textScaleFactor: context
+                          .watch<QuranProvider>()
+                          .localSetting
+                          .textScaleFactor,
+                      lineHeight: context
+                          .watch<QuranProvider>()
+                          .localSetting
+                          .lineHeight,
+                      onTap: context
+                          .read<SurahDetailsProvider>()
+                          .changeReadingMode,
+                      onVerseLongPress: (ctx, verse, position, size) {
+                        VersePopUpMenu.showVerseMenuAt(
+                          context,
+                          verse: verse,
+                          position: position,
+                          menuSourceSize: size,
+                        );
+                      },
+                      surahDetailsPageTheme: context
+                          .watch<QuranProvider>()
+                          .surahDetailsPageThemeColor,
+                    ),
+                    Visibility(
+                      visible: index ==
+                          context
+                                  .read<SurahDetailsProvider>()
+                                  .mushafPageList
+                                  .length -
+                              1,
+                      child: const ReadingPageBottomBar(),
+                    ),
                   ],
                 ),
               ),
             ),
           );
         },
-        separatorBuilder: (context, index) => const SizedBox(height: kSizeXL),
+        separatorBuilder: (context, index) => const SizedBox(height: 12),
       ),
     );
   }

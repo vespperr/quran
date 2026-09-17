@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:the_open_quran/constants/constants.dart';
 
+import '../../models/mushaf_backgrund_model.dart';
 import '../../models/translation.dart';
 import '../../models/verse_model.dart';
 import '../../providers/quran_provider.dart';
@@ -67,127 +68,140 @@ class VerseCard extends StatelessWidget {
       shareFunction: shareFunction,
       memorizeFunction: memorizeFunction,
       changeSelectedVerseKey: changeSelectedVerseKey,
-      child: Container(
-        key: globalKey,
-        decoration: selectedVerseKey == verseModel.verseKey || isPlaying
-            ? BoxDecoration(
-                color: AppColors.black9.withOpacity(0.26),
-                borderRadius: BorderRadius.circular(kSizeM),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromRGBO(0, 0, 0, 0.25),
-                    offset: Offset(0, 4),
-                    blurRadius: 4,
-                  )
-                ],
-                border: Border.all(
-                  color: const Color.fromRGBO(0, 0, 0, 1),
-                  width: 1,
-                ),
-              )
-            : BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: context
-                        .watch<QuranProvider>()
-                        .surahDetailsPageThemeColor
-                        .titleVectorColor
-                        .withOpacity(0.5),
-                    width: 1,
-                  ),
-                ),
+      child: Builder(
+        builder: (context) {
+          final themeColor =
+              context.watch<QuranProvider>().surahDetailsPageThemeColor;
+          final isSelectedOrPlaying =
+              selectedVerseKey == verseModel.verseKey || isPlaying;
+
+          final cardBg = isSelectedOrPlaying
+              ? const Color(0xFF43A047).withValues(alpha: 0.08)
+              : themeColor.backgroundColor.withValues(alpha: 0.7);
+
+          final borderColor = isSelectedOrPlaying
+              ? const Color(0xFF43A047).withValues(alpha: 0.5)
+              : themeColor.titleVectorColor.withValues(alpha: 0.15);
+
+          return Container(
+            key: globalKey,
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: cardBg,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: borderColor,
+                width: isSelectedOrPlaying ? 1.5 : 1.0,
               ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    context
-                        .read<SurahDetailsProvider>()
-                        .changeAyahNumberStyle();
-                  },
-                  child: _verseNumberText(context),
+              boxShadow: [
+                BoxShadow(
+                  color: isSelectedOrPlaying
+                      ? const Color(0xFF43A047).withValues(alpha: 0.1)
+                      : Colors.black.withValues(alpha: 0.03),
+                  blurRadius: isSelectedOrPlaying ? 8 : 4,
+                  offset: const Offset(0, 2),
                 ),
-                isBookmark
-                    ? Padding(
-                        padding:
-                            const EdgeInsets.only(left: kSizeM, top: kSizeM),
-                        child: SvgPicture.asset(
-                          ImageConstants.bookmarkIconCard,
-                          color: context
-                              .watch<QuranProvider>()
-                              .surahDetailsPageThemeColor
-                              .textColor,
-                        ),
-                      )
-                    : Container(),
               ],
             ),
-            Expanded(
-              child: Column(
-                children: [
-                  _buildVerseCardArabic(readOptions, context),
-                  _buildVerseCardTranslation(readOptions),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        context
+                            .read<SurahDetailsProvider>()
+                            .changeAyahNumberStyle();
+                      },
+                      child: _verseNumberBadge(context, themeColor),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (isBookmark)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 6),
+                            child: SvgPicture.asset(
+                              ImageConstants.bookmarkActiveIcon,
+                              height: 17,
+                              colorFilter: const ColorFilter.mode(
+                                Color(0xFFD4AF37),
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ),
+                        IconButton(
+                          icon: Icon(
+                            isPlaying
+                                ? Icons.pause_circle_filled_rounded
+                                : Icons.play_circle_outline_rounded,
+                            color: isPlaying
+                                ? const Color(0xFF43A047)
+                                : themeColor.titleVectorColor
+                                    .withValues(alpha: 0.7),
+                            size: 20,
+                          ),
+                          onPressed: () => playFunction(verseModel, isPlaying),
+                          visualDensity: VisualDensity.compact,
+                          padding: EdgeInsets.zero,
+                          constraints:
+                              const BoxConstraints(minWidth: 32, minHeight: 32),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                _buildVerseCardArabic(readOptions, context),
+                _buildVerseCardTranslation(readOptions),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-  /// The number of ayat if arabic and latin format
-  Widget _verseNumberText(BuildContext context) {
-    if (context.read<SurahDetailsProvider>().isLatinNumber) {
-      return Text(
-        Utils.getArabicVerseNo(verseModel.verseNumber.toString()),
-        textAlign: TextAlign.start,
-        textScaleFactor: textScaleFactor,
-        style: context.theme.textTheme.displayLarge?.copyWith(
-          color: context
-              .watch<QuranProvider>()
-              .surahDetailsPageThemeColor
-              .textColor,
-          fontSize: 30,
-          fontFamily: arabicFontFamily,
+  Widget _verseNumberBadge(
+      BuildContext context, SurahDetailsPageThemeModel themeColor) {
+    final isLatin = context.read<SurahDetailsProvider>().isLatinNumber;
+    final verseNumStr = isLatin
+        ? verseModel.verseNumber.toString()
+        : Utils.getArabicVerseNo(verseModel.verseNumber.toString());
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+      decoration: BoxDecoration(
+        color: themeColor.titleVectorColor.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: themeColor.titleVectorColor.withValues(alpha: 0.2),
+          width: 0.8,
         ),
-      );
-    } else {
-      return Padding(
-        padding: const EdgeInsets.only(top: kSizeXXL, left: kSizeM),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Text(
-              verseModel.verseNumber.toString(),
-              textAlign: TextAlign.start,
-              textScaleFactor: textScaleFactor,
-              style: context.theme.textTheme.displayLarge?.copyWith(
-                color: context
-                    .watch<QuranProvider>()
-                    .surahDetailsPageThemeColor
-                    .textColor,
-                fontSize: 15,
-                fontFamily: arabicFontFamily,
-              ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.menu_book_rounded,
+            size: 12,
+            color: themeColor.titleVectorColor.withValues(alpha: 0.7),
+          ),
+          const SizedBox(width: 5),
+          Text(
+            verseModel.verseKey ?? verseNumStr,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: themeColor.textColor,
             ),
-            SvgPicture.asset(
-              ImageConstants.versNumberFrame,
-              height: 32,
-              color: context
-                  .watch<QuranProvider>()
-                  .surahDetailsPageThemeColor
-                  .textColor
-                  .withOpacity(0.6),
-            ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
   }
 
   /// Arabic Text
@@ -200,22 +214,21 @@ class VerseCard extends StatelessWidget {
             width: double.infinity,
             decoration: isPlaying
                 ? BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.black10.withOpacity(0),
-                        AppColors.brandy.withOpacity(0.24),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(kSizeM),
+                    color: const Color(0xFF43A047).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
                   )
                 : null,
-            padding: const EdgeInsets.all(kSizeM),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             child: RichText(
               text: TextSpan(
                 style: context.theme.textTheme.headlineLarge?.copyWith(
-                    height: context.watch<QuranProvider>().localSetting.lineHeight,
-                    fontSize: 20,
-                    fontFamily: Fonts.getArabicFont(context.watch<QuranProvider>().localSetting.fontTypeArabic),
+                    height:
+                        context.watch<QuranProvider>().localSetting.lineHeight,
+                    fontSize: 21,
+                    fontFamily: Fonts.getArabicFont(context
+                        .watch<QuranProvider>()
+                        .localSetting
+                        .fontTypeArabic),
                     fontFamilyFallback: [Fonts.amiri],
                     color: context
                         .watch<QuranProvider>()
@@ -223,25 +236,29 @@ class VerseCard extends StatelessWidget {
                         .textColor,
                     letterSpacing: -0.7),
                 children: context.watch<QuranProvider>().getVerseDisplaySpans(
-                  verseModel,
-                  context.theme.textTheme.headlineLarge!.copyWith(
-                    height: context.watch<QuranProvider>().localSetting.lineHeight,
-                    fontSize: 20,
-                    fontFamily: Fonts.getArabicFont(context.watch<QuranProvider>().localSetting.fontTypeArabic),
-                    fontFamilyFallback: [Fonts.amiri],
-                    color: context.watch<QuranProvider>().surahDetailsPageThemeColor.textColor,
-                    letterSpacing: -0.7,
-                  ),
-                ),
+                      verseModel,
+                      context.theme.textTheme.headlineLarge!.copyWith(
+                        height: context
+                            .watch<QuranProvider>()
+                            .localSetting
+                            .lineHeight,
+                        fontSize: 21,
+                        fontFamily: Fonts.getArabicFont(context
+                            .watch<QuranProvider>()
+                            .localSetting
+                            .fontTypeArabic),
+                        fontFamilyFallback: [Fonts.amiri],
+                        color: context
+                            .watch<QuranProvider>()
+                            .surahDetailsPageThemeColor
+                            .textColor,
+                        letterSpacing: -0.7,
+                      ),
+                    ),
               ),
               textDirection: TextDirection.rtl,
               textAlign: TextAlign.start,
               textScaler: TextScaler.linear(textScaleFactor),
-              /* style: context.theme.textTheme.displayLarge?.copyWith(
-                color: context.watch<QuranProvider>().surahDetailsPageThemeColor.textColor,
-                fontSize: 27,
-                fontFamily: context.watch<QuranProvider>().localSetting.fontTypeArabic,
-              ), */
             ),
           ),
           Visibility(
@@ -258,44 +275,38 @@ class VerseCard extends StatelessWidget {
       visible: readOptions != EReadOptions.surah,
       child: Padding(
         padding: readOptions == EReadOptions.translation
-            ? const EdgeInsets.only(top: kSizeXL)
+            ? const EdgeInsets.only(top: 8)
             : EdgeInsets.zero,
         child: ListView.separated(
           itemCount: verseTranslations.length,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          padding: const EdgeInsets.only(bottom: kSizeM),
+          padding: const EdgeInsets.only(bottom: 6),
           separatorBuilder: (context, index) => buildVerseCardDivider(context),
           itemBuilder: (context, index) {
             final verseTranslation = verseTranslations[index];
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  verseTranslation.text ?? "",
-                  textAlign: TextAlign.end,
-                  textScaleFactor: textScaleFactor,
-                  style: context.theme.textTheme.titleSmall?.copyWith(
-                    fontFamily: translationFontFamily,
-                    color: context
-                        .watch<QuranProvider>()
-                        .surahDetailsPageThemeColor
-                        .textColor,
-                  ),
+            final quran = context.watch<QuranProvider>();
+            return Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              decoration: BoxDecoration(
+                color: quran.surahDetailsPageThemeColor.titleVectorColor
+                    .withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                verseTranslation.text ?? "",
+                textAlign: TextAlign.start,
+                textDirection: TextDirection.rtl,
+                textScaler: TextScaler.linear(textScaleFactor),
+                style: context.theme.textTheme.titleSmall?.copyWith(
+                  fontFamily: translationFontFamily,
+                  color: quran.surahDetailsPageThemeColor.textColor
+                      .withValues(alpha: 0.88),
+                  height: 1.55,
+                  fontSize: 14.5,
                 ),
-                /* Text(
-                  "- ${verseTranslation.translationName}",
-                  textAlign: TextAlign.end,
-                  textScaleFactor: textScaleFactor,
-                  style: context.theme.textTheme.labelLarge?.copyWith(
-                    fontFamily: translationFontFamily,
-                    color: context
-                        .watch<QuranProvider>()
-                        .surahDetailsPageThemeColor
-                        .transparentTextColor,
-                  ),
-                ), */
-              ],
+              ),
             );
           },
         ),
@@ -316,12 +327,12 @@ class VerseCard extends StatelessWidget {
                 .watch<QuranProvider>()
                 .surahDetailsPageThemeColor
                 .transparentVectorColor
-                .withOpacity(0),
+                .withValues(alpha: 0),
             context
                 .watch<QuranProvider>()
                 .surahDetailsPageThemeColor
                 .textColor
-                .withOpacity(0.24),
+                .withValues(alpha: 0.24),
           ],
         ),
       ),
