@@ -137,7 +137,9 @@ class QuranPageWidget extends StatelessWidget {
               Text(
                 'الجُزْءُ ${Utils.getArabicVerseNo(juzNumber.toString())}',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontFamily: Fonts.naskh,
+                  fontFamilyFallback: const [Fonts.uthmanic],
+                  fontSize: 12.5,
                   fontWeight: FontWeight.w600,
                   color: textColor,
                 ),
@@ -189,6 +191,7 @@ class QuranPageWidget extends StatelessWidget {
             height: lineHeight,
             fontSize: 20,
             fontFamily: Fonts.getArabicFont(fontTypeArabic),
+            fontFamilyFallback: const [Fonts.naskh, Fonts.uthmanic],
             color: quran.surahDetailsPageThemeColor.textColor,
           ) ??
           const TextStyle();
@@ -252,6 +255,7 @@ class QuranPageWidget extends StatelessWidget {
           height: lineHeight,
           fontSize: 20,
           fontFamily: Fonts.getArabicFont(fontTypeArabic),
+          fontFamilyFallback: const [Fonts.naskh, Fonts.uthmanic],
           color: quran.surahDetailsPageThemeColor.textColor,
         ) ??
         const TextStyle();
@@ -310,7 +314,9 @@ class QuranPageWidget extends StatelessWidget {
               child: Text(
                 'حِزْبُ ${Utils.getArabicVerseNo(verse.hizbNumber?.toString() ?? '1')}',
                 style: TextStyle(
-                  fontSize: 11.5,
+                  fontFamily: Fonts.naskh,
+                  fontFamilyFallback: const [Fonts.uthmanic],
+                  fontSize: 12,
                   fontWeight: FontWeight.w500,
                   color: subColor,
                 ),

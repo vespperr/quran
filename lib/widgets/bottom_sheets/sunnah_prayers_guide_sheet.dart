@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/design_system.dart';
 import '../../constants/extensions.dart';
+import '../../constants/fonts.dart';
 
 /// Modal bottom sheet presenting the comprehensive guide for:
 /// 1. Step-by-step How to Pray (صفة الصلاة / شێوازی نوێژکردن) & Congregational mistakes.
@@ -264,9 +265,11 @@ class _SunnahPrayersGuideSheetState extends State<SunnahPrayersGuideSheet>
               const Text(
                 '«صَلُّوا كَمَا رَأَيْتُمُونِي أُصَلِّي»',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontFamily: Fonts.naskh,
+                  fontFamilyFallback: [Fonts.uthmanic],
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  height: 1.6,
+                  height: 1.8,
                 ),
                 textDirection: TextDirection.rtl,
               ),
@@ -897,9 +900,11 @@ class _SunnahPrayersGuideSheetState extends State<SunnahPrayersGuideSheet>
               const Text(
                 '«مَنْ صَلَّى فِي يَوْمٍ وَلَيْلَةٍ ثِنْتَيْ عَشْرَةَ رَكْعَةً بُنِيَ لَهُ بَيْتٌ فِي الْجَنَّةِ»',
                 style: TextStyle(
-                  fontSize: 15,
+                  fontFamily: Fonts.naskh,
+                  fontFamilyFallback: [Fonts.uthmanic],
+                  fontSize: 17,
                   fontWeight: FontWeight.bold,
-                  height: 1.6,
+                  height: 1.8,
                 ),
                 textDirection: TextDirection.rtl,
               ),
@@ -1760,9 +1765,11 @@ class _SunnahPrayersGuideSheetState extends State<SunnahPrayersGuideSheet>
             child: Text(
               arabicText,
               style: const TextStyle(
+                fontFamily: Fonts.naskh,
+                fontFamilyFallback: [Fonts.uthmanic],
                 fontWeight: FontWeight.bold,
-                fontSize: 14,
-                height: 1.6,
+                fontSize: 16,
+                height: 1.8,
               ),
               textDirection: TextDirection.rtl,
             ),

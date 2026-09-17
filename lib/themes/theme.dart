@@ -133,7 +133,10 @@ ThemeData themeForLocale(Locale? locale) {
         fontWeight: FontWeight.w300,
         color: DesignSystem.onSurface,
       ),
-    ).apply(fontFamily: fontFamily),
+    ).apply(
+      fontFamily: fontFamily,
+      fontFamilyFallback: isArabic ? const [Fonts.naskh, Fonts.uthmanic] : null,
+    ),
   );
 }
 

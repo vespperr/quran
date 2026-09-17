@@ -64,6 +64,8 @@ class SearchVerseCard extends StatelessWidget {
       verseModel.text ?? "",
       textDirection: TextDirection.rtl,
       style: context.theme.textTheme.headlineMedium!.copyWith(
+        fontFamily: Fonts.naskh,
+        fontFamilyFallback: const [Fonts.uthmanic],
         height: 2,
         color: DesignSystem.onSurface,
       ),
@@ -76,8 +78,11 @@ class SearchVerseCard extends StatelessWidget {
       verseModel.surahNameArabic ?? "",
       overflow: TextOverflow.ellipsis,
       textDirection: TextDirection.rtl,
-      style: context.theme.textTheme.titleLarge!
-          .copyWith(color: DesignSystem.onSurface),
+      style: context.theme.textTheme.titleLarge!.copyWith(
+        fontFamily: Fonts.surahNames,
+        fontFamilyFallback: const [Fonts.naskh, Fonts.uthmanic],
+        color: DesignSystem.onSurface,
+      ),
     );
   }
 

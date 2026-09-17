@@ -101,7 +101,9 @@ class BasmalaTitle extends StatelessWidget {
               child: Text(
                 '$revelationText • آيَاتُهَا ${Utils.getArabicVerseNo(versesCount.toString())}',
                 style: TextStyle(
-                  fontSize: 11.5,
+                  fontFamily: Fonts.naskh,
+                  fontFamilyFallback: const [Fonts.uthmanic],
+                  fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: themeColor.textColor.withValues(alpha: 0.75),
                   letterSpacing: 0.2,

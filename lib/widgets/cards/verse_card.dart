@@ -217,7 +217,11 @@ class VerseCard extends StatelessWidget {
                         .watch<QuranProvider>()
                         .localSetting
                         .fontTypeArabic,
-                    fontFamilyFallback: [Fonts.amiri],
+                    fontFamilyFallback: [
+                      Fonts.naskh,
+                      Fonts.uthmanic,
+                      Fonts.amiri,
+                    ],
                     color: context
                         .watch<QuranProvider>()
                         .surahDetailsPageThemeColor
