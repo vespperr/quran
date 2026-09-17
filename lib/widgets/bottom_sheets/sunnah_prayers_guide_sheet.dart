@@ -888,8 +888,147 @@ class _SunnahPrayersGuideSheetState extends State<SunnahPrayersGuideSheet>
             'نوێژی ئێوارە (المغرب)', '٣ ڕکات', '٢ بە دەنگ + ١ بێدەنگ', isDark),
         _buildPrayerRakatCountItem(
             'نوێژی عیشا (العشاء)', '٤ ڕکات', '٢ بە دەنگ + ٢ بێدەنگ', isDark),
+        const SizedBox(height: 20),
+
+        // Common Mistakes in Congregational Prayer
+        Text(
+          'هەڵە باوەکانی ناو نوێژی جەماعەت',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFFE53935),
+          ),
+        ),
+        const SizedBox(height: 8),
+        _buildMistakeCard(
+          title: '١. دەنگ دەرکردن و فسکە فسک لە خوێندنەوەدا',
+          problem:
+              'لە نوێژە نهێنییەکاندا (نیوەڕۆ و عەسر یان لە دوای ئیمام)، هەندێک کەس دەنگی فسکە فسک یان فیکە فیک لە دەمیان دێت کە دەبێتە هۆی بێزارکردن و تێکدانی خشوعی ئەو کەسانەی لە تەنیشتیەوە نوێژ دەکەن.',
+          correction:
+              'خوێندنەوەی دروست بە تەنها جووڵاندنی زمان و لێوەکان دەبێت بەبێ دەرکردنی دەنگ و فسکە فسک، وەکو پێغەمبەری خوا ﷺ فەرموویەتی: «إِنَّ كُلَّكُمْ يُنَاجِي رَبَّهُ، فَلاَ يُؤْذِيَنَّ بَعْضُكُمْ بَعْضاً» (هەمووتان رازونیاز لەگەڵ پەروەردگارتان دەکەن، با هیچتان یەکتری بێزار نەکات).',
+          isDark: isDark,
+        ),
+        _buildMistakeCard(
+          title: '٢. شێوازی هەڵەی دانانی قاچەکان و ناڕێکی ڕیز',
+          problem:
+              'یان زۆر کردنەوەی قاچەکان بە شێوەیەکی ناپێویست و سەرنجڕاکێش کە دەبێتە هۆی تێکدانی ڕاوەستانی کەسانی تەنیشت، یان بە پێچەوانەوە زۆر نووساندنی قاچەکان بە یەکەوە و بەجێهێشتنی بۆشایی گەورە لە نێوان شانی نوێژخوێناندا.',
+          correction:
+              'سوننەت ئەوەیە هەر کەسێک قاچەکانی بە ئەندازەی بەرینی شانەکانی خۆی بکاتەوە و پەنجەکانی ڕوو لە قیبلە بن، و ڕیزەکە بە تەریبکردنی پاژنەی پێ و شانەکان پڕ بکرێتەوە بەبێ پاڵنان و زیادەڕەوی.',
+          isDark: isDark,
+        ),
+        _buildMistakeCard(
+          title: '٣. پێشکەوتن بەسەر پێشنوێژدا (مسابقة الإمام)',
+          problem:
+              'چوون بۆ ڕکوع یان سوجدە یان بەرزبوونەوە پێش پێشنوێژ (ئیمام)، یان سەلامدانەوە پێش ئەوەی ئیمام سەلام بداتەوە.',
+          correction:
+              'ئیمام دانراوە بۆ ئەوەی شوێنی بکەویت، فەرزە لەسەر نوێژخوێن تەنها دوای دەنگی ئیمام کردارەکە ئەنجام بدات نەک پێشتر.',
+          isDark: isDark,
+        ),
         const SizedBox(height: 16),
       ],
+    );
+  }
+
+  Widget _buildMistakeCard({
+    required String title,
+    required String problem,
+    required String correction,
+    required bool isDark,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF261D1D) : const Color(0xFFFFF8F8),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: const Color(0xFFE53935).withValues(alpha: 0.25),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.cancel_rounded,
+                color: Color(0xFFE53935),
+                size: 18,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13.5,
+                    color: Color(0xFFE53935),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color:
+                  isDark ? Colors.white.withValues(alpha: 0.04) : Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: isDark ? Colors.white10 : Colors.grey.shade200,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('⚠️ ', style: TextStyle(fontSize: 12)),
+                    Expanded(
+                      child: Text(
+                        'هەڵەکە: $problem',
+                        style: TextStyle(
+                          fontSize: 12,
+                          height: 1.45,
+                          color: isDark
+                              ? Colors.grey.shade300
+                              : Colors.grey.shade800,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.check_circle,
+                      size: 15,
+                      color: Color(0xFF43A047),
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        'دروست و سوننەت: $correction',
+                        style: TextStyle(
+                          fontSize: 12,
+                          height: 1.45,
+                          fontWeight: FontWeight.w600,
+                          color: isDark
+                              ? const Color(0xFF81C784)
+                              : const Color(0xFF2E7D32),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
