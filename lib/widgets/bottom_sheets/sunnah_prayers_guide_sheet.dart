@@ -28,7 +28,7 @@ class _SunnahPrayersGuideSheetState extends State<SunnahPrayersGuideSheet>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -43,7 +43,7 @@ class _SunnahPrayersGuideSheetState extends State<SunnahPrayersGuideSheet>
     final isDark = theme.brightness == Brightness.dark;
 
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.85,
+      height: MediaQuery.sizeOf(context).height * 0.88,
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF161F1A) : DesignSystem.surface,
         borderRadius: const BorderRadius.vertical(
@@ -86,7 +86,7 @@ class _SunnahPrayersGuideSheetState extends State<SunnahPrayersGuideSheet>
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'ڕێبەری نوێژە سوننەتەکان و کاتەکانی نەهی',
+                    'ڕێبەری نوێژ و سوننەتەکان',
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       fontSize: 17,
@@ -104,7 +104,7 @@ class _SunnahPrayersGuideSheetState extends State<SunnahPrayersGuideSheet>
           const SizedBox(height: 8),
           // Tab bar
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
               color: isDark
                   ? Colors.white.withValues(alpha: 0.06)
@@ -124,12 +124,13 @@ class _SunnahPrayersGuideSheetState extends State<SunnahPrayersGuideSheet>
                   theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
               labelStyle: const TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 14,
+                fontSize: 12.5,
                 fontFamily: 'Inter',
               ),
               tabs: const [
+                Tab(text: 'شێوازی نوێژکردن'),
                 Tab(text: 'نوێژە سوننەتەکان'),
-                Tab(text: 'کاتەکانی نەهی (قەدەغەکراو)'),
+                Tab(text: 'کاتەکانی نەهی'),
               ],
             ),
           ),
@@ -139,6 +140,7 @@ class _SunnahPrayersGuideSheetState extends State<SunnahPrayersGuideSheet>
             child: TabBarView(
               controller: _tabController,
               children: [
+                _buildHowToPrayTab(theme, isDark),
                 _buildSunnahTab(theme, isDark),
                 _buildProhibitedTab(theme, isDark),
               ],
@@ -597,6 +599,495 @@ class _SunnahPrayersGuideSheetState extends State<SunnahPrayersGuideSheet>
               fontSize: 11.5,
               color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
               height: 1.4,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHowToPrayTab(ThemeData theme, bool isDark) {
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      physics: const BouncingScrollPhysics(),
+      children: [
+        // Prophetic Hadith banner
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1E88E5).withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: const Color(0xFF1E88E5).withValues(alpha: 0.3),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.menu_book_rounded,
+                      color: Color(0xFF1E88E5), size: 20),
+                  const SizedBox(width: 8),
+                  Text(
+                    'فەرموودەی پێغەمبەری خوا ﷺ',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF1E88E5),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                '«صَلُّوا كَمَا رَأَيْتُمُونِي أُصَلِّي»',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  height: 1.6,
+                ),
+                textDirection: TextDirection.rtl,
+              ),
+              const SizedBox(height: 6),
+              Text(
+                '«نوێژ بکەن بەو شێوازەی کە بینیتان من نوێژم پێکرد.» (صحيح البخاري)',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  height: 1.5,
+                  color:
+                      theme.textTheme.bodySmall?.color?.withValues(alpha: 0.8),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Prerequisites
+        Text(
+          'پێشمەرجەکانی پێش دەستپێکردنی نوێژ',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF43A047),
+          ),
+        ),
+        const SizedBox(height: 8),
+        _buildPrerequisiteCard(
+          isDark: isDark,
+          items: const [
+            '١. پاکوخاوێنی: دەستنوێژگرتن یان خۆشۆردن لە لەشگرانی.',
+            '٢. پاکیی لەش و جلوبەرگ و شوێنی نوێژ لە هەموو ناپاکیەک.',
+            '٣. داپۆشینی عەورەت (بۆ پیاو لە ناوکەوە تا ئەژنۆ، بۆ ئافرەت هەموو لەش جگە لە دەموچاو و دەستەکان).',
+            '٤. دڵنیابوون لە هاتنی کاتی نوێژەکە.',
+            '٥. ڕووکردنە قیبلەی پیرۆز (کەعبەی پیرۆز).',
+            '٦. نیەت: شوێنەکەی دڵە و بە دەم وتنی نەهاتووە و بیدعەیە.',
+          ],
+        ),
+        const SizedBox(height: 20),
+
+        // Steps Title
+        Text(
+          'شێوازی نوێژکردن هەنگاو بە هەنگاو',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF43A047),
+          ),
+        ),
+        const SizedBox(height: 10),
+
+        // Step 1: Takbeerat al-Ihram
+        _buildStepCard(
+          stepNumber: '١',
+          title: 'تەكبیرەی ئیحرام (دەستپێکردن)',
+          arabicText: 'اللَّهُ أَكْبَرُ',
+          explanation:
+              'ڕاوەستان بە ڕێکی و سەیرکردنی جێگای سوجدە. هەردوو دەست تا ئاستی شانەکان یان نەرمەی گوێچکەکان بەرز دەکرێنەوە بە شێوەیەک پەنجەکان لێک کراوە نەبن و ڕوو لە قیبلە بن، لەگەڵ وتنی «اللَّهُ أَكْبَرُ».',
+          note: 'ئەم تەكبیرەیە فەرزە (ڕوکنە) و بەبێ ئەمە نوێژ دانامەزرێت.',
+          isDark: isDark,
+        ),
+
+        // Step 2: Istiftah
+        _buildStepCard(
+          stepNumber: '٢',
+          title: 'دانانی دەستەکان و دەعای دەستپێکردن (الاستفتاح)',
+          arabicText:
+              '«سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، وَتَبَارَكَ اسْمُكَ، وَتَعَالَى جَدُّكَ، وَلاَ إِلَهَ غَيْرُكَ»',
+          explanation:
+              'دەستی ڕاست لەسەر پشتی دەستی چەپ و مەچەک لەسەر سنگ دادەنرێت. پاشان ئەم دەعایە بە بێدەنگی لە دڵ یان بە چرپە لە ڕکاتی یەکەمدا دەخوێندرێت.',
+          note: 'سوننەتە لە ڕکاتی یەکەمدا لە دوای تەكبیرەی ئیحرام بخوێندرێت.',
+          isDark: isDark,
+        ),
+
+        // Step 3: Fatihah & Surah
+        _buildStepCard(
+          stepNumber: '٣',
+          title: 'پەناگرتن و خوێندنی سورەتی (الفاتحة)',
+          arabicText:
+              '«أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ • بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ»',
+          explanation:
+              'پاش پەناگرتن بە پەروەردگار و بەسمەلە، سورەتی پیرۆزی فاتیحە بە تەواوی دەخوێندرێت. لە کۆتایی فاتیحەدا دەوترێت: «آمين». خوێندنی فاتیحە ڕوکنە لە هەموو ڕکاتێکدا بۆ ئیمام و تەنیاخوێن. پاش فاتیحە لە ڕکاتی یەکەم و دووەمدا سورەتێک یان چەند ئایەتێک لە قورئان دەخوێندرێت.',
+          note:
+              '«لاَ صَلاَةَ لِمَنْ لَمْ يَقْرَأْ بِفَاتِحَةِ الْكِتَابِ» (صحيح البخاري).',
+          isDark: isDark,
+        ),
+
+        // Step 4: Ruku
+        _buildStepCard(
+          stepNumber: '٤',
+          title: 'چوون بۆ ڕکوع (چەمینەوە)',
+          arabicText: '«سُبْحَانَ رَبِّيَ الْعَظِيمِ» (٣ جار)',
+          explanation:
+              'وتنی «اللَّهُ أَكْبَرُ» و چەمینەوە بۆ ڕکوع. دەستەکان دەخرێنە سەر ئەژنۆکان و پەنجەکان لێک جیا دەکرێنەوە وەک ئەوەی دەست بە ئەژنۆوە گیرابێت. پشت تەواو ڕێک دەبێت بە ئاستی سەر، بەبێ دانەواندن یان بەرزکردنەوەی سەر.',
+          note:
+              'ئارامگرتن لە ڕکوعدا ڕوکنە، نابێت پەلە بکرێت تا جومگەکان جێگیر دەبن.',
+          isDark: isDark,
+        ),
+
+        // Step 5: Rising from Ruku
+        _buildStepCard(
+          stepNumber: '٥',
+          title: 'هەستانەوە لە ڕکوع بە هێمنی',
+          arabicText:
+              '«سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ»\n«رَبَّنَا وَلَكَ الْحَمْدُ، حَمْداً كَثِيراً طَيِّباً مُبَارَكاً فِيهِ»',
+          explanation:
+              'بەرزبوونەوە لە ڕکوع بە تەواوی تا قیت ڕادەوەستیت. لە کاتی هەستانەوە دەوترێت «سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ» (بۆ ئیمام و تەنیاخوێن)، لە کاتی ڕاوەستان بە ڕێکی دەوترێت «رَبَّنَا وَلَكَ الْحَمْدُ...».',
+          note:
+              'پێویستە بە تەواوی پشت ڕێک بوەستێت و هەموو جومگەیەک بگەڕێتەوە شوێنی خۆی.',
+          isDark: isDark,
+        ),
+
+        // Step 6: First Sujud
+        _buildStepCard(
+          stepNumber: '٦',
+          title: 'سوجدەی یەکەم',
+          arabicText: '«سُبْحَانَ رَبِّيَ الأَعْلَى» (٣ جار)',
+          explanation:
+              'وتنی «اللَّهُ أَكْبَرُ» و دابەزین بۆ سوجدە. سوجدە بردن لەسەر ٧ ئەندام: نێوچەوان لەگەڵ لوت، هەردوو لەپی دەست، هەردوو ئەژنۆ، و سەرپەنجەکانی هەردوو پێ کە ڕوو لە قیبلە بن. باڵەکان لە تەنیشت دوور دەخرێنەوە و ئەنیشک لەسەر زەوی دانانرێت.',
+          note:
+              'نزیکترین کات کە بەندە لە پەروەردگاری نزیک بێت کاتی سوجدەیە، بۆیە دەعای تێدا زۆر بکەن.',
+          isDark: isDark,
+        ),
+
+        // Step 7: Sitting Between Sujuds
+        _buildStepCard(
+          stepNumber: '٧',
+          title: 'دانیشتنی نێوان دوو سوجدەدا',
+          arabicText: '«رَبِّ اغْفِرْ لِي، رَبِّ اغْفِرْ لِي»',
+          explanation:
+              'هەستانەوە لە سوجدە بە وتنی «اللَّهُ أَكْبَرُ» و دانیشتن بە ئارامی. سوننەتە پێی چەپ ڕابخرێت و لەسەری دابنیشێت (افتراش) و پێی ڕاست ڕابگیرێت بە پەنجەکانی ڕوو لە قیبلە. دەستەکان لەسەر ڕان دادەنرێن.',
+          note:
+              'هێمنی و دڵنیابوون لە دانیشتنەکە ڕوکنە و ناکرێت بە خێرایی سوجدەی دووەم ببرێت.',
+          isDark: isDark,
+        ),
+
+        // Step 8: Second Sujud & 2nd Rakat
+        _buildStepCard(
+          stepNumber: '٨',
+          title: 'سوجدەی دووەم و هەستانەوە بۆ ڕکاتی دووەم',
+          arabicText: '«سُبْحَانَ رَبِّيَ الأَعْلَى» (٣ جار)',
+          explanation:
+              'سوجدەی دووەم دەبرێتەوە بە هەمان شێوازی سوجدەی یەکەم. پاشان بە وتنی «اللَّهُ أَكْبَرُ» هەڵدەستیتەوە بۆ ئەنجامدانی ڕکاتی دووەم بە هەمان هەنگاوەکان، جگە لە تەكبیرەی ئیحرام و دەعای دەستپێکردن کە تەنها لە ڕکاتی یەکەمدا هەن.',
+          note: 'بە ئەنجامدانی سوجدەی دووەم ڕکاتی یەکەم تەواو دەبێت.',
+          isDark: isDark,
+        ),
+
+        // Step 9: First Tashahhud
+        _buildStepCard(
+          stepNumber: '٩',
+          title: 'تەشەهودی یەکەم (دوای ڕکاتی دووەم)',
+          arabicText:
+              '«التَّحِيَّاتُ لِلَّهِ، وَالصَّلَوَاتُ وَالطَّيِّبَاتُ، السَّلاَمُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ، السَّلاَمُ عَلَيْنَا وَعَلَى عِبَادِ اللَّهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ اللَّهُ، وَأَشْهَدُ أَنَّ مُحَمَّداً عَبْدُهُ وَرَسُولُهُ»',
+          explanation:
+              'دوای ڕکاتی دووەم دادەنیشیت، دەستی چەپ لەسەر ئەژنۆی چەپ و دەستی ڕاست لەسەر ئەژنۆی ڕاست دادەنرێت. پەنجەکانی دەستی ڕاست گرێ دەدرێن جگە لە پەنجەی شایەتمان کە ڕوو لە قیبلە ئاماژەی پێدەکرێت لەگەڵ خوێندنی تەشەهود.',
+          note:
+              'لە نوێژەکانی نیوەڕۆ، عەسر، مەغریب و عیشادا دوای ئەم تەشەهودە بە وتنی «اللَّهُ أَكْبَرُ» هەڵدەستیتەوە بۆ ڕکاتەکانی تر.',
+          isDark: isDark,
+        ),
+
+        // Step 10: Final Tashahhud & Salawat & Refuge
+        _buildStepCard(
+          stepNumber: '١٠',
+          title: 'تەشەهودی کۆتایی، سەڵاواتی ئیبراهیمی، و پەناگرتن',
+          arabicText:
+              '«اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ، اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ»\n\n«اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ جَهَنَّمَ، وَمِنْ عَذَابِ الْقَبْرِ، وَمِنْ فِتْنَةِ الْمَحْيَا وَالْمَمَاتِ، وَمِنْ شَرِّ فِتْنَةِ الْمَسِيحِ الدَّجَّالِ»',
+          explanation:
+              'لە کۆتا ڕکاتی نوێژەکەدا دادەنیشیت، تەشەهود دەخوێنیت و پاشان سەڵاواتی ئیبراهیمی دەخوێنیت. سوننەتی پێغەمبەرە ﷺ کە لە دوای سەڵاوات و پێش سەلامدانەوە پەنا بە خوا بگریت لە چوار شتی مەترسیدار.',
+          note: 'دەعاکردن لەم کاتەدا پێش سەلامدانەوە زۆر وەڵامدراوەیە.',
+          isDark: isDark,
+        ),
+
+        // Step 11: Tasleem
+        _buildStepCard(
+          stepNumber: '١١',
+          title: 'سەلامدانەوە (کۆتایی نوێژ)',
+          arabicText:
+              'لای ڕاست: «السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ»\nلای چەپ: «السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ»',
+          explanation:
+              'سەرت دەسوڕێنیت بۆ لای ڕاست بە شێوەیەک سپیایی گۆنات لە دواوە ببینرێت و سەلام دەدەیتەوە، پاشان بە هەمان شێوە سەرت دەسوڕێنیت بۆ لای چەپ و سەلام دەدەیتەوە.',
+          note: 'بە سەلامدانەوە بۆ لای ڕاست نوێژەکە بە تەواوی کۆتایی دێت.',
+          isDark: isDark,
+        ),
+        const SizedBox(height: 16),
+
+        // Tumaneenah Note
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: const Color(0xFFE53935).withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: const Color(0xFFE53935).withValues(alpha: 0.3),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Row(
+                children: [
+                  Icon(Icons.warning_amber_rounded,
+                      color: Color(0xFFE53935), size: 20),
+                  SizedBox(width: 8),
+                  Text(
+                    'ئاگادارییەکی زۆر گرنگ: هێمنی و ئارامی (الطمأنينة)',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13.5,
+                      color: Color(0xFFE53935),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'هێمنی لە ڕاوەستان، ڕکوع، هەستانەوە، و سوجدەدا یەکێکە لە پایە (ڕوکنە) هەرە سەرەکییەکانی نوێژ. کەسێک نوێژ بە پەلە و بەبێ جێگیربوونی ئێسکەکانی بکات، نوێژەکەی قبوڵ نابێت وەکو چۆن پێغەمبەری خوا ﷺ بەو پیاوەی فەرموو کە پەلەی کرد لە نوێژەکەیدا: «ارْجِعْ فَصَلِّ فَإِنَّكَ لَمْ تُصَلِّ» (بگەڕێرەوە نوێژ بکەوە چونکە تۆ نوێژت نەکردووە).',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  height: 1.5,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Rakat count table
+        Text(
+          'ژمارەی ڕکاتەکانی ٥ نوێژە فەرزەکە',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF43A047),
+          ),
+        ),
+        const SizedBox(height: 8),
+        _buildPrayerRakatCountItem(
+            'نوێژی بەیانی (الفجر)', '٢ ڕکات', 'بە دەنگ', isDark),
+        _buildPrayerRakatCountItem(
+            'نوێژی نیوەڕۆ (الظهر)', '٤ ڕکات', 'بە بێدەنگ (نهێنی)', isDark),
+        _buildPrayerRakatCountItem(
+            'نوێژی عەسر (العصر)', '٤ ڕکات', 'بە بێدەنگ (نهێنی)', isDark),
+        _buildPrayerRakatCountItem(
+            'نوێژی ئێوارە (المغرب)', '٣ ڕکات', '٢ بە دەنگ + ١ بێدەنگ', isDark),
+        _buildPrayerRakatCountItem(
+            'نوێژی عیشا (العشاء)', '٤ ڕکات', '٢ بە دەنگ + ٢ بێدەنگ', isDark),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  Widget _buildPrerequisiteCard({
+    required bool isDark,
+    required List<String> items,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E2A22) : Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: isDark ? Colors.white12 : Colors.grey.shade200,
+        ),
+      ),
+      child: Column(
+        children: items
+            .map((it) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.check_circle_rounded,
+                          size: 16, color: Color(0xFF43A047)),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          it,
+                          style: TextStyle(
+                            fontSize: 12.5,
+                            height: 1.45,
+                            color: isDark
+                                ? Colors.grey.shade300
+                                : Colors.grey.shade800,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ))
+            .toList(),
+      ),
+    );
+  }
+
+  Widget _buildStepCard({
+    required String stepNumber,
+    required String title,
+    required String arabicText,
+    required String explanation,
+    required String note,
+    required bool isDark,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E2A22) : Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: isDark ? Colors.white12 : Colors.grey.shade200,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 12,
+                backgroundColor: const Color(0xFF43A047),
+                child: Text(
+                  stepNumber,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13.5,
+                    color: Color(0xFF43A047),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (arabicText.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF43A047).withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                arabicText,
+                style: const TextStyle(
+                  fontSize: 14.5,
+                  fontWeight: FontWeight.bold,
+                  height: 1.6,
+                ),
+                textDirection: TextDirection.rtl,
+              ),
+            ),
+          ],
+          const SizedBox(height: 8),
+          Text(
+            explanation,
+            style: TextStyle(
+              fontSize: 12,
+              height: 1.5,
+              color: isDark ? Colors.grey.shade300 : Colors.grey.shade800,
+            ),
+          ),
+          if (note.isNotEmpty) ...[
+            const SizedBox(height: 6),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.info_outline,
+                    size: 13, color: Color(0xFFD4AF37)),
+                const SizedBox(width: 5),
+                Expanded(
+                  child: Text(
+                    note,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color:
+                          isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPrayerRakatCountItem(
+    String prayer,
+    String rakats,
+    String voiceType,
+    bool isDark,
+  ) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E2A22) : Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: isDark ? Colors.white10 : Colors.grey.shade200,
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              prayer,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            decoration: BoxDecoration(
+              color: const Color(0xFF43A047).withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              rakats,
+              style: const TextStyle(
+                color: Color(0xFF43A047),
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            voiceType,
+            style: TextStyle(
+              fontSize: 11,
+              color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
             ),
           ),
         ],
