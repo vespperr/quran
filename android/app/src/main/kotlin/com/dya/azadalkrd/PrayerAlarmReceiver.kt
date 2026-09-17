@@ -46,25 +46,28 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
         val id = intent.getIntExtra(EXTRA_ID, 0)
         val title = intent.getStringExtra(EXTRA_TITLE) ?: "Prayer"
         val body = intent.getStringExtra(EXTRA_BODY) ?: ""
-        val adhanRaw = intent.getStringExtra(EXTRA_ADHAN_RAW)
+        var adhanRaw = intent.getStringExtra(EXTRA_ADHAN_RAW)
         val adhanDurationMs = intent.getIntExtra(EXTRA_ADHAN_DURATION, 30000)
 
-        Log.d(TAG, "onReceive id=$id at=${Date(System.currentTimeMillis())} adhanRaw=${adhanRaw ?: ""} title=$title")
+        if (adhanRaw.isNullOrEmpty()) {
+            adhanRaw = context.getSharedPreferences("prayer_alarms", Context.MODE_PRIVATE)
+                .getString("adhan_raw", null)
+        }
+        if (adhanRaw.isNullOrEmpty()) {
+            adhanRaw = "bang_hijaz_maghrib_isha"
+        }
+
+        Log.d(TAG, "onReceive id=$id at=${Date(System.currentTimeMillis())} adhanRaw=$adhanRaw title=$title")
         createChannelIfNeeded(context)
         try {
             PrayerTimesWidgetBaseProvider.refreshAllWidgets(context)
         } catch (_: Exception) {}
 
-        if (adhanRaw != null && adhanRaw.isNotEmpty()) {
-            AdhanPlayer.playForAlarm(context, adhanRaw, adhanDurationMs.toLong())
-            showNotification(context, id, title, body, null)
-        } else {
-            val defaultUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-            showNotification(context, id, title, body, defaultUri)
-        }
+        AdhanPlayer.playForAlarm(context, adhanRaw, adhanDurationMs.toLong())
+        showNotification(context, id, title, body)
     }
 
-    private fun showNotification(context: Context, id: Int, title: String, body: String, soundUri: Uri?) {
+    private fun showNotification(context: Context, id: Int, title: String, body: String) {
         val openIntent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
@@ -90,16 +93,13 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
             .setContentTitle(title)
             .setContentText(body)
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setFullScreenIntent(pendingOpen, true)
             .setAutoCancel(true)
             .setContentIntent(pendingOpen)
-        if (soundUri != null) {
-            builder.setSound(soundUri)
-        }
-        if (soundUri == null) {
-            builder.addAction(android.R.drawable.ic_media_pause, "Stop", pendingStop)
-        }
+            .addAction(android.R.drawable.ic_media_pause, "Stop", pendingStop)
         val notification = builder.build()
 
         try {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:the_open_quran/constants/constants.dart';
 import 'package:the_open_quran/managers/surah_detail_navigation_manager.dart';
-import 'package:the_open_quran/services/friday_notification_service.dart';
 import 'package:the_open_quran/services/friday_sunnah_service.dart';
 import 'package:the_open_quran/widgets/app_bars/secondary_app_bar.dart';
 

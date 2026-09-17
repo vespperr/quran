@@ -7,6 +7,9 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
+import android.os.SystemClock
+import android.util.Log
 import android.widget.RemoteViews
 import java.util.Calendar
 
@@ -24,6 +27,48 @@ open class PrayerTimesWidgetBaseProvider(
         }
     }
 
+    private fun getPrefString(context: Context, key: String): String? {
+        val prefNames = listOf(
+            "HomeWidgetPreferences",
+            "group.com.dya.azadalkrd",
+            "DATA",
+            "prayer_alarms",
+            "FlutterSharedPreferences"
+        )
+        for (name in prefNames) {
+            val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+            var valStr = prefs.getString(key, null)
+            if (valStr.isNullOrEmpty() || valStr == "--:--") {
+                valStr = prefs.getString("flutter.$key", null)
+            }
+            if (!valStr.isNullOrEmpty() && valStr != "--:--") {
+                return valStr
+            }
+        }
+        return null
+    }
+
+    private fun getRawDisplayTimes(context: Context): String? {
+        val prefNames = listOf(
+            "HomeWidgetPreferences",
+            "group.com.dya.azadalkrd",
+            "DATA",
+            "prayer_alarms",
+            "FlutterSharedPreferences"
+        )
+        for (name in prefNames) {
+            val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+            var str = prefs.getString("display_times", null)
+            if (str.isNullOrEmpty()) {
+                str = prefs.getString("flutter.display_times", null)
+            }
+            if (!str.isNullOrEmpty()) {
+                return str
+            }
+        }
+        return null
+    }
+
     private fun updateWidget(
         context: Context,
         appWidgetManager: AppWidgetManager,
@@ -31,17 +76,17 @@ open class PrayerTimesWidgetBaseProvider(
     ) {
         try {
             val views = RemoteViews(context.packageName, layoutResId)
-            val widgetData = context.getSharedPreferences("DATA", Context.MODE_PRIVATE)
 
-            var fajr = widgetData.getString("fajr", null)
-            var dhuhr = widgetData.getString("dhuhr", null)
-            var asr = widgetData.getString("asr", null)
-            var maghrib = widgetData.getString("maghrib", null)
-            var isha = widgetData.getString("isha", null)
-            var nextPrayer = widgetData.getString("next_prayer", null)
+            var fajr = getPrefString(context, "fajr")
+            var dhuhr = getPrefString(context, "dhuhr")
+            var asr = getPrefString(context, "asr")
+            var maghrib = getPrefString(context, "maghrib")
+            var isha = getPrefString(context, "isha")
+            var nextPrayer = getPrefString(context, "next_prayer")
 
-            if (fajr.isNullOrEmpty() || dhuhr.isNullOrEmpty()) {
-                val rawDisplayTimes = PrayerAlarmScheduler.getDisplayTimes(context)
+            // Fallback 1: Parse display_times ("Fajr|05:30;Dhuhr|12:15...")
+            if (fajr.isNullOrEmpty() || dhuhr.isNullOrEmpty() || asr.isNullOrEmpty() || maghrib.isNullOrEmpty() || isha.isNullOrEmpty()) {
+                val rawDisplayTimes = getRawDisplayTimes(context) ?: ""
                 if (rawDisplayTimes.isNotEmpty()) {
                     val parts = rawDisplayTimes.split(";")
                     for (part in parts) {
@@ -49,15 +94,51 @@ open class PrayerTimesWidgetBaseProvider(
                         if (pair.size == 2) {
                             val name = pair[0].trim().lowercase()
                             val time = pair[1].trim()
-                            when (name) {
-                                "fajr" -> if (fajr.isNullOrEmpty()) fajr = time
-                                "dhuhr" -> if (dhuhr.isNullOrEmpty()) dhuhr = time
-                                "asr" -> if (asr.isNullOrEmpty()) asr = time
-                                "maghrib" -> if (maghrib.isNullOrEmpty()) maghrib = time
-                                "isha" -> if (isha.isNullOrEmpty()) isha = time
+                            if (time.isNotEmpty() && time != "--:--") {
+                                when (name) {
+                                    "fajr" -> if (fajr.isNullOrEmpty()) fajr = time
+                                    "dhuhr" -> if (dhuhr.isNullOrEmpty()) dhuhr = time
+                                    "asr" -> if (asr.isNullOrEmpty()) asr = time
+                                    "maghrib" -> if (maghrib.isNullOrEmpty()) maghrib = time
+                                    "isha" -> if (isha.isNullOrEmpty()) isha = time
+                                }
                             }
                         }
                     }
+                }
+            }
+
+            // Fallback 2: Parse JSON from widget_prayer_data_v1
+            if (fajr.isNullOrEmpty() || dhuhr.isNullOrEmpty() || asr.isNullOrEmpty() || maghrib.isNullOrEmpty() || isha.isNullOrEmpty()) {
+                val jsonData = getPrefString(context, "widget_prayer_data_v1")
+                if (!jsonData.isNullOrEmpty()) {
+                    try {
+                        val json = org.json.JSONObject(jsonData)
+                        if (fajr.isNullOrEmpty()) {
+                            val v = json.optString("fajr", "")
+                            if (v.isNotEmpty() && v != "--:--") fajr = v
+                        }
+                        if (dhuhr.isNullOrEmpty()) {
+                            val v = json.optString("dhuhr", "")
+                            if (v.isNotEmpty() && v != "--:--") dhuhr = v
+                        }
+                        if (asr.isNullOrEmpty()) {
+                            val v = json.optString("asr", "")
+                            if (v.isNotEmpty() && v != "--:--") asr = v
+                        }
+                        if (maghrib.isNullOrEmpty()) {
+                            val v = json.optString("maghrib", "")
+                            if (v.isNotEmpty() && v != "--:--") maghrib = v
+                        }
+                        if (isha.isNullOrEmpty()) {
+                            val v = json.optString("isha", "")
+                            if (v.isNotEmpty() && v != "--:--") isha = v
+                        }
+                        if (nextPrayer.isNullOrEmpty()) {
+                            val v = json.optString("nextPrayer", "")
+                            if (v.isNotEmpty()) nextPrayer = v
+                        }
+                    } catch (_: Exception) {}
                 }
             }
 
@@ -72,11 +153,12 @@ open class PrayerTimesWidgetBaseProvider(
             if (nextPrayer.isNullOrEmpty() || nextPrayer == "Next: --:--" || nextPrayer == "Next: ") {
                 nextPrayer = calculatedNext
             } else {
-                // If stored next prayer is valid, use calculated if it's available and non-default
                 if (calculatedNext != "Next: Fajr --:--") {
                     nextPrayer = calculatedNext
                 }
             }
+
+            Log.d("PrayerWidget", "updateWidget layout=$layoutResId appWidgetId=$appWidgetId: Fajr=$fajr, Dhuhr=$dhuhr, Asr=$asr, Maghrib=$maghrib, Isha=$isha, Next=$nextPrayer")
 
             // Small Layout Updates
             if (layoutResId == R.layout.prayer_times_widget_small) {
@@ -129,6 +211,25 @@ open class PrayerTimesWidgetBaseProvider(
                 }
             }
 
+            // Countdown Chronometer Updates (real-time seconds ticking)
+            val targetEpochMillis = getNextPrayerTargetEpochMillis(fajr, dhuhr, asr, maghrib, isha)
+            if (targetEpochMillis > 0) {
+                val baseElapsed = SystemClock.elapsedRealtime() + (targetEpochMillis - System.currentTimeMillis())
+                val chronometerId = when (layoutResId) {
+                    R.layout.prayer_times_widget_small -> R.id.small_countdown_chronometer
+                    R.layout.prayer_times_widget_large -> R.id.hero_countdown_chronometer
+                    else -> R.id.medium_countdown_chronometer
+                }
+                try {
+                    views.setChronometer(chronometerId, baseElapsed, "%s", true)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        views.setChronometerCountDown(chronometerId, true)
+                    }
+                } catch (e: Exception) {
+                    Log.e("PrayerWidget", "Error setting chronometer", e)
+                }
+            }
+
             // Click pending intent to launch app
             val openApp = Intent(context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -150,6 +251,53 @@ open class PrayerTimesWidgetBaseProvider(
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun getNextPrayerTargetEpochMillis(
+        fajr: String,
+        dhuhr: String,
+        asr: String,
+        maghrib: String,
+        isha: String
+    ): Long {
+        val nowCalendar = Calendar.getInstance()
+        val nowMinutes = nowCalendar.get(Calendar.HOUR_OF_DAY) * 60 + nowCalendar.get(Calendar.MINUTE)
+
+        val list = listOf(
+            Pair("Fajr", parseTimeToMinutes(fajr, "fajr")),
+            Pair("Dhuhr", parseTimeToMinutes(dhuhr, "dhuhr")),
+            Pair("Asr", parseTimeToMinutes(asr, "asr")),
+            Pair("Maghrib", parseTimeToMinutes(maghrib, "maghrib")),
+            Pair("Isha", parseTimeToMinutes(isha, "isha"))
+        )
+
+        for (item in list) {
+            val minutes = item.second
+            if (minutes != null && minutes > nowMinutes) {
+                val targetCal = Calendar.getInstance().apply {
+                    set(Calendar.HOUR_OF_DAY, minutes / 60)
+                    set(Calendar.MINUTE, minutes % 60)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }
+                return targetCal.timeInMillis
+            }
+        }
+
+        // Next is Fajr tomorrow
+        val fajrMinutes = parseTimeToMinutes(fajr, "fajr")
+        if (fajrMinutes != null) {
+            val targetCal = Calendar.getInstance().apply {
+                add(Calendar.DAY_OF_YEAR, 1)
+                set(Calendar.HOUR_OF_DAY, fajrMinutes / 60)
+                set(Calendar.MINUTE, fajrMinutes % 60)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+            return targetCal.timeInMillis
+        }
+
+        return 0L
     }
 
     private fun parseTimeToMinutes(timeStr: String, prayerName: String): Int? {
@@ -257,8 +405,14 @@ open class PrayerTimesWidgetBaseProvider(
             )
             val mgr = AppWidgetManager.getInstance(context)
             for (p in providers) {
-                val ids = mgr.getAppWidgetIds(ComponentName(context, p))
+                val component = ComponentName(context, p)
+                val ids = mgr.getAppWidgetIds(component)
                 if (ids.isNotEmpty()) {
+                    try {
+                        val providerInstance = p.getDeclaredConstructor().newInstance() as AppWidgetProvider
+                        providerInstance.onUpdate(context, mgr, ids)
+                    } catch (_: Exception) {}
+
                     val intent = Intent(context, p).apply {
                         action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
                         putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
@@ -272,7 +426,7 @@ open class PrayerTimesWidgetBaseProvider(
 
 // 3 Provider Classes for Small, Medium, Large
 class PrayerTimesWidgetSmallProvider : PrayerTimesWidgetBaseProvider(R.layout.prayer_times_widget_small)
-class PrayerTimesWidgetMediumProvider : PrayerTimesWidgetBaseProvider(R.layout.prayer_times_widget_medium)
+class PrayerTimesWidgetMediumProvider : PrayerTimesWidgetBaseProvider(R.layout.prayer_times_widget_large)
 class PrayerTimesWidgetLargeProvider : PrayerTimesWidgetBaseProvider(R.layout.prayer_times_widget_large)
 
 // Original Provider subclassed for backwards compatibility

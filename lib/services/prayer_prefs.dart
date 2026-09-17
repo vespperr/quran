@@ -31,13 +31,19 @@ class PrayerPrefs {
     await GetStorage(_box).write('$_storageKeyPrefix$prayerName', value);
   }
 
-  /// Selected adhan asset path (iOS) or empty. On Android use [adhanRawName].
-  static String get adhanAsset =>
-      GetStorage(_box).read(_adhanKey) as String? ?? '';
+  /// Selected adhan asset path (iOS). Default is bang_hijaz_maghrib_isha.
+  static String get adhanAsset {
+    final val = GetStorage(_box).read(_adhanKey) as String?;
+    if (val != null && val.isNotEmpty) return val;
+    return 'assets/audio/bang_hijaz_maghrib_isha.mp3';
+  }
 
-  /// Selected adhan raw resource name (Android only). Empty = no sound.
-  static String get adhanRawName =>
-      GetStorage(_box).read(_adhanRawKey) as String? ?? '';
+  /// Selected adhan raw resource name (Android only). Default is bang_hijaz_maghrib_isha.
+  static String get adhanRawName {
+    final val = GetStorage(_box).read(_adhanRawKey) as String?;
+    if (val != null && val.isNotEmpty) return val;
+    return 'bang_hijaz_maghrib_isha';
+  }
 
   static Future<void> setAdhanAsset(String path) async {
     await GetStorage(_box).write(_adhanKey, path);

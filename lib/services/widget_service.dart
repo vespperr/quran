@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:home_widget/home_widget.dart';
 
 class WidgetService {
@@ -43,22 +44,22 @@ class WidgetService {
       await HomeWidget.saveWidgetData<String>('widget_city', city);
     }
 
-    if (prayerTimes.containsKey('fajr')) {
+    if (prayerTimes.containsKey('fajr') && prayerTimes['fajr'] != null && prayerTimes['fajr'] != '--:--') {
       await HomeWidget.saveWidgetData<String>('fajr', prayerTimes['fajr']);
     }
-    if (prayerTimes.containsKey('dhuhr')) {
+    if (prayerTimes.containsKey('dhuhr') && prayerTimes['dhuhr'] != null && prayerTimes['dhuhr'] != '--:--') {
       await HomeWidget.saveWidgetData<String>('dhuhr', prayerTimes['dhuhr']);
     }
-    if (prayerTimes.containsKey('asr')) {
+    if (prayerTimes.containsKey('asr') && prayerTimes['asr'] != null && prayerTimes['asr'] != '--:--') {
       await HomeWidget.saveWidgetData<String>('asr', prayerTimes['asr']);
     }
-    if (prayerTimes.containsKey('maghrib')) {
+    if (prayerTimes.containsKey('maghrib') && prayerTimes['maghrib'] != null && prayerTimes['maghrib'] != '--:--') {
       await HomeWidget.saveWidgetData<String>('maghrib', prayerTimes['maghrib']);
     }
-    if (prayerTimes.containsKey('isha')) {
+    if (prayerTimes.containsKey('isha') && prayerTimes['isha'] != null && prayerTimes['isha'] != '--:--') {
       await HomeWidget.saveWidgetData<String>('isha', prayerTimes['isha']);
     }
-    if (nextPrayer != null && nextPrayer.isNotEmpty) {
+    if (nextPrayer != null && nextPrayer.isNotEmpty && nextPrayer != 'Next: --:--') {
       await HomeWidget.saveWidgetData<String>('next_prayer', nextPrayer);
     }
 
@@ -89,9 +90,11 @@ class WidgetService {
     for (final provider in _androidWidgetProviders) {
       await HomeWidget.updateWidget(name: provider);
     }
-    await HomeWidget.updateWidget(
-      name: 'PrayerWidget',
-      iOSName: 'PrayerWidget',
-    );
+    if (Platform.isIOS) {
+      await HomeWidget.updateWidget(
+        name: 'PrayerWidget',
+        iOSName: 'PrayerWidget',
+      );
+    }
   }
 }

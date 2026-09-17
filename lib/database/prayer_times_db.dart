@@ -1,8 +1,4 @@
-import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../constants/iso_country_names.dart';
@@ -13,20 +9,9 @@ import '../services/aladhan_prayer_times_service.dart';
 import '../utils/prayer_time_parse.dart';
 import 'dhikr_db.dart';
 
-/// Copies bundled [kurdistandb.sqlite] into app documents (isolate).
-Future<void> _writeKurdistanPrayerDbFile(List<dynamic> args) async {
-  final path = args[0] as String;
-  final bytes = args[1] as List<int>;
-  await File(path).writeAsBytes(bytes);
-}
-
-/// Prayer times from bundled SQLite.
+/// Prayer times from bundled SQLite database (KurdistanPrayerTimes.db).
 ///
-/// **Kurdistan-only** ([includeIraq] false): [kurdistandb.sqlite] — one table per city,
-/// date column `D` (MM-DD), times: bayani, niwaro/nwaro, asr, eywara, esha (sunrise column not shown).
-///
-/// **Other regions** ([includeIraq] true): [KurdistanPrayerTimes.db] via [DhikrDb] —
-/// Iraq & Iran cities only, excluding Kurdistan (`Jegir = 1`). Kurdistan uses [kurdistandb.sqlite].
+/// Precomputed times from [PrayerTimesforKurdistantable] for Kurdistan, Iraq, and world cities.
 ///
 /// **Adhan offset:** [adhanMinutesEarlier] minutes subtracted from each stored time for display
 /// and notifications. Use `0` so UI matches the values in the database tables exactly.
@@ -36,151 +21,112 @@ class PrayerTimesDb {
   /// Minutes to subtract from each stored prayer time (0 = show same times as in SQLite).
   static const int adhanMinutesEarlier = 0;
 
-  /// Default city when none selected (matches azadalkrd).
-  static const String defaultCity = 'Kalar';
+  /// Default city when none selected.
+  static const String defaultCity = 'Slemani';
 
-  static const String _kurdistanAssetPath = 'lib/assets/kurdistandb.sqlite';
-  static const String _kurdistanFileName = 'kurdistandb.sqlite';
+  /// Primary Kurdistan cities list
+  static const List<String> _kurdistanPrimaryCities = [
+    'Kalar',
+    'Slemani',
+    'Hawler',
+    'Duhok',
+    'Zakho',
+    'Halabja',
+    'Akre',
+    'Chamchamal',
+    'Darbandikhan',
+    'Dukan',
+    'Dwz',
+    'Khurmal',
+    'Kifri',
+    'Kirkuk',
+    'Koya',
+    'Qaladze',
+    'SaidSadq',
+    'Soran',
+    'Taqtaq',
+    'Bardarash',
+    'Khanaqin',
+    'Qasrok',
+    'Shekhan',
+    'Sinjar',
+    'Mosul',
+  ];
 
-  static Database? _kurdistanDbInstance;
-  static Future<Database>? _kurdistanDbOpening;
-  static bool _sqfliteFfiReady = false;
-
-  static void _ensureSqfliteFfi() {
-    if (_sqfliteFfiReady) return;
-    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-      sqfliteFfiInit();
-      databaseFactory = databaseFactoryFfi;
-    }
-    _sqfliteFfiReady = true;
-  }
-
-  static Future<Database> _kurdistanDatabase() async {
-    if (_kurdistanDbInstance != null && _kurdistanDbInstance!.isOpen) {
-      return _kurdistanDbInstance!;
-    }
-    _kurdistanDbOpening ??= _openKurdistanDatabaseOnce();
-    return _kurdistanDbOpening!;
-  }
-
-  static Future<Database> _openKurdistanDatabaseOnce() async {
-    _ensureSqfliteFfi();
-    final dir = await getApplicationDocumentsDirectory();
-    final dbPath = '${dir.path}/$_kurdistanFileName';
-    if (!await File(dbPath).exists()) {
-      final byteData = await rootBundle.load(_kurdistanAssetPath);
-      final bytes = byteData.buffer.asUint8List().toList();
-      await compute(_writeKurdistanPrayerDbFile, [dbPath, bytes]);
-    }
-    _kurdistanDbInstance = await openDatabase(dbPath, readOnly: true);
-    return _kurdistanDbInstance!;
-  }
-
-  static Set<String>? _kurdistanTableNameCache;
-
-  /// Tables in [KurdistanPrayerTimes.db] that are not per-city prayer tables (never treat as cities).
-  static const Set<String> _kurdistanSqliteExcludedTablesLower = {
-    'android_metadata',
-    'cities',
-    'countries',
-    'dhikr',
-    'dhikrname',
-    'prayertimesforkurdistantable',
-    'sqlite_sequence',
-  };
-
-  static Future<Set<String>> _kurdistanTableNames(Database db) async {
-    if (_kurdistanTableNameCache != null) return _kurdistanTableNameCache!;
-    final rows = await db.rawQuery(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name",
-    );
-    final names = <String>{};
-    for (final r in rows) {
-      final n = (r['name'] as String?)?.trim();
-      if (n == null || n.isEmpty) continue;
-      if (_kurdistanSqliteExcludedTablesLower.contains(n.toLowerCase())) {
-        continue;
-      }
-      names.add(n);
-    }
-    _kurdistanTableNameCache = names;
-    return names;
-  }
-
-  /// Friendly labels for UI; [id] remains the SQLite table name (e.g. Slemany).
-  static const Map<String, String> _kurdistanTableToDisplayName = {
-    'Slemany': 'Slemani',
-    'Hewler': 'Hawler',
-    'Penjwin': 'Penjwen',
-  };
-
-  /// Maps legacy big-DB / UI city keys to [kurdistandb.sqlite] table names.
-  static const Map<String, String> _legacyKeyToKurdistanTable = {
-    'Slemani': 'Slemany',
-    'Sulaymaniyah': 'Slemany',
-    'Suleimaniyah': 'Slemany',
-    'Sulaimaniyah': 'Slemany',
-    'Hawler': 'Hewler',
-    'Erbil': 'Hewler',
-    'Penjuin': 'Penjwin',
-    'Penjwen': 'Penjwin',
-    'Zakho': 'Zaxo',
-    'SaidSadq': 'SaidSadiq',
-    'Dwz': 'tuzxurmatu',
-    'Mosul': 'mosul',
-    'ئاکرێ': 'Amedi',
-  };
-
-  static String? _resolveKurdistanTableName(String city, Set<String> tables) {
-    final t = city.trim();
-    if (t.isEmpty) return null;
-    if (tables.contains(t)) return t;
-    final mapped = _legacyKeyToKurdistanTable[t];
-    if (mapped != null && tables.contains(mapped)) return mapped;
-    final normalized = _normalizeCity(city);
-    final mapped2 = _legacyKeyToKurdistanTable[normalized];
-    if (mapped2 != null && tables.contains(mapped2)) return mapped2;
-    if (tables.contains(normalized)) return normalized;
-    final lower = t.toLowerCase();
-    for (final name in tables) {
-      if (name.toLowerCase() == lower) return name;
-    }
-    return null;
-  }
-
-  /// City name replacements for big-DB query (from azadalkrd MydbClass.readAllDate).
+  /// City name replacements for big-DB query (from azadalkrd / KurdistanPrayerTimes.db).
   static const Map<String, String> _cityReplacements = {
-    'Amedi': 'ئاکرێ',
-    'Arbat': 'سلێمانی',
-    'Barznja': 'بەرزنجە',
-    'Bazyan': 'قالادەزە',
-    'Chamchamal': 'چمچمال(کۆن)',
-    'Darbandixan': 'دەربەندیخان',
-    'HajiAwa': 'چمچمال',
-    'HalabjaN': 'هەڵەبجە',
-    'Kfri': 'کیفری',
-    'Penjuin': ' پێنجوێن',
-    'Penjwen': ' پێنجوێن',
+    'Amedi': 'Akre',
+    'Arbat': 'Slemani',
+    'Barznja': 'Slemani',
+    'Bazyan': 'Slemani',
+    'Chamchamal(Kon)': 'Chamchamal',
+    'Darbandixan': 'Darbandikhan',
+    'HajiAwa': 'Ranya(Kon)',
+    'HalabjaN': 'Halabja',
+    'Halabja2': 'Halabja',
+    'Kfri': 'Kifri',
+    'Penjuin': 'Slemani',
+    'Penjwen': 'Slemani',
     'Piramagrun': 'Dukan',
-    'Ranya': 'Chamchamal',
+    'Ranya': 'Ranya(Kon)',
     'SaidSadiq': 'SaidSadq',
     'Slemany': 'Slemani',
     'Sulaymaniyah': 'Slemani',
     'Suleimaniyah': 'Slemani',
     'Sulaimaniyah': 'Slemani',
-    'Takya': 'Chamchamal(Kon)',
-    'TaqTaq': 'Chamchamal',
-    'Tasluja': 'Qaladze',
-    'Xalakan': 'Chamchamal',
+    'Takya': 'Chamchamal',
+    'TaqTaq': 'Taqtaq',
+    'Tasluja': 'Slemani',
+    'Xalakan': 'Dukan',
     'Zaxo': 'Zakho',
     'mosul': 'Mosul',
     'tuzxurmatu': 'Dwz',
+    'Tuz': 'Dwz',
+    'Hewler': 'Hawler',
+    'Erbil': 'Hawler',
+    'سلێمانی': 'Slemani',
+    'السليمانية': 'Slemani',
+    'هەولێر': 'Hawler',
+    'أربيل': 'Hawler',
+    'دهۆک': 'Duhok',
+    'دهوك': 'Duhok',
+    'زاخۆ': 'Zakho',
+    'زاخو': 'Zakho',
+    'هەڵەبجە': 'Halabja',
+    'حلبجة': 'Halabja',
+    'کالار': 'Kalar',
+    'كalar': 'Kalar',
+    'کەرکووك': 'Kirkuk',
+    'كركوك': 'Kirkuk',
+    'موسڵ': 'Mosul',
+    'الموصل': 'Mosul',
+    'ئاکرێ': 'Akre',
+    'العمادية': 'Akre',
+    'دوکان': 'Dukan',
+    'دوكان': 'Dukan',
+    'ڕانیه': 'Ranya(Kon)',
+    'رانية': 'Ranya(Kon)',
+    'چمچمال': 'Chamchamal',
+    'قەلادزێ': 'Qaladze',
+    'قلادزة': 'Qaladze',
+    'دەربەندیخان': 'Darbandikhan',
+    'دربنديخان': 'Darbandikhan',
+    'سەید سادق': 'SaidSadq',
+    'السيد صادق': 'SaidSadq',
+    'دوز': 'Dwz',
+    'طوز': 'Dwz',
+    'پێنجوێن': 'Slemani',
+    'بنجوين': 'Slemani',
   };
 
   static String _normalizeCity(String city) {
-    var c = city;
+    var c = city.trim();
+    final direct = _cityReplacements[c];
+    if (direct != null) return direct;
     for (final e in _cityReplacements.entries) {
-      c = c.replaceAll(e.key, e.value);
+      if (c.contains(e.key)) {
+        return e.value;
+      }
     }
     return c;
   }
@@ -360,25 +306,16 @@ class PrayerTimesDb {
     return list;
   }
 
-  /// [includeIraq] false: [kurdistandb.sqlite] (Kurdistan). True: legacy — use [getCitiesForCountryIso].
+  /// [includeIraq] false: Primary Kurdistan cities. True: cities from [KurdistanPrayerTimes.db] by country.
   static Future<List<PrayerCityModel>> getCities(
       {bool includeIraq = false}) async {
     if (!includeIraq) {
-      final db = await _kurdistanDatabase();
-      final tables = (await _kurdistanTableNames(db)).toList()..sort();
-      if (tables.isEmpty) {
-        return [PrayerCityModel(id: defaultCity, name: defaultCity)];
-      }
       final list = <PrayerCityModel>[];
-      for (final table in tables) {
-        final display = _kurdistanTableToDisplayName[table] ?? table;
-        final key = display.split(RegExp(r'\s*[,(]')).first.trim();
-        final variants = _cityNameVariants[display] ??
-            _cityNameVariants[table] ??
-            _cityNameVariants[key];
+      for (final table in _kurdistanPrimaryCities) {
+        final variants = _cityNameVariants[table];
         list.add(PrayerCityModel(
           id: table,
-          name: display,
+          name: table,
           nameCkb: variants?[0],
           nameAr: variants?[1],
           nameEn: variants?[2],
@@ -395,8 +332,8 @@ class PrayerTimesDb {
 
   /// Optional CKB (Kurdish), AR (Arabic), EN (English) names for search. Key = DB city name (or part).
   static const Map<String, List<String>> _cityNameVariants = {
-    'Kalar': ['کالار', 'كalar', 'Kalar'],
-    'کالار': ['کالار', 'كalar', 'Kalar'],
+    'Kalar': ['کالار', 'كلار', 'Kalar'],
+    'کالار': ['کالار', 'كلار', 'Kalar'],
     'Slemani': ['سلێمانی', 'السليمانية', 'Sulaymaniyah'],
     'Slemany': ['سلێمانی', 'السليمانية', 'Sulaymaniyah'],
     'سلێمانی': ['سلێمانی', 'السليمانية', 'Sulaymaniyah'],
@@ -415,34 +352,52 @@ class PrayerTimesDb {
     'HalabjaN': ['هەڵەبجە', 'حلبجة', 'Halabja'],
     'Kirkuk': ['کەرکووك', 'كركوك', 'Kirkuk'],
     'کەرکووك': ['کەرکووك', 'كركوك', 'Kirkuk'],
-    'Kfri': ['کەرکووك', 'كركوك', 'Kirkuk'],
+    'Kfri': ['کفری', 'كفري', 'Kifri'],
+    'Kifri': ['کفری', 'كفري', 'Kifri'],
     'Mosul': ['موسڵ', 'الموصل', 'Mosul'],
     'موسڵ': ['موسڵ', 'الموصل', 'Mosul'],
     'mosul': ['موسڵ', 'الموصل', 'Mosul'],
-    'ئاکرێ': ['ئاکرێ', 'العمادية', 'Amedi'],
-    'Amedi': ['ئاکرێ', 'العمادية', 'Amedi'],
+    'ئاکرێ': ['ئاکرێ', 'العمادية', 'Akre'],
+    'Amedi': ['ئاکرێ', 'العمادية', 'Akre'],
+    'Akre': ['ئاکرێ', 'عقرة', 'Akre'],
     'Dukan': ['دوکان', 'دوكان', 'Dukan'],
     'دوکان': ['دوکان', 'دوكان', 'Dukan'],
-    'Piramagrun': ['دوکان', 'دوكان', 'Dukan'],
-    'Ranya': ['ڕانیه', 'رانية', 'Ranya'],
-    'ڕانیه': ['ڕانیه', 'رانية', 'Ranya'],
-    'Chamchamal': ['چمچمال', 'چمچمال', 'Chamchamal'],
-    'چمچمال': ['چمچمال', 'چمچمال', 'Chamchamal'],
-    'Qaladze': ['قەلادزێ', 'قلادزة', 'Qaladze'],
-    'قەلادزێ': ['قەلادزێ', 'قلادزة', 'Qaladze'],
-    'Tasluja': ['قەلادزێ', 'قلادزة', 'Qaladze'],
+    'Piramagrun': ['پیرەمەگروون', 'بيرمكرون', 'Piramagrun'],
+    'Ranya': ['ڕانیە', 'رانية', 'Ranya'],
+    'Ranya(Kon)': ['ڕانیە', 'رانية', 'Ranya'],
+    'ڕانیە': ['ڕانیە', 'رانية', 'Ranya'],
+    'ڕانیه': ['ڕانیە', 'رانية', 'Ranya'],
+    'Chamchamal': ['چەمچەماڵ', 'جمجمال', 'Chamchamal'],
+    'چەمچەماڵ': ['چەمچەماڵ', 'جمجمال', 'Chamchamal'],
+    'چمچمال': ['چەمچەماڵ', 'جمجمال', 'Chamchamal'],
+    'Qaladze': ['قەڵادزێ', 'قلعة دزة', 'Qaladze'],
+    'قەڵادزێ': ['قەڵادزێ', 'قلعة دزة', 'Qaladze'],
+    'قەلادزێ': ['قەڵادزێ', 'قلعة دزة', 'Qaladze'],
+    'Tasluja': ['تاسڵوجە', 'طاسلوجة', 'Tasluja'],
     'بەرزنجە': ['بەرزنجە', 'برزنجة', 'Barzanja'],
     'Barznja': ['بەرزنجە', 'برزنجة', 'Barzanja'],
     'دەربەندیخان': ['دەربەندیخان', 'دربنديخان', 'Darbandikhan'],
+    'Darbandikhan': ['دەربەندیخان', 'دربنديخان', 'Darbandikhan'],
     'Darbandixan': ['دەربەندیخان', 'دربنديخان', 'Darbandikhan'],
     'پێنجوێن': ['پێنجوێن', 'بنجوين', 'Penjwin'],
     'Penjwen': ['پێنجوێن', 'بنجوين', 'Penjwin'],
     'Penjuin': ['پێنجوێن', 'بنجوين', 'Penjwin'],
     'Penjwin': ['پێنجوێن', 'بنجوين', 'Penjwin'],
-    'Dwz': ['دوز', 'طوز', 'Tuz'],
-    'tuzxurmatu': ['دوز', 'طوز', 'Tuz Khurmatu'],
-    'SaidSadiq': ['سەید سادق', 'السيد صادق', 'Said Sadiq'],
-    'SaidSadq': ['سەید سادق', 'السيد صادق', 'Said Sadiq'],
+    'Dwz': ['دووزخورماتوو', 'طوزخورماتو', 'Tuz Khurmatu'],
+    'tuzxurmatu': ['دووزخورماتوو', 'طوزخورماتو', 'Tuz Khurmatu'],
+    'Tuz': ['دووزخورماتوو', 'طوزخورماتو', 'Tuz Khurmatu'],
+    'SaidSadiq': ['سەید سادق', 'سيد صادق', 'Said Sadiq'],
+    'SaidSadq': ['سەید سادق', 'سيد صادق', 'Said Sadiq'],
+    'سەید سادق': ['سەید سادق', 'سيد صادق', 'Said Sadiq'],
+    'Khurmal': ['خورماڵ', 'خورمال', 'Khurmal'],
+    'Koya': ['کۆیە', 'كوية', 'Koya'],
+    'Soran': ['سۆران', 'سوران', 'Soran'],
+    'Taqtaq': ['تەق تەق', 'طقطق', 'Taqtaq'],
+    'Bardarash': ['بەردەڕەش', 'بردرش', 'Bardarash'],
+    'Khanaqin': ['خانەقین', 'خانقين', 'Khanaqin'],
+    'Qasrok': ['قەسرۆک', 'قصروك', 'Qasrok'],
+    'Shekhan': ['شێخان', 'شيخان', 'Shekhan'],
+    'Sinjar': ['شنگال', 'سنجار', 'Sinjar'],
   };
 
   /// Today's date: try common formats (MM-dd, dd-MM, yyyy-MM-dd).
@@ -453,11 +408,8 @@ class PrayerTimesDb {
     return ['$m-$d', '$d-$m', '$y-$m-$d'];
   }
 
-  /// Prayer times for a city and date. Returns 5 prayers (Fajr, Dhuhr, Asr, Maghrib, Isha).
-  /// [date] defaults to today.
-  ///
-  /// When [includeIraq] is true (world / non-Kurdistan DB), [countryIso] (ISO 3166-1 alpha-2) is
-  /// used to fetch from Aladhan if the bundled table has no row for that city/date.
+  /// Prayer times for a city and date from [KurdistanPrayerTimes.db] (or API fallback).
+  /// Returns 5 prayers (Fajr, Dhuhr, Asr, Maghrib, Isha).
   static Future<List<PrayerTimeModel>> getPrayerTimesForDate({
     required String city,
     String? dateStr,
@@ -468,25 +420,6 @@ class PrayerTimesDb {
     final useDate = date ?? DateTime.now();
     final dateVariants =
         dateStr != null ? [dateStr] : _dateStrVariants(useDate);
-
-    if (!includeIraq) {
-      final db = await _kurdistanDatabase();
-      final tables = await _kurdistanTableNames(db);
-      final tableName = _resolveKurdistanTableName(city, tables);
-      if (tableName == null) return _emptyPrayerList();
-
-      for (final dateVariant in dateVariants) {
-        final rows = await db.rawQuery(
-          'SELECT * FROM "$tableName" WHERE "D" = ?',
-          [dateVariant],
-        );
-        if (rows.isNotEmpty) {
-          final row = rows.first;
-          return _rowsToPrayerList(row);
-        }
-      }
-      return _emptyPrayerList();
-    }
 
     final db = await DhikrDb.database;
     final hasTable = await db.rawQuery(
@@ -505,8 +438,8 @@ class PrayerTimesDb {
     for (final cityKey in cityVariants) {
       for (final dateVariant in dateVariants) {
         final rows = await db.rawQuery(
-          "SELECT * FROM PrayerTimesforKurdistantable WHERE cities = ? AND date = ?",
-          [cityKey, dateVariant],
+          "SELECT * FROM PrayerTimesforKurdistantable WHERE (cities = ? OR cities = ?) AND (date = ? OR date = ?)",
+          [cityKey, city.trim(), dateVariant, dateVariant],
         );
         if (rows.isNotEmpty) {
           final row = rows.first;

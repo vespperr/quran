@@ -1,30 +1,24 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:the_open_quran/main.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:the_open_quran/database/prayer_times_db.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  test('PrayerTimesDb loads Kurdistan cities from KurdistanPrayerTimes.db', () async {
+    sqfliteFfiInit();
+    final dbPath = File('lib/assets/KurdistanPrayerTimes.db').absolute.path;
+    final db = await databaseFactoryFfi.openDatabase(dbPath, options: OpenDatabaseOptions(readOnly: true));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    final rows = await db.rawQuery("SELECT * FROM PrayerTimesforKurdistantable WHERE cities = 'Kalar' AND date = '08-18'");
+    expect(rows.isNotEmpty, true);
+    expect(rows.first['bayani'], isNotNull);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    final cities = await PrayerTimesDb.getCities(includeIraq: false);
+    expect(cities.isNotEmpty, true);
+    expect(cities.any((c) => c.name == 'Kalar'), true);
+    expect(cities.any((c) => c.name == 'Slemani'), true);
+    expect(cities.any((c) => c.name == 'Hawler'), true);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await db.close();
   });
 }

@@ -2,9 +2,7 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'friday_sunnah_service.dart';
 
 /// Service to handle weekly Friday local notification reminders.
 class FridayNotificationService {

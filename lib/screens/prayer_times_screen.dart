@@ -309,6 +309,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
       await PrayerPrefs.setAdhanAsset(p);
       setState(() => _adhanAsset = p);
     }
+    await _rescheduleNotifications();
   }
 
   @override
@@ -1237,14 +1238,13 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     final currentValue = isAndroid
         ? (_adhanRawName.isEmpty ||
                 !_androidAdhanOptions.any((o) => o['rawName'] == _adhanRawName)
-            ? ''
+            ? 'bang_hijaz_maghrib_isha'
             : _adhanRawName)
         : (_adhanAsset.isEmpty ||
                 !AdhanAssets.options.any((o) => o['path'] == _adhanAsset)
-            ? ''
+            ? 'assets/audio/bang_hijaz_maghrib_isha.mp3'
             : _adhanAsset);
-    final hasSelection =
-        isAndroid ? _adhanRawName.isNotEmpty : _adhanAsset.isNotEmpty;
+    final hasSelection = true;
 
     return Container(
       padding: const EdgeInsets.all(14),

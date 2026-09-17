@@ -15,9 +15,11 @@ class PrayerBootReceiver : BroadcastReceiver() {
         val action = intent.action ?: return
         if (action != Intent.ACTION_BOOT_COMPLETED &&
             action != Intent.ACTION_MY_PACKAGE_REPLACED &&
-            action != "android.intent.action.QUICKBOOT_POWERON"
+            action != "android.intent.action.QUICKBOOT_POWERON" &&
+            action != Intent.ACTION_TIME_CHANGED &&
+            action != Intent.ACTION_TIMEZONE_CHANGED
         ) return
-        Log.d(TAG, "Boot/replace: rescheduling prayer alarms")
+        Log.d(TAG, "Boot/replace/time change: rescheduling prayer alarms")
         PrayerAlarmScheduler.rescheduleAfterBoot(context)
     }
 

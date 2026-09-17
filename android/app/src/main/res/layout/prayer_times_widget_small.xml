@@ -52,7 +52,16 @@
             android:layout_marginTop="2dp"
             android:text="--:--"
             android:textColor="#FFFFFF"
-            android:textSize="22sp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Chronometer
+            android:id="@+id/small_countdown_chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="#F3E5AB"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
 

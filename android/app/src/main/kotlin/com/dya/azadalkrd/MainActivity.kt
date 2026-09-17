@@ -1,5 +1,6 @@
 package com.dya.azadalkrd
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
@@ -107,6 +108,34 @@ class MainActivity: FlutterActivity() {
                         val displayTimes = call.argument<String>("displayTimes") ?: ""
                         val widgetCity = call.argument<String>("widgetCity") ?: ""
                         PrayerAlarmScheduler.saveWidgetData(this, displayTimes, widgetCity)
+
+                        val prefGroups = listOf(
+                            getSharedPreferences("group.com.dya.azadalkrd", Context.MODE_PRIVATE),
+                            getSharedPreferences("DATA", Context.MODE_PRIVATE)
+                        )
+                        for (prefs in prefGroups) {
+                            val edit = prefs.edit()
+                            if (displayTimes.isNotEmpty()) {
+                                edit.putString("display_times", displayTimes)
+                                val parts = displayTimes.split(";")
+                                for (part in parts) {
+                                    val pair = part.split("|")
+                                    if (pair.size == 2) {
+                                        val name = pair[0].trim().lowercase()
+                                        val time = pair[1].trim()
+                                        if (time.isNotEmpty() && time != "--:--") {
+                                            edit.putString(name, time)
+                                        }
+                                    }
+                                }
+                            }
+                            if (widgetCity.isNotEmpty()) {
+                                edit.putString("widget_city", widgetCity)
+                            }
+                            edit.apply()
+                        }
+
+                        PrayerTimesWidgetBaseProvider.refreshAllWidgets(this)
                         result.success(true)
                     } catch (e: Exception) {
                         result.success(false)

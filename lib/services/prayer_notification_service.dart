@@ -589,6 +589,29 @@ class PrayerNotificationService {
     }
   }
 
+  static Future<void> testAlarm({int delaySeconds = 5}) async {
+    if (!_initialized) await init();
+    await ensurePermissions();
+    if (Platform.isAndroid) {
+      final now = DateTime.now().add(Duration(seconds: delaySeconds));
+      final raw = _getAdhanRawName() ?? 'bang_hijaz_maghrib_isha';
+      const channel = MethodChannel(_prayerAlarmsChannel);
+      await channel.invokeMethod<void>('schedulePrayerAlarms', {
+        'alarms': [
+          {
+            'id': 999,
+            'triggerAtMillis': now.millisecondsSinceEpoch,
+            'title': 'تجربة الأذان | Test Adhan',
+            'body': 'حان الآن موعد الأذان (تجربة)',
+            'prayerName': 'Test',
+          }
+        ],
+        'adhanRawName': raw,
+        'adhanDurationMs': 15000,
+      });
+    }
+  }
+
   static Future<void> cancelAll() async {
     if (!_initialized) return;
     if (Platform.isAndroid) {
@@ -653,10 +676,7 @@ class PrayerNotificationService {
     if (!scheduled.isAfter(now)) {
       scheduled = scheduled.add(const Duration(days: 1));
     }
-    return tz.TZDateTime.fromMillisecondsSinceEpoch(
-      tz.UTC,
-      scheduled.millisecondsSinceEpoch,
-    );
+    return tz.TZDateTime.from(scheduled, tz.local);
   }
 
   static Future<void> _scheduleDailyRepeating({
@@ -705,10 +725,7 @@ class PrayerNotificationService {
         final now = DateTime.now();
         if (at.isAfter(now)) {
           final details = _detailsForPrayer(null);
-          final atTz = tz.TZDateTime.fromMillisecondsSinceEpoch(
-            tz.UTC,
-            at.millisecondsSinceEpoch,
-          );
+          final atTz = tz.TZDateTime.from(at, tz.local);
           try {
             await _plugin.zonedSchedule(
               id: id,
@@ -750,10 +767,7 @@ class PrayerNotificationService {
         final now = DateTime.now();
         if (at.isAfter(now)) {
           final details = _detailsForPrayer(null);
-          final atTz = tz.TZDateTime.fromMillisecondsSinceEpoch(
-            tz.UTC,
-            at.millisecondsSinceEpoch,
-          );
+          final atTz = tz.TZDateTime.from(at, tz.local);
           try {
             await _plugin.zonedSchedule(
               id: id,

@@ -130,6 +130,7 @@ struct PrayerEntry: TimelineEntry {
     let times: [(name: String, timeStr: String)]
     let nextPrayerName: String
     let nextPrayerTime: String
+    let targetDate: Date
     let timeUntil: String
     let lastUpdatedStr: String
 }
@@ -241,6 +242,7 @@ struct PrayerWidgetProvider: TimelineProvider {
         var nextName = parsedTimes.first?.name ?? "Fajr"
         var nextTimeStr = parsedTimes.first?.timeStr ?? "--:--"
         var nextTotalMins = 0
+        var targetDate: Date = date
 
         for item in parsedTimes {
             if let total = parsePrayerMinutes(item.timeStr, name: item.name) {
@@ -248,6 +250,9 @@ struct PrayerWidgetProvider: TimelineProvider {
                     nextName = item.name
                     nextTimeStr = item.timeStr
                     nextTotalMins = total
+                    let h = total / 60
+                    let m = total % 60
+                    targetDate = calendar.date(bySettingHour: h, minute: m, second: 0, of: date) ?? date
                     break
                 }
             }
@@ -256,6 +261,11 @@ struct PrayerWidgetProvider: TimelineProvider {
         if nextTotalMins == 0, let first = parsedTimes.first {
             if let total = parsePrayerMinutes(first.timeStr, name: first.name) {
                 nextTotalMins = total + (24 * 60)
+                let h = total / 60
+                let m = total % 60
+                if let nextDay = calendar.date(byAdding: .day, value: 1, to: date) {
+                    targetDate = calendar.date(bySettingHour: h, minute: m, second: 0, of: nextDay) ?? nextDay
+                }
             }
         }
 
@@ -270,6 +280,7 @@ struct PrayerWidgetProvider: TimelineProvider {
             times: parsedTimes,
             nextPrayerName: nextName,
             nextPrayerTime: nextTimeStr,
+            targetDate: targetDate,
             timeUntil: untilStr,
             lastUpdatedStr: lastUpdatedStr
         )
@@ -310,9 +321,10 @@ struct SmallPrayerWidgetView: View {
                 Image(systemName: "hourglass")
                     .font(.system(size: 10))
                     .foregroundColor(Color(red: 212/255, green: 175/255, blue: 55/255))
-                Text("-\(entry.timeUntil)")
+                Text(entry.targetDate, style: .timer)
                     .font(.system(size: 11, weight: .bold, design: .monospaced))
                     .foregroundColor(.white.opacity(0.9))
+                    .monospacedDigit()
             }
             .padding(.horizontal, 8)
             .padding(.vertical, 3)
@@ -363,9 +375,15 @@ struct MediumPrayerWidgetView: View {
                     .font(.system(size: 24, weight: .heavy))
                     .foregroundColor(.white)
 
-                Text("-\(entry.timeUntil)")
-                    .font(.system(size: 11, weight: .bold, design: .monospaced))
-                    .foregroundColor(Color(red: 212/255, green: 175/255, blue: 55/255))
+                HStack(spacing: 3) {
+                    Image(systemName: "hourglass")
+                        .font(.system(size: 9))
+                        .foregroundColor(Color(red: 212/255, green: 175/255, blue: 55/255))
+                    Text(entry.targetDate, style: .timer)
+                        .font(.system(size: 11, weight: .bold, design: .monospaced))
+                        .foregroundColor(Color(red: 212/255, green: 175/255, blue: 55/255))
+                        .monospacedDigit()
+                }
             }
             .padding(12)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -443,9 +461,10 @@ struct LargePrayerWidgetView: View {
                     Image(systemName: "hourglass")
                         .font(.system(size: 11))
                         .foregroundColor(Color(red: 212/255, green: 175/255, blue: 55/255))
-                    Text("-\(entry.timeUntil)")
+                    Text(entry.targetDate, style: .timer)
                         .font(.system(size: 13, weight: .bold, design: .monospaced))
                         .foregroundColor(.white)
+                        .monospacedDigit()
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 4)
