@@ -402,7 +402,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                 _buildLocationBar(),
                 const SizedBox(height: DesignSystem.space20),
                 _buildPrayerTimesGrid(nextInfo.next.name),
-                const SizedBox(height: DesignSystem.space14),
+                const SizedBox(height: DesignSystem.space16),
                 _buildDuhaSunriseCard(),
                 const SizedBox(height: DesignSystem.space24),
                 _buildQuickActionsRow(),
