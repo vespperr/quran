@@ -19,8 +19,10 @@ import '../services/prayer_foreground_adhan_watch.dart';
 import '../services/prayer_notification_service.dart';
 import '../services/prayer_prefs.dart';
 import '../services/prayer_times_source.dart';
+import '../utils/prayer_time_parse.dart';
 import '../widgets/adhan_learning_links_card.dart';
 import '../widgets/app_bars/primary_app_bar.dart';
+import '../widgets/bottom_sheets/sunnah_prayers_guide_sheet.dart';
 import '../widgets/light_sweep_container.dart';
 import 'qibla_screen.dart';
 
@@ -380,8 +382,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
       );
     }
 
-    final nextInfo =
-        PrayerTimesDb.getNextPrayerWithDuration(_times, _now);
+    final nextInfo = PrayerTimesDb.getNextPrayerWithDuration(_times, _now);
 
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
@@ -1207,79 +1208,255 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     );
   }
 
-  /// Informational card showing Sunrise and Duha (نوێژی زوحا) prayer time
+  /// Computes whether current moment is during Duha, a prohibited time, or regular Sunnah time.
+  Map<String, dynamic> _currentSunnahStatus() {
+    if (_times.length < 5) {
+      return {
+        'label': 'ڕێبەری نوێژە سوننەتەکان',
+        'color': const Color(0xFF43A047),
+        'isProhibited': false,
+      };
+    }
+    final nowM = _now.hour * 60 + _now.minute;
+
+    int? getM(String name) {
+      final matches =
+          _times.where((x) => x.name.toLowerCase() == name.toLowerCase());
+      if (matches.isEmpty) return null;
+      final t = matches.first;
+      if (t.timeString.isEmpty || t.timeString == '--:--') return null;
+      return parsePrayerTimeMinutesForPrayer(name, t.timeString);
+    }
+
+    final fajrM = getM('fajr');
+    final dhuhrM = getM('dhuhr');
+    final asrM = getM('asr');
+    final maghribM = getM('maghrib');
+
+    final sunriseM = parsePrayerTimeMinutes(_sunriseTime);
+    var duhaM = parsePrayerTimeMinutes(_duhaTime);
+    if (sunriseM != null && duhaM == null) {
+      duhaM = (sunriseM + 20) % (24 * 60);
+    }
+
+    // 1. After Fajr until Duha (~20m after sunrise) -> Prohibited
+    if (fajrM != null && duhaM != null) {
+      if (nowM >= fajrM && nowM < duhaM) {
+        return {
+          'label': 'کاتەکانی نەهی (پاش بەیانی تا بەرزی خۆر)',
+          'color': const Color(0xFFE53935),
+          'isProhibited': true,
+        };
+      }
+    }
+
+    // 2. Duha time (Duha start until ~15m before Dhuhr) -> Recommended Sunnah
+    if (duhaM != null && dhuhrM != null) {
+      if (nowM >= duhaM && nowM < (dhuhrM - 15)) {
+        return {
+          'label': 'کاتی نوێژی چێشتەنگاوە (زوحا)',
+          'color': const Color(0xFFD4AF37),
+          'isProhibited': false,
+        };
+      }
+    }
+
+    // 3. Zenith (~15m before Dhuhr until Dhuhr) -> Prohibited
+    if (dhuhrM != null) {
+      if (nowM >= (dhuhrM - 15) && nowM < dhuhrM) {
+        return {
+          'label': 'کاتەکانی نەهی (وەستانی خۆر پێش نیوەڕۆ)',
+          'color': const Color(0xFFE53935),
+          'isProhibited': true,
+        };
+      }
+    }
+
+    // 4. After Asr until Maghrib -> Prohibited
+    if (asrM != null && maghribM != null) {
+      if (nowM >= asrM && nowM < maghribM) {
+        return {
+          'label': 'کاتەکانی نەهی (پاش عەسر تا ئاوابوون)',
+          'color': const Color(0xFFE53935),
+          'isProhibited': true,
+        };
+      }
+    }
+
+    // Default: Regular / Permissible Sunnah time
+    return {
+      'label': 'نوێژە سوننەتەکان و کاتەکانی نەهی',
+      'color': const Color(0xFF43A047),
+      'isProhibited': false,
+    };
+  }
+
+  /// Informational card showing Sunrise and Duha (نوێژی زوحا) with live status & guide sheet
   Widget _buildDuhaSunriseCard() {
     if (_sunriseTime == '--:--' && _duhaTime == '--:--') {
       return const SizedBox.shrink();
     }
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: DesignSystem.surface,
+    final status = _currentSunnahStatus();
+    final Color statusColor = status['color'] as Color;
+    final String statusLabel = status['label'] as String;
+    final bool isProhibited = status['isProhibited'] as bool;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => SunnahPrayersGuideSheet.show(context),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: DesignSystem.outline.withValues(alpha: 0.4),
-          width: 1.0,
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: const Color(0xFFD4AF37).withValues(alpha: 0.15),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.wb_sunny_rounded,
-              size: 20,
-              color: Color(0xFFD4AF37),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: DesignSystem.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isProhibited
+                  ? const Color(0xFFE53935).withValues(alpha: 0.35)
+                  : DesignSystem.outline.withValues(alpha: 0.4),
+              width: 1.0,
             ),
           ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'خۆرهەڵاتن: $_sunriseTime',
-                      style: context.theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: DesignSystem.onSurface.withValues(alpha: 0.8),
-                        fontFeatures: const [FontFeature.tabularFigures()],
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFD4AF37).withValues(alpha: 0.15),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.wb_sunny_rounded,
+                      size: 20,
+                      color: Color(0xFFD4AF37),
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'خۆرهەڵاتن: $_sunriseTime',
+                              style:
+                                  context.theme.textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: DesignSystem.onSurface
+                                    .withValues(alpha: 0.8),
+                                fontFeatures: const [
+                                  FontFeature.tabularFigures()
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              '•',
+                              style: TextStyle(color: DesignSystem.outline),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              'نوێژی زوحا: $_duhaTime',
+                              style:
+                                  context.theme.textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: const Color(0xFFD4AF37),
+                                fontFeatures: const [
+                                  FontFeature.tabularFigures()
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 3),
+                        Text(
+                          'کاتی نوێژی زوحا نزیکەی ٢٠ خولەک دوای خۆرهەڵاتن دەستپێدەکات',
+                          style: context.theme.textTheme.bodySmall?.copyWith(
+                            color:
+                                DesignSystem.onSurface.withValues(alpha: 0.55),
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF43A047).withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: const Color(0xFF43A047).withValues(alpha: 0.3),
                       ),
                     ),
-                    const SizedBox(width: 12),
-                    Text(
-                      '•',
-                      style: TextStyle(color: DesignSystem.outline),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'ڕێبەر',
+                          style: TextStyle(
+                            color: Color(0xFF43A047),
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 2),
+                        Icon(Icons.chevron_right,
+                            size: 14, color: Color(0xFF43A047)),
+                      ],
                     ),
-                    const SizedBox(width: 12),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: statusColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      isProhibited
+                          ? Icons.cancel_outlined
+                          : Icons.check_circle_outline,
+                      size: 14,
+                      color: statusColor,
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        statusLabel,
+                        style: TextStyle(
+                          color: statusColor,
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                     Text(
-                      'نوێژی زوحا: $_duhaTime',
-                      style: context.theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: const Color(0xFFD4AF37),
-                        fontFeatures: const [FontFeature.tabularFigures()],
+                      'کلیک بکە بۆ ڕێبەر',
+                      style: TextStyle(
+                        color: statusColor.withValues(alpha: 0.7),
+                        fontSize: 10,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  'کاتی نوێژی زوحا نزیکەی ٢٠ خولەک دوای خۆرهەڵاتن دەستپێدەکات',
-                  style: context.theme.textTheme.bodySmall?.copyWith(
-                    color: DesignSystem.onSurface.withValues(alpha: 0.55),
-                    fontSize: 11,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -1343,7 +1520,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         value: '',
         child: Row(
           children: [
-            Icon(Icons.volume_off_outlined, color: DesignSystem.onSurface.withValues(alpha: 0.5), size: 18),
+            Icon(Icons.volume_off_outlined,
+                color: DesignSystem.onSurface.withValues(alpha: 0.5), size: 18),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
@@ -1363,7 +1541,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
               value: o['rawName'] ?? '',
               child: Row(
                 children: [
-                  const Icon(Icons.music_note_outlined, color: DesignSystem.primary, size: 18),
+                  const Icon(Icons.music_note_outlined,
+                      color: DesignSystem.primary, size: 18),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -1384,7 +1563,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
               value: o['path']!,
               child: Row(
                 children: [
-                  const Icon(Icons.music_note_outlined, color: DesignSystem.primary, size: 18),
+                  const Icon(Icons.music_note_outlined,
+                      color: DesignSystem.primary, size: 18),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -1403,15 +1583,17 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     ];
 
     final currentValue = isAndroid
-        ? (_adhanRawName.isEmpty ||
-                !_androidAdhanOptions.any((o) => o['rawName'] == _adhanRawName)
-            ? 'bang_hijaz_maghrib_isha'
-            : _adhanRawName)
-        : (_adhanAsset.isEmpty ||
-                !AdhanAssets.options.any((o) => o['path'] == _adhanAsset)
-            ? 'assets/audio/bang_hijaz_maghrib_isha.mp3'
-            : _adhanAsset);
-    final hasSelection = true;
+        ? (_adhanRawName == ''
+            ? ''
+            : (!_androidAdhanOptions.any((o) => o['rawName'] == _adhanRawName)
+                ? 'bang_hijaz_maghrib_isha'
+                : _adhanRawName))
+        : (_adhanAsset == ''
+            ? ''
+            : (!AdhanAssets.options.any((o) => o['path'] == _adhanAsset)
+                ? 'assets/audio/bang_hijaz_maghrib_isha.mp3'
+                : _adhanAsset));
+    final hasSelection = currentValue.isNotEmpty;
 
     return Container(
       padding: const EdgeInsets.all(14),
@@ -1467,7 +1649,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                   initialValue: currentValue,
                   dropdownColor: DesignSystem.surface,
                   borderRadius: BorderRadius.circular(16),
-                  icon: const Icon(Icons.keyboard_arrow_down_rounded, color: DesignSystem.primary),
+                  icon: const Icon(Icons.keyboard_arrow_down_rounded,
+                      color: DesignSystem.primary),
                   decoration: InputDecoration(
                     isDense: true,
                     filled: true,
@@ -1528,7 +1711,9 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
               ),
               const SizedBox(width: 8),
               Material(
-                color: hasSelection ? DesignSystem.primary : Colors.grey.withValues(alpha: 0.2),
+                color: hasSelection
+                    ? DesignSystem.primary
+                    : Colors.grey.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(14),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(14),
@@ -1631,18 +1816,49 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     final now = _now;
     final lang = Localizations.localeOf(context).languageCode;
     const enMonths = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
     ];
     const arMonths = [
-      'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
-      'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+      'يناير',
+      'فبراير',
+      'مارس',
+      'أبريل',
+      'مايو',
+      'يونيو',
+      'يوليو',
+      'أغسطس',
+      'سبتمبر',
+      'أكتوبر',
+      'نوفمبر',
+      'ديسمبر'
     ];
     const kuMonths = [
-      'کانوونی دووەم', 'شوبات', 'ئازار', 'نیسان', 'ئایار', 'حوزەیران',
-      'تەممووز', 'ئاب', 'ئەیلوول', 'تشرینی یەکەم', 'تشرینی دووەم', 'کانوونی یەکەم'
+      'کانوونی دووەم',
+      'شوبات',
+      'ئازار',
+      'نیسان',
+      'ئایار',
+      'حوزەیران',
+      'تەممووز',
+      'ئاب',
+      'ئەیلوول',
+      'تشرینی یەکەم',
+      'تشرینی دووەم',
+      'کانوونی یەکەم'
     ];
-    final mList = lang == 'ar' ? arMonths : (lang == 'ku' ? kuMonths : enMonths);
+    final mList =
+        lang == 'ar' ? arMonths : (lang == 'ku' ? kuMonths : enMonths);
     final monthName = mList[now.month - 1];
     if (lang == 'ar' || lang == 'ku') {
       return '$monthName ${now.day}، ${now.year}';
